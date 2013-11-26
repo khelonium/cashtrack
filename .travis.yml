@@ -4,29 +4,17 @@ php:
   - 5.4
 services: mysql
 before_script:
-#  - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-mysql php5-curl
-#  - sudo sed -i -e "s,/var/www,$(pwd)/public,g" /etc/apache2/sites-available/default
-#  - sudo sed -i -e "s,AllowOverride None,AllowOverride All,g" /etc/apache2/sites-available/default
-#  - cat /etc/apache2/envvars
-#  - sudo a2enmod rewrite
-#  - sudo a2enmod php5
   - export HOSTNAME=zentrack
-#  - sudo sed -i -e "/DocumentRoot/i\ServerName $HOSTNAME" /etc/apache2/sites-available/default
-#  - sudo apt-get install apache2 libapache2-mod-fastcgi
- # - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
- # - sudo a2enmod rewrite actions fastcgi alias
- # - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
- # - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  - sudo apt-get install apache2
-  - sudo a2enmod actions
-  - sudo a2enmod rewrite
-  - echo "export PATH=/home/vagrant/.phpenv/bin:$PATH" | sudo tee -a /etc/apache2/envvars > /dev/null
-  - echo "$(curl -fsSL https://gist.github.com/roderik/16d751c979fdeb5a14e3/raw/gistfile1.txt)" | sudo tee /etc/apache2/conf.d/phpconfig > /dev/null
-  - echo "$(curl -fsSL https://gist.github.com/roderik/2eb301570ed4a1f4c33d/raw/gistfile1.txt)" | sed -e "s,PATH,`pwd`/public,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo a2enmod rewrite actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   - sudo service apache2 restart
   - echo "127.0.0.1    $HOSTNAME" | sudo tee -a /etc/hosts
-  #- sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
-  #- sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - phpenv config-add ./build/error_log.ini
   - sudo service apache2 restart
   - mysql -e 'create database yourcashflowtest;'
   - mysql -u root -e  'show databases;'
@@ -44,6 +32,8 @@ before_script:
   - wget http://zentrack --output-document="/tmp/ceva" ; cat /tmp/ceva
   - wget http://zentrack/api/cashflow --output-document="/tmp/ceva" ; cat /tmp/ceva
   - wget http://zentrack/api/balance  --output-document="/tmp/ceva" ; cat /tmp/ceva
+  - sudo ls /tmp
+  - sudo cat /tmp/php_errors.log
   - sudo cat /var/log/apache2/error.log
 
 
