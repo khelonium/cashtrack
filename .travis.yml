@@ -10,7 +10,7 @@ before_script:
 #  - cat /etc/apache2/envvars
 #  - sudo a2enmod rewrite
 #  - sudo a2enmod php5
-#  - export HOSTNAME=zentrack
+  - export HOSTNAME=zentrack
 #  - sudo sed -i -e "/DocumentRoot/i\ServerName $HOSTNAME" /etc/apache2/sites-available/default
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
