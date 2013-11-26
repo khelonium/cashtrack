@@ -1,0 +1,96 @@
+
+
+<div class="row">
+    <ul class="pagination">
+        <li><a href="#">&laquo;</a></li>
+    </ul>
+</div>
+
+
+
+<div class="row left-navigation">
+    <div id="formContainer" class="col-md-2">
+        <div id="addTransactionForm" class="add-transaction" >
+         </div>
+
+        <script type="text/template" id="add-transaction-template">
+
+                <form   class="form-horizontal" role="form">
+
+                    <div class="form-group">
+
+                        <label for="idAccount">Account</label>
+                        <select  id="idAccount" name="idAccount" class="form-control">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="datepicker">Date</label>
+                        <input type="text"  class="form-control" name="datepicker" id="datepicker" value="<%= date %>" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="amount" class="form-control" id="amount" placeholder="Amount" value="<%= amount %>">
+                    </div>
+                    <div class="form-group">
+
+                        <textarea class="form-control" name="description" rows="3"><%= description %> </textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">Add</button>
+                        </div>
+                    </div>
+                </form>
+        </script>
+
+        <div class="Accounts">
+            <div>
+            <a id="addTransactionLink" href="#addTransaction">Add Expense</a>
+            </div>
+
+            <table id="bufferList" class="table table-hover">
+
+                <tr >
+                    <th>   </th>
+                </tr>
+
+                <?php foreach ($this->buffers as $buffer):?>
+
+                     <tr>
+                        <th> <?php echo $buffer->name;?>  <span class="buffer-account" data-buffer-id=<?php echo $buffer->id;?>>-</span> </th>
+                    </tr>
+
+                <? endforeach; ?>
+
+
+            </table>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Category View</h3>
+            </div>
+            <div class="panel-body">
+                <table id="app" class="table table-hover"></table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1">
+
+        <div>
+            <div>
+                <a id="accountView" href="" data-backbone="true">Conturi</a>
+            </div>
+            <div>
+                <a id="transactionView" href="">Operatii</a>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

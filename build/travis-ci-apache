@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+    ServerName  zentrack
+    ServerAdmin cosmin.dordea@refactoring.ro
+    DocumentRoot "%TRAVIS_BUILD_DIR%/public"
+    <Directory "%TRAVIS_BUILD_DIR%/public">
+        AllowOverride All 
+        Options Indexes MultiViews Includes FollowSymlinks 
+        DirectoryIndex index.html index.php 
+        Order allow,deny
+        Allow from all 
+    </Directory>
+</VirtualHost>
+
