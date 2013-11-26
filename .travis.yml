@@ -4,19 +4,23 @@ php:
   - 5.4
 services: mysql
 before_script:
-  - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-mysql php5-curl
-  - sudo sed -i -e "s,/var/www,$(pwd)/public,g" /etc/apache2/sites-available/default
-  - sudo sed -i -e "s,AllowOverride None,AllowOverride All,g" /etc/apache2/sites-available/default
-  - cat /etc/apache2/envvars
-  - sudo a2enmod rewrite
-  - sudo a2enmod php5
-  - export HOSTNAME=zentrack
-  - sudo sed -i -e "/DocumentRoot/i\ServerName $HOSTNAME" /etc/apache2/sites-available/default
+#  - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-mysql php5-curl
+#  - sudo sed -i -e "s,/var/www,$(pwd)/public,g" /etc/apache2/sites-available/default
+#  - sudo sed -i -e "s,AllowOverride None,AllowOverride All,g" /etc/apache2/sites-available/default
+#  - cat /etc/apache2/envvars
+#  - sudo a2enmod rewrite
+#  - sudo a2enmod php5
+#  - export HOSTNAME=zentrack
+#  - sudo sed -i -e "/DocumentRoot/i\ServerName $HOSTNAME" /etc/apache2/sites-available/default
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo a2enmod rewrite actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   - echo "127.0.0.1    $HOSTNAME" | sudo tee -a /etc/hosts
-  #- sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
-  #- sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
-  - sudo /etc/init.d/apache2 restart
   - mysql -e 'create database yourcashflowtest;'
   - mysql -u root -e  'show databases;'
   - mysql -u root yourcashflowtest < ./tests/_data/dump.sql
