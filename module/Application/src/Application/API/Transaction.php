@@ -13,6 +13,7 @@ namespace Application\API;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
+use Finance\Transaction\Transaction as TransactionEntity;
 
 class Transaction extends AbstractController
 {
@@ -57,7 +58,7 @@ class Transaction extends AbstractController
      */
     public function update($id, $data)
     {
-       $entity = new Transaction($data);
+       $entity = new TransactionEntity($data);
        $this->getRepository()->update($entity);
 
        return new JsonModel($entity);
@@ -72,7 +73,8 @@ class Transaction extends AbstractController
     public function create($data)
     {
 
-        $entity = new Transaction($data);
+
+        $entity = new TransactionEntity($data);
 
 
         try {

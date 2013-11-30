@@ -20,31 +20,3 @@
         }
     }
 }());
-
-// Place any jQuery/helper plugins in here.
-
-var CashApp = new (Backbone.View.extend({
-
-    events: {
-        'click a[data-backbone]':  function(e){
-            e.preventDefault();
-           console.log("I got this mofo event");
-
-        },
-        'click a':  function(e){
-            e.preventDefault();
-            console.log("I got this mofo event 2");
-
-        }
-    },
-
-    Models:{},
-    Views:{},
-    Forms:{},
-    Collections:{},
-
-    start:function(){
-        this.router = new CashApp.CashRouter();
-        this.router.start();
-    }
-}))({el:document.body});

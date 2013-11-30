@@ -1,11 +1,24 @@
+/**
+ * Created with JetBrains PhpStorm.
+ * User: logo
+ * Date: 11/30/13
+ * Time: 2:39 PM
+ * To change this template use File | Settings | File Templates.
+ */
 
-CashApp.CashRouter  =  Backbone.Router.extend({
+var cashCode = {
+    Models:{},
+    Views:{},
+    Forms:{},
+    Collections:{}
+};
+
+
+cashCode.CashRouter  =  Backbone.Router.extend({
     routes: {
         "": "index",
         "cashflow/:id"         : "cashflow" ,
         'addTransaction'       : 'showAddTransaction' ,
-//        'transactionView'      : 'showTransactions',
-//        'accountView'          : 'showAccounts',
         'transaction/:id/edit' : 'editTransaction'
 
     },
@@ -27,21 +40,20 @@ CashApp.CashRouter  =  Backbone.Router.extend({
 
         ];
 
-        this.viewMode = 'category';
 
-        this.categoryList     = new CashApp.Collections.CategoryList();
-        this.transactions     = new CashApp.Collections.Transaction();
-        this.navigationYear   = new CashApp.Collections.NavigationYear(currentYear);
+        this.categoryList     = new cashCode.Collections.CategoryList();
+        this.transactions     = new cashCode.Collections.Transaction();
+        this.navigationYear   = new cashCode.Collections.NavigationYear(currentYear);
 
-        this.cashNavigation     = new CashApp.Views.NavigationYearView({collection:this.navigationYear, el:$('.pagination')});
-        this.addTransactionForm = new CashApp.Forms.AddTransaction({model: this.emptyTransaction(), el:$('#addTransactionForm')});
+        this.cashNavigation     = new cashCode.Views.NavigationYearView({collection:this.navigationYear, el:$('.pagination')});
+        this.addTransactionForm = new cashCode.Forms.AddTransaction({model: this.emptyTransaction(), el:$('#addTransactionForm')});
 
         this.cashNavigation.render();
 
 
-        this.cashView =  new CashApp.Views.CashView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
+        this.cashView =  new cashCode.Views.CashView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
 
-        this.buffersView = new CashApp.Views.Buffers({collection: new CashApp.Collections.Buffers, el:$('#bufferList')});
+        this.buffersView = new cashCode.Views.Buffers({collection: new cashCode.Collections.Buffers, el:$('#bufferList')});
 
 
         this.members = [];
@@ -49,12 +61,14 @@ CashApp.CashRouter  =  Backbone.Router.extend({
         this.members.push(this.cashNavigation);
         this.members.push(this.addTransactionForm);
         this.members.push(this.buffersView);
+        this.members.push(this.categoryList);
+        this.members.push(this.transactions);
 
 
         $('#accountView').bind('click', $.proxy(function(e) {e.preventDefault(); $('.panel-title').html('Category View'); this.raise('view_mode','category');}, this));
         $('#transactionView').bind('click', $.proxy(function(e) {e.preventDefault();$('.panel-title').html('Transaction View'); this.raise('view_mode','transaction');}, this));
 
-        this.renderMoney();
+        this.cashView.render();
 
 
     },
@@ -67,36 +81,25 @@ CashApp.CashRouter  =  Backbone.Router.extend({
 
     },
 
-    renderMoney:function() {
-        this.cashView.render();
-        return;
-        var toRender = this.categoryListView;
-
-        if (this.viewMode == 'transaction') {
-            toRender = this.transactionsView;
-        }
-
-        toRender.render();
-    },
-
     index: function(){
         var month = this.getFirstOfMonth();
         this.setActiveMonth(month);
     },
 
     setActiveMonth : function(month) {
-        CashApp.trigger("active_month", month);
         this.raise('active_month', month);
         this.activeMonth = month;
     },
 
     start: function(){
-       Backbone.history.start();
+        Backbone.history.start();
 
     },
+
     cashflow: function(month){
-       this.setActiveMonth(month);
+        this.setActiveMonth(month);
     },
+
     showAddTransaction : function() {
 
         if (this.addTransactionForm.model.get('id')) {
@@ -111,23 +114,18 @@ CashApp.CashRouter  =  Backbone.Router.extend({
     },
 
     emptyTransaction : function () {
-        return new CashApp.Models.Transaction(
+        return new cashCode.Models.Transaction(
             {description:"Completeaza-ma!",fromAccount:49,date:this.getToday(),reference:'added from ui', amount:0}
         );
     },
 
     showTransactions : function () {
-        this.viewMode = 'transaction';
         this.raise('view_mode','transaction');
-
-
 
     },
 
     showAccounts : function () {
-        this.viewMode = 'category';
         this.raise('view_mode','category');
-
     },
 
     raise : function (eventName, eventData) {
@@ -145,8 +143,40 @@ CashApp.CashRouter  =  Backbone.Router.extend({
     }
 });
 
+
+var CashApp =Backbone.View.extend({
+
+    initialize:function(options){
+        this.Models  = options.code.Views;
+        this.Models  = options.code.Models;
+        this.Forms   = options.code.Forms;
+        this.router  = options.code.CashRouter;
+    },
+
+    events: {
+        'click a[data-backbone]':  function(e){
+
+        },
+        'click a':  function(e){
+
+        }
+    },
+
+    Models:{},
+    Views:{},
+    Forms:{},
+    Collections:{},
+
+    start:function(){
+        this.router = new this.router();
+        this.router.start();
+    }
+});
+
+
 $(document).ready ( function (){
-    CashApp.start();
+    var cashApp = new CashApp(({el:document.body, code:cashCode}));
+    cashApp.start();
 
 });
 

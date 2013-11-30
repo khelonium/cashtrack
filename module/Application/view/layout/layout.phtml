@@ -30,10 +30,10 @@
            'js/vendor/jquery-ui-1.10.3.custom.min.js',
            'js/vendor/underscore-min.js',
            'js/vendor/backbone-min.js',
+           'js/cashapp.js',
            'js/plugins.js',
-           'js/models.js',
-           'js/views.js',
-           'js/main.js'
+           'js/cashapp/models.js',
+           'js/cashapp/views.js',
         );
         foreach ($javascripts as $script) {
             $this->headScript()->appendFile($this->basePath($script));
@@ -51,10 +51,10 @@
 
 
     <ul class="nav nav-pills">
-        <li class="active"><a href="#">Cashflow</a></li>
-        <li><a href="#">Merchants</a></li>
-        <li><a href="#">Accounts</a></li>
-        <li><a href="#">Import</a></li>
+        <li class="active"><a href="/">Cashflow</a></li>
+        <li><a href="/merchants">Merchants</a></li>
+        <li><a href="accounts">Accounts</a></li>
+        <li><a href="/import">Import</a></li>
 
     </ul>
 

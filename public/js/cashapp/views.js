@@ -1,5 +1,5 @@
 
-CashApp.Views.Item = Backbone.View.extend({
+cashCode.Views.Item = Backbone.View.extend({
     template: _.template('<option value ="<%= id %>"><%= name %></option>'),
     tagName: 'option',
     render:function(){
@@ -8,14 +8,14 @@ CashApp.Views.Item = Backbone.View.extend({
     }
 });
 
-CashApp.Views.AccountSelect = Backbone.View.extend({
+cashCode.Views.AccountSelect = Backbone.View.extend({
     initialize:function(){
         this.collection.on('change',this.render,this);
         this.collection.on('sync',this.render,this);
     },
     render:function(){
         _.each(this.collection.models,function( item ){
-            this.$el.append(new CashApp.Views.Item({model:item}).render().$el.html() );
+            this.$el.append(new cashCode.Views.Item({model:item}).render().$el.html() );
         },this);
 
         return this;
@@ -23,7 +23,7 @@ CashApp.Views.AccountSelect = Backbone.View.extend({
 });
 
 
-CashApp.Views.Transaction = Backbone.View.extend({
+cashCode.Views.Transaction = Backbone.View.extend({
 
     tagName: 'tr',
     template: _.template('<td><%= description %><td><%= amount %></td><td><a href="/#transaction/<%= id %>/edit">Edit</a></td>'),
@@ -38,7 +38,7 @@ CashApp.Views.Transaction = Backbone.View.extend({
 
 
 
-CashApp.Views.Category = Backbone.View.extend({
+cashCode.Views.Category = Backbone.View.extend({
 
     tagName: 'tr',
     template: _.template('<td><span class="glyphicon glyphicon-chevron-right"</span> <%= name %><td><%= amount %></td>'),
@@ -76,8 +76,8 @@ CashApp.Views.Category = Backbone.View.extend({
 
         this.$el.after(new_el);
 
-        transactions       = new CashApp.Collections.Transaction();
-        this.expandedView  = new CashApp.Views.Transactions({collection:transactions, el:new_el});
+        transactions       = new cashCode.Collections.Transaction();
+        this.expandedView  = new cashCode.Views.Transactions({collection:transactions, el:new_el});
         console.log(this.model.attributes);
         transactions.fetch({data:{month:this.model.get('month'), accountId:this.model.get('accountId')}, reset:true});
 
@@ -89,17 +89,17 @@ CashApp.Views.Category = Backbone.View.extend({
 });
 
 
- CashApp.Forms.AddTransaction = Backbone.View.extend({
+ cashCode.Forms.AddTransaction = Backbone.View.extend({
     events : {
       'submit' : 'save'
     },
     initialize:function(){
 
-        this.accountList = new CashApp.Collections.AccountList();
+        this.accountList = new cashCode.Collections.AccountList();
         this.listenTo(this.model, 'change',this.render);
         this.listenTo(this.model, 'canHide',this.hide);
         this.initModelListeners(this.model);
-        CashApp.on('working_month',this.setDate,this);
+        this.on('working_month',this.setDate,this);
         this.accountList.fetch();
 
 
@@ -152,7 +152,7 @@ CashApp.Views.Category = Backbone.View.extend({
         var template = _.template($('#add-transaction-template').html(), this.model.attributes);
         this.$el.html(template);
         this.calendar =  $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
-        this.select = new CashApp.Views.AccountSelect({collection:this.accountList,el:$('#idAccount')});
+        this.select = new cashCode.Views.AccountSelect({collection:this.accountList,el:$('#idAccount')});
 
         this.select.render();
 
@@ -161,7 +161,7 @@ CashApp.Views.Category = Backbone.View.extend({
     }
 });
 
-CashApp.Views.AbstractTransaction = Backbone.View.extend({
+cashCode.Views.AbstractTransaction = Backbone.View.extend({
     tagName:'table',
     className:'table table-hover',
     activeMonth: NaN,
@@ -185,32 +185,29 @@ CashApp.Views.AbstractTransaction = Backbone.View.extend({
 });
 
 
-CashApp.Views.CashView = CashApp.Views.AbstractTransaction.extend({
+cashCode.Views.CashView = cashCode.Views.AbstractTransaction.extend({
     mode : "category",
     transactionMode : NaN,
     categoryMode: NaN,
     activeView : NaN,
 
     initialize : function(options) {
-        this.categoryMode       = new CashApp.Views.CategoryList({collection:options.categories, el: this.el});
-        this.transactionMode    = new CashApp.Views.Transactions({collection:options.transactions, el: this.el});
+        this.categoryMode       = new cashCode.Views.CategoryList({collection:options.categories, el: this.el});
+        this.transactionMode    = new cashCode.Views.Transactions({collection:options.transactions, el: this.el});
 
         this.activeView = this.categoryMode;
 
         this.on('view_mode', this.setMode, this);
         this.on('active_month', this.setMonth, this);
 
-
-
     },
-
 
     setMonth : function (month) {
         this.activeMonth = month;
         this.categoryMode.setMonth(month);
         this.transactionMode.setMonth(month);
-    },
 
+    },
 
 
     setMode:function(mode){
@@ -234,7 +231,7 @@ CashApp.Views.CashView = CashApp.Views.AbstractTransaction.extend({
 
 });
 
-CashApp.Views.Transactions = CashApp.Views.AbstractTransaction.extend({
+cashCode.Views.Transactions = cashCode.Views.AbstractTransaction.extend({
 
 
 
@@ -245,7 +242,7 @@ CashApp.Views.Transactions = CashApp.Views.AbstractTransaction.extend({
     },
 
     addOne : function(transaction) {
-        var categoryView = new CashApp.Views.Transaction({model: transaction});
+        var categoryView = new cashCode.Views.Transaction({model: transaction});
         categoryView.render();
         if (categoryView.model.get('toAccount') == '') {
             categoryView.$el.addClass('danger');
@@ -259,7 +256,7 @@ CashApp.Views.Transactions = CashApp.Views.AbstractTransaction.extend({
 });
 
 
-CashApp.Views.CategoryList = CashApp.Views.AbstractTransaction.extend({
+cashCode.Views.CategoryList = cashCode.Views.AbstractTransaction.extend({
 
 
     addAll: function() {
@@ -303,14 +300,14 @@ CashApp.Views.CategoryList = CashApp.Views.AbstractTransaction.extend({
         );
     },
     addOne : function(categoryItem) {
-        var categoryView = new CashApp.Views.Category({model: categoryItem});
+        var categoryView = new cashCode.Views.Category({model: categoryItem});
         categoryView.render();
         this.$el.append(categoryView.el);
     }
 });
 
 
-var NavigationMonthView = Backbone.View.extend({
+cashCode.Views.NavigationMonth = Backbone.View.extend({
     tagName:'li',
     template: _.template('<a data-cashmonth="<%= date %>" href="#/cashflow/<%= date %>"><%= name %></a>'),
 
@@ -319,7 +316,7 @@ var NavigationMonthView = Backbone.View.extend({
     },
 
     initialize:function() {
-        CashApp.on("active_month",this.activateMonth, this);
+        this.on("active_month",this.activateMonth, this);
     },
     activateMonth: function(month) {
         var date = new Date(month);
@@ -346,14 +343,14 @@ var NavigationMonthView = Backbone.View.extend({
     }
 });
 
-CashApp.Views.NavigationYearView = Backbone.View.extend({
+cashCode.Views.NavigationYearView = Backbone.View.extend({
 
     render : function() {
         this.collection.forEach(this.addMonth,this);
     },
 
     addMonth: function(month){
-        var navigationMonthView = new NavigationMonthView({model:month});
+        var navigationMonthView = new cashCode.Views.NavigationMonth({model:month});
         navigationMonthView.render();
         this.$el.append(navigationMonthView.el);
     }
@@ -364,7 +361,7 @@ CashApp.Views.NavigationYearView = Backbone.View.extend({
 
 
 
-CashApp.Views.Buffer = Backbone.View.extend({
+cashCode.Views.Buffer = Backbone.View.extend({
 
     tagName : 'tr',
     template : _.template('<th data-buffer-id=<%= idAccount%>> <%= name %> <%=balance %></th>'),
@@ -379,7 +376,7 @@ CashApp.Views.Buffer = Backbone.View.extend({
 
 
 
-CashApp.Views.Buffers = Backbone.View.extend({
+cashCode.Views.Buffers = Backbone.View.extend({
 
    'tagName'    : 'table',
     className   :'table table-hover',
@@ -407,7 +404,7 @@ CashApp.Views.Buffers = Backbone.View.extend({
 
     addBuffer : function(model)
     {
-        var view = new CashApp.Views.Buffer({model:model});
+        var view = new cashCode.Views.Buffer({model:model});
         this.$el.append(view.render().el);
     }
 
