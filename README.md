@@ -1,4 +1,8 @@
 cashtrack
 =========
 
-Personal finance
+Install
+-------
+
+Check the travis build file for some tips
+
