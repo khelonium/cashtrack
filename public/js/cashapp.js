@@ -157,9 +157,7 @@ var CashApp =Backbone.View.extend({
         'click a[data-backbone]':  function(e){
 
         },
-        'click a':  function(e){
-
-        }
+        'click .end-month button':  'endOfMonth',
     },
 
     Models:{},
@@ -170,6 +168,10 @@ var CashApp =Backbone.View.extend({
     start:function(){
         this.router = new this.router();
         this.router.start();
+    },
+
+    endOfMonth: function() {
+        console.log("End month");
     }
 });
 

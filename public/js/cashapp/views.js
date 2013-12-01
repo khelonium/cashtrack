@@ -78,7 +78,6 @@ cashCode.Views.Category = Backbone.View.extend({
 
         transactions       = new cashCode.Collections.Transaction();
         this.expandedView  = new cashCode.Views.Transactions({collection:transactions, el:new_el});
-        console.log(this.model.attributes);
         transactions.fetch({data:{month:this.model.get('month'), accountId:this.model.get('accountId')}, reset:true});
 
     },
@@ -326,7 +325,6 @@ cashCode.Views.NavigationMonth = Backbone.View.extend({
             month = '0'+month;
         }
         var month_start = date.getFullYear() + '-' +  month + '-01';
-        console.log(month_start);
         if (this.model.get('date') === month_start) {
             this.toggleActive();
         }
@@ -356,7 +354,6 @@ cashCode.Views.NavigationYearView = Backbone.View.extend({
     }
 
 });
-
 
 
 
