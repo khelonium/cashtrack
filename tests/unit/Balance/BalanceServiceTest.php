@@ -2,7 +2,7 @@
 
 namespace FinanceTest\Balance;
 
-use Finance\Balance\Balance;
+use Finance\Balance\AbstractBalance;
 use Finance\Balance\BalanceService;
 
 class BalanceServiceTest extends \PHPUnit_Framework_TestCase
@@ -25,23 +25,7 @@ class BalanceServiceTest extends \PHPUnit_Framework_TestCase
         $this->mockAdapter = $this->getMock('Zend\Db\Adapter\Adapter', null, array($mockDriver));
     }
 
-    public function testGet()
-    {
 
-        $intervalMock =    $mockResult = $this->getMock('Refactoring\Interval\IntervalInterface');
-        $intervalMock->expects($this->any())
-                    ->method('getStart')
-                    ->will($this->returnValue(new \DateTime()));
-
-        $intervalMock->expects($this->any())
-            ->method('getEnd')
-            ->will($this->returnValue(new \DateTime()));
-
-        $service      = new BalanceService($this->mockAdapter);
-        $balance = $service->get(1, $intervalMock);
-
-        $this->assertTrue($balance instanceof Balance);
-    }
 
 
 }

@@ -3,6 +3,13 @@
 namespace Finance;
 
 use Finance\Account\Account as ExpenseEntity;
+use Finance\Account\Account;
+use Finance\Account\AccountFactory;
+use Finance\Account\AccountFactoryAwareInterface;
+use Finance\Account\AccountRepository;
+use Finance\Account\AccountRepositoryAwareInterface;
+use Finance\AccountValue\AccountValueFactory;
+use Finance\AccountValue\AccountValueFactoryAwareInterface;
 use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Transaction\Transaction as TransactionEntity;
 
@@ -44,13 +51,41 @@ class Module
                     if ($service instanceof AdapterAwareInterface) {
                         $service->setDbAdapter($sm->get('Zend\Db\Adapter\Adapter'));
                     }
-                }
+
+                },
+                'accountFactory' => function ($service, $sm) {
+                    if ($service instanceof AccountFactoryAwareInterface) {
+
+                        $service->setAccountFactory($sm->get('Finance\Account\AccountFactory'));
+                    }
+                },
+                'accountValueFactory' => function ($service, $sm) {
+
+                    if ($service instanceof AccountValueFactoryAwareInterface) {
+                        $service->setAccountValueFactory($sm->get('Finance\AccountValue\AccountValueFactory'));
+                    }
+                },
+
+                'accountRepository' => function ($service, $sm) {
+
+                    if ($service instanceof AccountRepositoryAwareInterface) {
+                        $service->setAccountRepository($sm->get('Finance\Account\AccountRepository'));
+                    }
+                },
+
+
             ),
             'factories' => array(
                 '\Finance\Dao\AccountGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ExpenseEntity());
+                    return new TableGateway('account', $dbAdapter, null, $resultSetPrototype);
+                },
+                '\Finance\Dao\AccountGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Account());
                     return new TableGateway('account', $dbAdapter, null, $resultSetPrototype);
                 },
                 '\Finance\Dao\MerchantGateway' => function ($sm) {
@@ -86,6 +121,18 @@ class Module
                 '\Report\CashFlow' => function ($sm) {
                     return new \Report\CashFlow();
                 },
+
+                '\Finance\AccountValue\AccountValueFactory' => function($sm) {
+                    return new AccountValueFactory();
+                },
+                '\Finance\Account\AccountFactory' => function ($sm) {
+                    return new AccountFactory();
+                },
+
+                '\Finance\Account\AccountRepository' => function ($sm) {
+                    return new AccountRepository();
+                },
+
             ),
         );
     }

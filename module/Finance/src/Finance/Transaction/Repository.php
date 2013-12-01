@@ -12,7 +12,6 @@ namespace Finance\Transaction;
 
 
 
-use Refactoring\Db\SqlSpecification;
 use Refactoring\Interval\IntervalInterface;
 use Refactoring\Repository\AbstractRepository;
 use Zend\Db\ResultSet\ResultSet;
