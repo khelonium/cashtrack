@@ -26,18 +26,16 @@ class OpenBalance extends  AbstractBalance
      */
     private $accountFactory = null;
 
-    public function __construct(SpecificMonth $month, AccountValueFactory $accountFactory)
+    public function __construct(SpecificMonth $month,  $accountProvider)
     {
-        $this->interval = $month;
-        $this->accountFactory = $accountFactory;
+        $this->interval        = $month;
+        $this->accountFactory = $accountProvider;
     }
-
 
     /**
      * @var null
      */
     private $list = null;
-
 
     /**
      * @return array|null

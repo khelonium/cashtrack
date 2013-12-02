@@ -45,5 +45,8 @@ cashCode.Models.Buffer  = Backbone.Model.extend({
 
 cashCode.Collections.Buffers = Backbone.Collection.extend({
     model:cashCode.Models.Buffer,
-    url:"/api/balance"
+    url:"/api/balance",
+    parse: function(options) {
+        return options.accounts;
+    }
 });

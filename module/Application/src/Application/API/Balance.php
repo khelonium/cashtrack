@@ -12,6 +12,7 @@ namespace Application\API;
 
 
 use Application\Library\Interval\ThisOrSpecificMonth;
+use Application\View\JsonBalance;
 use Finance\Balance\BalanceService;
 use Finance\Balance\SubsetBalance;
 use Refactoring\Interval\ThisMonth;
@@ -51,10 +52,8 @@ class Balance extends AbstractRestfulController
         $balance_service = $this->getServiceLocator()->get('\Finance\Balance\BalanceService');
         $balance  = $balance_service->getBalance($interval);
 
+        return new JsonBalance(new SubsetBalance($balance, 'buffer'));
 
-        $buffer_balance = new SubsetBalance($balance, 'buffer');
-
-        return new JsonModel($buffer_balance->accounts());
     }
 
 

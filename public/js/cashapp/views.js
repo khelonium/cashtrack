@@ -363,7 +363,6 @@ cashCode.Views.Buffer = Backbone.View.extend({
     tagName : 'tr',
     template : _.template('<th data-buffer-id=<%= idAccount%>> <%= name %> <%=balance %></th>'),
     render : function() {
-        console.log(this.model.attributes);
         this.$el.html(this.template(this.model.attributes));
         return this;
     }
