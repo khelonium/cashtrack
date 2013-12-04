@@ -38,33 +38,9 @@ class Balance extends AbstractRestfulController
     public function create($data)
     {
 
-        //fixme this is to be moved in close month service
-        //a specification will check if the month can be closed
-        // no negative amount allowed at end of month
         $working_month = new SpecificMonth(new \DateTime($data['month']));
         $balance_service = $this->getServiceLocator()->get('\Finance\Balance\BalanceService');
-        $balance = $balance_service->getBalance($working_month);
-        $buffers = new SubsetBalance($balance, 'buffer');
-
-
-        $next = $working_month->getEnd()->add(new \DateInterval('P1D'));
-        $date = $next->format('Y-m-d');
-
-        $repo = $this->getServiceLocator()->get('Finance\Transaction\Repository');
-
-
-        foreach ($buffers->accounts() as $buffer) {
-            $transaction                 = new Transaction();
-            $transaction['amount']       = $buffer->getBalance();
-            $transaction['date']         = $date;
-            $transaction['reference']    = 'Previous month balance';
-            $transaction['from_account'] =  55;
-            $transaction['to_account']   =  $buffer->getAccount()['id'];
-            $repo->add($transaction);
-        }
-
-        return new JsonModel();
-
+        return new JsonBalance($balance_service->closeMonth($working_month));
     }
 
 
@@ -75,7 +51,7 @@ class Balance extends AbstractRestfulController
      */
     public function getList()
     {
-        $month    =  $this->params()->fromQuery('month' , null );
+        $month    =  $this->params()->fromQuery('month', null);
 
         $day = ($month === null)? new \DateTime() : new \DateTime($month);
 

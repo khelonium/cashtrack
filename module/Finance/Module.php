@@ -14,6 +14,7 @@ use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Transaction\Transaction as TransactionEntity;
 
 
+use Finance\Transaction\TransactionRepositoryAwareInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -47,7 +48,7 @@ class Module
     {
         return array(
             'initializers' => array(
-                'db' => function($service, $sm) {
+                'database' => function ($service, $sm) {
                     if ($service instanceof AdapterAwareInterface) {
                         $service->setDbAdapter($sm->get('Zend\Db\Adapter\Adapter'));
                     }
@@ -72,6 +73,15 @@ class Module
                         $service->setAccountRepository($sm->get('Finance\Account\AccountRepository'));
                     }
                 },
+
+                'transactionRepository' => function ($service, $sm) {
+
+                    if ($service instanceof TransactionRepositoryAwareInterface) {
+                        $service->setTransactionRepository($sm->get('Finance\Transaction\Repository'));
+                    }
+                },
+
+
 
 
             ),
