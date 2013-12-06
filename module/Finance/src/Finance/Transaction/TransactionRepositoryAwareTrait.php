@@ -26,8 +26,8 @@ trait TransactionRepositoryAwareTrait
     }
 
     /**
+     * @return Repository
      * @throws \RuntimeException
-     * @return \Finance\Account\Repository
      */
     final protected function getTransactionRepository()
     {

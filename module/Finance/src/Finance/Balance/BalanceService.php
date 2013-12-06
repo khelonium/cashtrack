@@ -5,13 +5,13 @@ namespace Finance\Balance;
 
 use Finance\AccountValue\AccountValueFactoryAwareInterface;
 use Finance\AccountValue\AccountValueFactoryAwareTrait;
+use Finance\Balance\Specification\BalanceCanBeClosed;
 use Finance\Balance\Specification\ClosedMonth;
+use Finance\Month\MonthWithTransactionSpecification;
 use Finance\Transaction\Transaction;
 use Finance\Transaction\TransactionRepositoryAwareInterface;
 use Finance\Transaction\TransactionRepositoryAwareTrait;
-use Refactoring\Interval\IntervalInterface;
 use Refactoring\Interval\SpecificMonth;
-use Zend\Db\Adapter\Adapter;
 
 /**
  * Class BalanceService
@@ -25,17 +25,7 @@ class BalanceService implements AccountValueFactoryAwareInterface, TransactionRe
     use TransactionRepositoryAwareTrait;
 
     /**
-     * @var null|\Zend\Db\Adapter\Adapter
-     */
-    private $adapter = null;
-
-    public function __construct(Adapter $adapter)
-    {
-        $this->adapter = $adapter;
-    }
-
-
-    /**
+     *
      * Used to mark a month as closed
      * @param SpecificMonth $month
      * @return ClosedBalance|OpenBalance
@@ -43,14 +33,32 @@ class BalanceService implements AccountValueFactoryAwareInterface, TransactionRe
     public function closeMonth(SpecificMonth $month)
     {
 
+
+
+        $monthHasTransaction = new MonthWithTransactionSpecification();
+        $monthHasTransaction->setTransactionRepository($this->getTransactionRepository());
+
+        if (!$monthHasTransaction->isSatisfiedBy($month)) {
+            throw new \DomainException("There are no transactions in this month");
+        }
+
+        $canBeClosed = new BalanceCanBeClosed();
+
         $balance = $this->getBalance($month);
+
+        if (!$canBeClosed->isSatisfiedBy($balance)) {
+            throw new \DomainException("This month can not be closed");
+        }
+
         $buffers = new SubsetBalance($balance, 'buffer');
 
+        $next = clone $month->getEnd();
 
-        $next = $month->getEnd()->add(new \DateInterval('P1D'));
+        $next->add(new \DateInterval('P1D'));
         $date = $next->format('Y-m-d');
 
         foreach ($buffers->accounts() as $buffer) {
+
             $transaction                 = new Transaction();
             $transaction['amount']       = $buffer->getBalance();
             $transaction['date']         = $date;
@@ -59,6 +67,7 @@ class BalanceService implements AccountValueFactoryAwareInterface, TransactionRe
             $transaction['to_account']   =  $buffer->getAccount()['id'];
             $this->getTransactionRepository()->add($transaction);
         }
+
 
         return $this->getBalance($month);
 

@@ -13,7 +13,7 @@ use Finance\AccountValue\AccountValueFactoryAwareTrait;
 use Refactoring\Interval\SpecificMonth;
 use Zend\Stdlib\ArrayObject;
 
-class OpenBalance extends  AbstractBalance
+class OpenBalance extends AbstractBalance
 {
 
     /**
@@ -26,10 +26,18 @@ class OpenBalance extends  AbstractBalance
      */
     private $accountFactory = null;
 
-    public function __construct(SpecificMonth $month,  $accountProvider)
+    public function __construct(SpecificMonth $month, $accountProvider)
     {
         $this->interval        = $month;
         $this->accountFactory = $accountProvider;
+    }
+
+    /**
+     * @return SpecificMonth
+     */
+    public function getMonth()
+    {
+        return $this->interval;
     }
 
     /**
@@ -48,6 +56,7 @@ class OpenBalance extends  AbstractBalance
 
         return $this->list;
     }
+
 
 
 }

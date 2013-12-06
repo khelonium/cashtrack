@@ -41,7 +41,7 @@ class AccountValueFactoryTest extends \Codeception\TestCase\Test
 
 
         try {
-            $factory->get(1, new CurrentWeek() );
+            $factory->get(1, new CurrentWeek());
         } catch (\RuntimeException $e) {
             $this->assertEquals("Zend Db Adapter not set", $e->getMessage());
         }
@@ -62,7 +62,7 @@ class AccountValueFactoryTest extends \Codeception\TestCase\Test
 
 
         try {
-            $factory->get(1, new CurrentWeek() );
+            $factory->get(1, new CurrentWeek());
         } catch (\RuntimeException $e) {
             $this->assertEquals("Account Factory not configured", $e->getMessage());
         }
@@ -75,7 +75,7 @@ class AccountValueFactoryTest extends \Codeception\TestCase\Test
         $factory = $this->getFromFactory();
 
         $interval = new SpecificMonth(new \DateTime('2013-10-01'));
-        $accountValue = $factory->get(1,$interval);
+        $accountValue = $factory->get(1, $interval);
 
         $this->assertTrue($accountValue instanceof AccountValue);
         $this->assertEquals($accountValue->getCredit(), $expected_credit);
@@ -102,6 +102,7 @@ class AccountValueFactoryTest extends \Codeception\TestCase\Test
 
         return $this->getFromService('\Finance\AccountValue\AccountValueFactory');
     }
+
 
 
     private function getFromService($key)

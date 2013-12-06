@@ -43,8 +43,11 @@ abstract class AbstractBalance
         $summary->debit = 0;
 
         foreach ($this->accounts() as $account) {
-            $summary->credit += $account->getCredit();
-            $summary->debit += $account->getDebit();
+            if ($account->getAccount()['type'] != 'buffer') {
+                $summary->credit += $account->getCredit();
+                $summary->debit += $account->getDebit();
+            }
+
         }
 
         $this->summary = $summary;
@@ -52,4 +55,5 @@ abstract class AbstractBalance
         return $this->summary;
 
     }
+
 }

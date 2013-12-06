@@ -7,6 +7,9 @@
 namespace Application\View;
 
 use Finance\Balance\AbstractBalance;
+use Finance\Balance\ClosedBalance;
+use Finance\Balance\OpenBalance;
+use Finance\Balance\SubsetBalance;
 use Zend\View\Model\JsonModel;
 
 class JsonBalance extends JsonModel
@@ -32,8 +35,21 @@ class JsonBalance extends JsonModel
         //fixme add month
         $data['credit']   = $balance->getCredit();
         $data['debit']    = $balance->getDebit();
-        $data['accounts'] = [];
 
+
+        if ($balance instanceof OpenBalance || $balance instanceof ClosedBalance) {
+            $data['start']  = $balance->getMonth()->getStart()->format('Y-m-d');
+            $data['end']    = $balance->getMonth()->getEnd()->format('Y-m-d');
+            $data['status'] = 'open';
+        }
+
+
+        if ($balance instanceof SubsetBalance) {
+            $data['status'] = 'subset';
+
+        }
+
+        $data['accounts'] = [];
         foreach ($balance->accounts() as $account) {
             $data['accounts'][] = $account->toArray();
         }

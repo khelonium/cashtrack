@@ -44,6 +44,15 @@ class AccountValue extends  \ArrayObject
     public function __construct(Interval $interval, Account $account, $debit = 0, $credit = 0)
     {
         //fixme add assertions
+
+        if ($debit === null ) {
+            $debit = 0;
+        }
+
+        if ($credit === null ) {
+            $credit = 0;
+        }
+
         $this->credit   = $credit;
         $this->debit    = $debit;
         $this->account  = $account;

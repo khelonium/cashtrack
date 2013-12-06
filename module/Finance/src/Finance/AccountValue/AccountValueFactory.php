@@ -41,6 +41,7 @@ class AccountValueFactory implements  AdapterAwareInterface, AccountFactoryAware
      */
     public function get($account, IntervalInterface $interval)
     {
+
         $sql        = $this->getSqlFor($account, $interval);
         $statement = $this->getAdapter()->query($sql);
         $result = $statement->execute();
@@ -82,14 +83,18 @@ class AccountValueFactory implements  AdapterAwareInterface, AccountFactoryAware
      * @param IntervalInterface $interval
      * @return array
      */
-    public function getList($accountIds, IntervalInterface $interval )
+    public function getList($accountIds, IntervalInterface $interval)
     {
 
         $out = new \ArrayObject();
 
         foreach ($accountIds as $id) {
-            $out[] = $this->get($id, $interval);
+            $account = $this->get($id, $interval);
+            if ($account->getCredit() >0 || $account->getDebit()  ) {
+                $out []= $account;
+            }
         }
+
 
         return $out;
     }

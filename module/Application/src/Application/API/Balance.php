@@ -32,15 +32,20 @@ class Balance extends AbstractRestfulController
      */
     public function get($id)
     {
-        return new JsonModel();
+        return new JsonBalance($this->getBalanceService()->getBalance(new SpecificMonth(new \DateTime($id))));
     }
 
     public function create($data)
     {
 
-        $working_month = new SpecificMonth(new \DateTime($data['month']));
-        $balance_service = $this->getServiceLocator()->get('\Finance\Balance\BalanceService');
-        return new JsonBalance($balance_service->closeMonth($working_month));
+        try {
+            $working_month   = new SpecificMonth(new \DateTime($data['month']));
+            $balance_service = $this->getServiceLocator()->get('\Finance\Balance\BalanceService');
+            return new JsonBalance($balance_service->closeMonth($working_month));
+        } catch (\Exception $e) {
+            $this->response->setStatusCode(500);
+            return new JsonModel(['content' => $e->getMessage()]);
+        }
     }
 
 
@@ -57,13 +62,19 @@ class Balance extends AbstractRestfulController
 
         $interval = new SpecificMonth($day);
 
-        /** @var BalanceService $balance_service */
-        $balance_service = $this->getServiceLocator()->get('\Finance\Balance\BalanceService');
+        $balance_service = $this->getBalanceService();
         $balance  = $balance_service->getBalance($interval);
 
         return new JsonBalance(new SubsetBalance($balance, 'buffer'));
 
     }
 
+    /**
+     * @return BalanceService
+     */
+    private function getBalanceService()
+    {
+        return $this->getServiceLocator()->get('\Finance\Balance\BalanceService');
+    }
 
 }

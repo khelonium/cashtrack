@@ -10,3 +10,5 @@ vendor/bin
 vendor/ro.refactoring
 data/export
 tests/_log/*
+codeception.yml
+composer.lock
