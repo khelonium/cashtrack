@@ -50,11 +50,12 @@ DROP TABLE IF EXISTS `balance`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `balance` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_account` int(11) NOT NULL,
   `month` date NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
+  `debit` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `credit` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `balance` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_account` (`id_account`,`month`)
+  KEY `id_account` (`month`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -135,4 +136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-12-07  0:13:31
+-- Dump completed on 2013-12-07  9:59:15

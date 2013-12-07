@@ -10,11 +10,14 @@ use Finance\Account\AccountRepository;
 use Finance\Account\AccountRepositoryAwareInterface;
 use Finance\AccountValue\AccountValueFactory;
 use Finance\AccountValue\AccountValueFactoryAwareInterface;
+use Finance\Balance\History\BalanceRepositoryAwareInterface;
+use Finance\Balance\History\History;
 use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Transaction\Transaction as TransactionEntity;
 
 
 use Finance\Transaction\TransactionRepositoryAwareInterface;
+use Refactoring\Repository\GenericRepository;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -81,10 +84,14 @@ class Module
                     }
                 },
 
+                'balanceRepository' => function ($service, $sm) {
 
-
-
+                    if ($service instanceof BalanceRepositoryAwareInterface) {
+                            $service->setBalanceRepository($sm->get('\Finance\Balance\History\Repository'));
+                    }
+                },
             ),
+
             'factories' => array(
                 '\Finance\Dao\AccountGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
@@ -112,6 +119,13 @@ class Module
                     return new TableGateway('transaction', $dbAdapter, null, $resultSetPrototype);
                 },
 
+                '\Finance\Dao\BalanceGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new History());
+                    return new TableGateway('balance', $dbAdapter, null, $resultSetPrototype);
+                },
+
                 '\Finance\Account\Repository' => function ($sm) {
                     return new \Finance\Account\Repository();
                 },
@@ -132,7 +146,7 @@ class Module
                     return new \Report\CashFlow();
                 },
 
-                '\Finance\AccountValue\AccountValueFactory' => function($sm) {
+                '\Finance\AccountValue\AccountValueFactory' => function ($sm) {
                     return new AccountValueFactory();
                 },
                 '\Finance\Account\AccountFactory' => function ($sm) {
@@ -143,9 +157,11 @@ class Module
                     return new AccountRepository();
                 },
 
+                '\Finance\Balance\History\Repository' => function ($sm) {
+                    return new GenericRepository($sm->get('\Finance\Dao\BalanceGateway'));
+                },
+
             ),
         );
     }
-
-
 }

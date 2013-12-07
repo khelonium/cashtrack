@@ -5,6 +5,9 @@ namespace Finance\Balance;
 
 use Finance\AccountValue\AccountValueFactoryAwareInterface;
 use Finance\AccountValue\AccountValueFactoryAwareTrait;
+use Finance\Balance\History\BalanceRepositoryAwareInterface;
+use Finance\Balance\History\BalanceRepositoryAwareTrait;
+use Finance\Balance\History\History;
 use Finance\Balance\Specification\BalanceCanBeClosed;
 use Finance\Balance\Specification\ClosedMonth;
 use Finance\Month\MonthWithTransactionSpecification;
@@ -18,16 +21,21 @@ use Refactoring\Interval\SpecificMonth;
  * Computes transients balances for any interval
  * @package Finance\Balance
  */
-class BalanceService implements AccountValueFactoryAwareInterface, TransactionRepositoryAwareInterface
+class BalanceService implements
+    AccountValueFactoryAwareInterface,
+    TransactionRepositoryAwareInterface,
+    BalanceRepositoryAwareInterface
 {
 
     use AccountValueFactoryAwareTrait;
     use TransactionRepositoryAwareTrait;
+    use BalanceRepositoryAwareTrait;
 
     /**
      *
      * Used to mark a month as closed
      * @param SpecificMonth $month
+     * @throws \DomainException
      * @return ClosedBalance|OpenBalance
      */
     public function closeMonth(SpecificMonth $month)
@@ -43,16 +51,23 @@ class BalanceService implements AccountValueFactoryAwareInterface, TransactionRe
         }
 
         $canBeClosed = new BalanceCanBeClosed();
-
         $balance = $this->getBalance($month);
+
 
         if (!$canBeClosed->isSatisfiedBy($balance)) {
             throw new \DomainException("This month can not be closed");
         }
 
-        $buffers = new SubsetBalance($balance, 'buffer');
+        $closedMonth = new ClosedMonth($this->getBalanceRepository());
 
-        $next = clone $month->getEnd();
+        if ($closedMonth->isSatisfiedBy($month)) {
+            throw new \DomainException("Month ".$month->getStart()->format('Y-m-d')." already closed");
+        }
+
+
+
+        $buffers = new SubsetBalance($balance, 'buffer');
+        $next    = clone $month->getEnd();
 
         $next->add(new \DateInterval('P1D'));
         $date = $next->format('Y-m-d');
@@ -69,6 +84,14 @@ class BalanceService implements AccountValueFactoryAwareInterface, TransactionRe
         }
 
 
+        $history = new History();
+        $history['month'] = $month->getStart()->format('Y-m-d');
+        $history['balance'] = $balance->getBalance();
+        $history['debit']   = $balance->getDebit();
+        $history['credit']  = $balance->getCredit();
+
+        $this->getBalanceRepository()->add($history);
+
         return $this->getBalance($month);
 
     }
@@ -83,15 +106,12 @@ class BalanceService implements AccountValueFactoryAwareInterface, TransactionRe
      */
     public function getBalance(SpecificMonth $month)
     {
-        $isClosedMonth = new ClosedMonth();
+        $isClosedMonth = new ClosedMonth($this->getBalanceRepository());
 
         if ($isClosedMonth->isSatisfiedBy($month)) {
-            return new ClosedBalance();
+            return new ClosedBalance($month, $this->getAccountValueFactory());
         } else {
             return new OpenBalance($month, $this->getAccountValueFactory());
         }
     }
-
-
-
 }

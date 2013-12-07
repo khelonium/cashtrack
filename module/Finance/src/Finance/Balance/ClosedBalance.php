@@ -11,7 +11,7 @@ namespace Finance\Balance;
  * Class ClosedBalance
  * @package Finance\Balance
  */
-class ClosedBalance
+class ClosedBalance extends OpenBalance
 {
 
 }

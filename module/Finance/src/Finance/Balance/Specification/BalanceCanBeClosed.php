@@ -6,7 +6,6 @@
 
 namespace Finance\Balance\Specification;
 
-use Finance\AccountValue\Specification\CanEndMonth;
 use Finance\Balance\AbstractBalance;
 use Finance\Balance\OpenBalance;
 use Refactoring\Specification\AbstractSpecification;
@@ -24,14 +23,14 @@ class BalanceCanBeClosed extends AbstractSpecification
             return false;
         }
 
-        $canEndMonth = new CanEndMonth();
-
         foreach ($object->accounts() as $account) {
-            if (!$canEndMonth->isSatisfiedBy($account) ) {
-                return false;
+            if ($account->getAccount()->type == 'buffer') {
+                //if your bank account is in minus you can not close month
+                if ($account->getBalance() < 0 ) {
+                    return false;
+                }
             }
         }
-
         return true;
     }
 }

@@ -5,6 +5,7 @@ use Codeception\Util\Stub;
 use Finance\Balance\AbstractBalance;
 use Finance\Balance\BalanceService;
 use Refactoring\Interval\SpecificMonth;
+use Zend\View\Exception\DomainException;
 
 /**
  * Class BalanceServiceTest
@@ -111,6 +112,22 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
 
     }
 
+    public function testCanNotCloseMonthTwice()
+    {
+        $this->testCanCloseMonth();
+        /** @var \Finance\Balance\BalanceService $balance */
+        $balance = \ApplicationTest\Bootstrap::getServiceManager()->get('\Finance\Balance\BalanceService');
+
+        try {
+            $balance->closeMonth(new SpecificMonth(new \DateTime('2013-06-01')));
+            $this->fail("Expected exception not raised");
+        } catch (\DomainException $e) {
+            $this->assertEquals("Month 2013-06-01 already closed", $e->getMessage());
+        }
+
+    }
+
+
     public function testCanCloseMonth()
     {
         $this->codeGuy->dontSeeInDatabase(
@@ -118,12 +135,11 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
             array('from_account' => 55, 'to_account' => 47, 'amount' => 353, 'transaction_date', '2013-07-01')
         );
 
-        //fixme not really unit test, more like functional
         //todo move functional in functional test suite
         /** @var \Finance\Balance\BalanceService $balance */
         $balance = \ApplicationTest\Bootstrap::getServiceManager()->get('\Finance\Balance\BalanceService');
         try {
-            $balance->closeMonth(new SpecificMonth(new \DateTime('2013-06-01')));
+            $closed = $balance->closeMonth(new SpecificMonth(new \DateTime('2013-06-01')));
         } catch (\DomainException $e) {
             $this->assertEquals("This month can not be closed", $e->getMessage());
 
@@ -141,6 +157,15 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
             );
         }
 
+        $this->codeGuy->seeInDatabase(
+            'balance',
+            array(
+                'month'   => '2013-06-01',
+                'credit'  => $closed->getCredit(),
+                'debit'   => $closed->getDebit(),
+                'balance' => $closed->getBalance()
+            )
+        );
 
     }
 
@@ -157,7 +182,7 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
         $methods = [
             'forInterval' => function () {
                     return [];
-                },
+            },
         ];
 
         return Stub::make('\Finance\Transaction\Repository', $methods);

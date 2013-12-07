@@ -93,12 +93,18 @@ class AccountValue extends  \ArrayObject
         return $this->debit;
     }
 
-
     public function getBalance()
     {
-        return $this->getCredit() - $this->getDebit();
-    }
+        switch ($this->getAccount()->type) {
+            case 'buffer':
+                $balance = $this->getCredit() - $this->getDebit();
+                break;
+            default:
+                $balance = $this->getDebit() - $this->getCredit();
+        }
 
+        return $balance;
+    }
 
     /**
      * fixme this representation has to be moved in a helper in api
