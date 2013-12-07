@@ -12,7 +12,6 @@ namespace Finance\Transaction;
 
 
 
-use Refactoring\Db\SqlSpecification;
 use Refactoring\Interval\IntervalInterface;
 use Refactoring\Repository\AbstractRepository;
 use Zend\Db\ResultSet\ResultSet;
@@ -45,24 +44,28 @@ class Repository extends AbstractRepository
      * @return array
      * @todo REFACTOR WITH specification
      */
-    public function forInterval(IntervalInterface $interval, $account = null)
+    public function forInterval(IntervalInterface $interval)
     {
-        $select = $this->gateway()->getSql()->select();
-        //TODO have infrastructure service that converts from object notion to db notation
+
+        $select = $this->getSelect();
         $select->where->greaterThanOrEqualTo('transaction_date', $interval->getStart()->format('Y-m-d'));
         $select->where->lessThanOrEqualTo('transaction_date', $interval->getEnd()->format('Y-m-d'));
 
-        if ($account) {
-            $select->where->equalTo('to_account',$account);
-        }
 
         $result = $this->gateway()->selectWith($select);
+        $out    = array();
 
-        $out = array();
         foreach ($result as $entry) {
             $out[] = $entry;
         }
         return $out;
     }
 
+    /**
+     * @return \Zend\Db\Sql\Select
+     */
+    private function getSelect()
+    {
+        return $this->gateway()->getSql()->select();
+    }
 }

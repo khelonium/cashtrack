@@ -78,7 +78,6 @@ cashCode.Views.Category = Backbone.View.extend({
 
         transactions       = new cashCode.Collections.Transaction();
         this.expandedView  = new cashCode.Views.Transactions({collection:transactions, el:new_el});
-        console.log(this.model.attributes);
         transactions.fetch({data:{month:this.model.get('month'), accountId:this.model.get('accountId')}, reset:true});
 
     },
@@ -326,7 +325,6 @@ cashCode.Views.NavigationMonth = Backbone.View.extend({
             month = '0'+month;
         }
         var month_start = date.getFullYear() + '-' +  month + '-01';
-        console.log(month_start);
         if (this.model.get('date') === month_start) {
             this.toggleActive();
         }
@@ -360,13 +358,11 @@ cashCode.Views.NavigationYearView = Backbone.View.extend({
 
 
 
-
 cashCode.Views.Buffer = Backbone.View.extend({
 
     tagName : 'tr',
     template : _.template('<th data-buffer-id=<%= idAccount%>> <%= name %> <%=balance %></th>'),
     render : function() {
-        console.log(this.model.attributes);
         this.$el.html(this.template(this.model.attributes));
         return this;
     }
@@ -375,37 +371,97 @@ cashCode.Views.Buffer = Backbone.View.extend({
 });
 
 
-
-cashCode.Views.Buffers = Backbone.View.extend({
+cashCode.Views.BufferList = Backbone.View.extend({
 
    'tagName'    : 'table',
     className   :'table table-hover',
-    activeMonth : NaN,
 
-    initialize:function() {
-        this.collection.on('change',this.render,this);
-        this.collection.on('sync',this.render,this);
-        this.on('active_month', this.setMonth, this);
-
-
-    },
-
-    setMonth : function (month) {
-        this.activeMonth = month;
-        this.collection.fetch({data:{month:month},reset:true});
-    },
 
 
     render : function() {
         this.$el.html('');
-        this.collection.forEach(this.addBuffer,this);
+
+
+        accounts = this.model.buffers();
+        accounts.forEach(this.addBuffer,this);
+        return this;
 
     },
 
     addBuffer : function(model)
     {
-        var view = new cashCode.Views.Buffer({model:model});
+        var bModel = new Backbone.Model(model);
+        var view = new cashCode.Views.Buffer({model:bModel});
+
         this.$el.append(view.render().el);
+
+
+    }
+});
+
+cashCode.Views.MonthOperation = Backbone.View.extend({
+
+    activeMonth : NaN,
+    bufferList : NaN,
+    addTransaction:NaN,
+    endMonth:NaN,
+
+    events: {
+        'click .end-month button':  'endOfMonthAction'
+    },
+
+    setMonth : function (month) {
+        this.model.set({start:month});
+        this.model.fetch();
+    },
+
+
+    endOfMonthAction: function() {
+
+        var callback = function(model, xhr, options) {
+            this.setError(xhr.responseJSON.content);
+        };
+
+        var call = callback.bind(this);
+
+        this.model.save({month:this.activeMonth} , {error:call} );
+    },
+
+    initialize:function() {
+        this.model.on('change',this.render,this);
+        this.model.on('sync',this.render,this);
+        this.on('active_month', this.setMonth, this);
+
+        this.bufferList = new cashCode.Views.BufferList({model:this.model, el:this.$el.find('#bufferList')});
+        this.addTransaction = this.$el.find('#addTransactionLink');
+        this.endMonth       = this.$el.find('.end-month');
+
+    },
+
+    setError: function(message) {
+
+        $error = $("<div class='text-danger'>"+ message + "</div>");
+        this.$el.append($error);
+        $error.fadeOut(5000, function() {$(this).remove()});
+    },
+    render : function() {
+
+        this.$el.html('');
+
+        if (this.model.get('status') === 'closed') {
+            this.$el.html('-Closed-');
+
+        }
+
+        if (this.model.get('status') === 'open') {
+            this.$el.append(this.addTransaction);
+        }
+
+        this.$el.append(this.bufferList.render().el);
+
+        if (this.model.get('status') === 'open') {
+            this.$el.append(this.endMonth);
+        }
     }
 
 

@@ -15,11 +15,13 @@ var cashCode = {
 
 
 cashCode.CashRouter  =  Backbone.Router.extend({
+    activeMonth : NaN,
+
     routes: {
         "": "index",
         "cashflow/:id"         : "cashflow" ,
         'addTransaction'       : 'showAddTransaction' ,
-        'transaction/:id/edit' : 'editTransaction'
+        'transaction/:id/edit' : 'editTransaction',
 
     },
     initialize: function(){
@@ -36,7 +38,8 @@ cashCode.CashRouter  =  Backbone.Router.extend({
             {name:"August", date:"2013-08-01"},
             {name:"Septembrie", date:"2013-09-01"},
             {name:"Octombrie", date:"2013-10-01"},
-            {name:"Noiembrie", date:"2013-11-01"}
+            {name:"Noiembrie", date:"2013-11-01"},
+            {name:"Decembrie", date:"2013-12-01"}
 
         ];
 
@@ -51,9 +54,8 @@ cashCode.CashRouter  =  Backbone.Router.extend({
         this.cashNavigation.render();
 
 
-        this.cashView =  new cashCode.Views.CashView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
-
-        this.buffersView = new cashCode.Views.Buffers({collection: new cashCode.Collections.Buffers, el:$('#bufferList')});
+        this.cashView    =  new cashCode.Views.CashView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
+        this.buffersView = new cashCode.Views.MonthOperation({model: new cashCode.Models.Buffer, el:$('#monthOperations')});
 
 
         this.members = [];
@@ -156,9 +158,6 @@ var CashApp =Backbone.View.extend({
     events: {
         'click a[data-backbone]':  function(e){
 
-        },
-        'click a':  function(e){
-
         }
     },
 
@@ -171,6 +170,7 @@ var CashApp =Backbone.View.extend({
         this.router = new this.router();
         this.router.start();
     }
+
 });
 
 

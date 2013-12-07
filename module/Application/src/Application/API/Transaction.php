@@ -10,7 +10,6 @@
 namespace Application\API;
 
 
-
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 use Finance\Transaction\Transaction as TransactionEntity;
@@ -27,9 +26,9 @@ class Transaction extends AbstractController
     public function get($id)
     {
 
-        if (! $response = $this->getRepository()->get($id)) {
+        if (!$response = $this->getRepository()->get($id)) {
             $this->response->setStatusCode(404);
-            return array(content =>"Transaction not found");
+            return array('content' => "Transaction not found");
         }
 
         return new JsonModel($response);
@@ -58,10 +57,10 @@ class Transaction extends AbstractController
      */
     public function update($id, $data)
     {
-       $entity = new TransactionEntity($data);
-       $this->getRepository()->update($entity);
+        $entity = new TransactionEntity($data);
+        $this->getRepository()->update($entity);
 
-       return new JsonModel($entity);
+        return new JsonModel($entity);
     }
 
     /**
@@ -79,10 +78,10 @@ class Transaction extends AbstractController
 
         try {
             $this->getRepository()->add($entity);
-        } catch ( \Exception $e) {
+        } catch (\Exception $e) {
             $this->response->setStatusCode(500);
             return new JsonModel(array(
-                'content' => 'Internal server error '. $e->getMessage()
+                'content' => 'Internal server error ' . $e->getMessage()
             ));
         }
 

@@ -28,14 +28,8 @@ before_script:
   - cp -f build/local.php ./config/autoload/local.php
   - cat build/codeception.yml
   - composer install
-  - php codecept.phar bootstrap
   - mkdir ./tests/_log
   - sudo chmod a+w ./tests/_log
-  - wget http://zentrack --output-document="/tmp/ceva" ; cat /tmp/ceva
-  - wget http://zentrack/api/cashflow --output-document="/tmp/ceva" ; cat /tmp/ceva
-  - wget http://zentrack/api/balance  --output-document="/tmp/ceva" ; cat /tmp/ceva
-  - sudo ls /tmp
-  - sudo cat /var/log/apache2/error.log
-  - sudo cat /var/log/apache2/access.log
+  - php codecept.phar build
 
 script: php codecept.phar run

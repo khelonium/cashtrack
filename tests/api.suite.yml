@@ -1,7 +1,7 @@
 class_name: ApiGuy
 
 modules:
-    enabled: [PhpBrowser, REST, ApiHelper]
+    enabled: [PhpBrowser, REST, ApiHelper,Db]
     config:
       PhpBrowser:
           url: http://zentrack/
