@@ -55,7 +55,7 @@ cashCode.CashRouter  =  Backbone.Router.extend({
 
 
         this.cashView    =  new cashCode.Views.CashView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
-        this.buffersView = new cashCode.Views.Buffers({model: new cashCode.Models.Buffer, el:$('#bufferList')});
+        this.buffersView = new cashCode.Views.MonthOperation({model: new cashCode.Models.Buffer, el:$('#monthOperations')});
 
 
         this.members = [];
@@ -158,8 +158,7 @@ var CashApp =Backbone.View.extend({
     events: {
         'click a[data-backbone]':  function(e){
 
-        },
-        'click .end-month button':  'endOfMonth',
+        }
     },
 
     Models:{},
@@ -170,13 +169,8 @@ var CashApp =Backbone.View.extend({
     start:function(){
         this.router = new this.router();
         this.router.start();
-    },
-
-    endOfMonth: function() {
-
-        $.post( "/api/balance", {month:this.router.activeMonth} );
-        console.log("End month");
     }
+
 });
 
 

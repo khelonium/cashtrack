@@ -371,42 +371,97 @@ cashCode.Views.Buffer = Backbone.View.extend({
 });
 
 
-
-cashCode.Views.Buffers = Backbone.View.extend({
+cashCode.Views.BufferList = Backbone.View.extend({
 
    'tagName'    : 'table',
     className   :'table table-hover',
+
+
+
+    render : function() {
+        this.$el.html('');
+
+
+        accounts = this.model.buffers();
+        accounts.forEach(this.addBuffer,this);
+        return this;
+
+    },
+
+    addBuffer : function(model)
+    {
+        var bModel = new Backbone.Model(model);
+        var view = new cashCode.Views.Buffer({model:bModel});
+
+        this.$el.append(view.render().el);
+
+
+    }
+});
+
+cashCode.Views.MonthOperation = Backbone.View.extend({
+
     activeMonth : NaN,
+    bufferList : NaN,
+    addTransaction:NaN,
+    endMonth:NaN,
+
+    events: {
+        'click .end-month button':  'endOfMonthAction'
+    },
+
+    setMonth : function (month) {
+        this.model.set({start:month});
+        this.model.fetch();
+    },
+
+
+    endOfMonthAction: function() {
+
+        var callback = function(model, xhr, options) {
+            this.setError(xhr.responseJSON.content);
+        };
+
+        var call = callback.bind(this);
+
+        this.model.save({month:this.activeMonth} , {error:call} );
+    },
 
     initialize:function() {
         this.model.on('change',this.render,this);
         this.model.on('sync',this.render,this);
         this.on('active_month', this.setMonth, this);
 
+        this.bufferList = new cashCode.Views.BufferList({model:this.model, el:this.$el.find('#bufferList')});
+        this.addTransaction = this.$el.find('#addTransactionLink');
+        this.endMonth       = this.$el.find('.end-month');
 
     },
 
-    setMonth : function (month) {
-        console.log("Setting active month " + month);
-        this.activeMonth = month;
-        this.model.fetch({data:{id:month}});
+    setError: function(message) {
+
+        $error = $("<div class='text-danger'>"+ message + "</div>");
+        this.$el.append($error);
+        $error.fadeOut(5000, function() {$(this).remove()});
     },
-
-
     render : function() {
+
         this.$el.html('');
-        accounts = this.model.buffers();
-        accounts.forEach(this.addBuffer,this);
 
-    },
+        if (this.model.get('status') === 'closed') {
+            this.$el.html('-Closed-');
 
-    addBuffer : function(model)
-    {
-        console.log("Adding buffer");
-        console.log(model);
-        var bModel = new Backbone.Model(model);
-        var view = new cashCode.Views.Buffer({model:bModel});
-        this.$el.append(view.render().el);
+        }
+
+        if (this.model.get('status') === 'open') {
+            this.$el.append(this.addTransaction);
+        }
+
+        this.$el.append(this.bufferList.render().el);
+
+        if (this.model.get('status') === 'open') {
+            this.$el.append(this.endMonth);
+        }
     }
 
 

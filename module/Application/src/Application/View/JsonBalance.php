@@ -37,10 +37,14 @@ class JsonBalance extends JsonModel
         $data['debit']    = $balance->getDebit();
 
 
-        if ($balance instanceof OpenBalance || $balance instanceof ClosedBalance) {
+        if ($balance instanceof OpenBalance) {
             $data['start']  = $balance->getMonth()->getStart()->format('Y-m-d');
             $data['end']    = $balance->getMonth()->getEnd()->format('Y-m-d');
             $data['status'] = 'open';
+        }
+
+        if ($balance instanceof ClosedBalance) {
+            $data['status'] = 'closed';
         }
 
 

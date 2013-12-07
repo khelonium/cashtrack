@@ -45,32 +45,21 @@
                 </form>
         </script>
 
-        <div class="Accounts">
-            <div>
+        <div id="monthOperations" class="month-operations">
+
             <a id="addTransactionLink" href="#addTransaction">Add Expense</a>
+
+            <div class="Accounts">
+                <table id="bufferList" class="table table-hover">
+                </table>
             </div>
 
-            <table id="bufferList" class="table table-hover">
-
-                <tr >
-                    <th>   </th>
-                </tr>
-
-                <?php foreach ($this->buffers as $buffer):?>
-
-                     <tr>
-                        <th> <?php echo $buffer->name;?>  <span class="buffer-account" data-buffer-id=<?php echo $buffer->id;?>>-</span> </th>
-                    </tr>
-
-                <? endforeach; ?>
-
-
-            </table>
+            <div class="end-month">
+                <button class="btb btn-primary">End Month</button>
+            </div>
         </div>
 
-        <div class="end-month">
-            <button class="btb btn-primary">End Month</button>
-        </div>
+
     </div>
     <div class="col-md-9">
         <div class="panel panel-default">

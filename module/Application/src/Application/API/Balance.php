@@ -35,6 +35,20 @@ class Balance extends AbstractRestfulController
         return new JsonBalance($this->getBalanceService()->getBalance(new SpecificMonth(new \DateTime($id))));
     }
 
+    /**
+     * This is not really rest
+     * @param mixed $data
+     * @return mixed|void
+     */
+    public function update($id, $data)
+    {
+
+        //very ugly to easily work with backbone
+        $data['month'] =  $id;
+        return $this->create($data);
+    }
+
+
     public function create($data)
     {
 

@@ -87,7 +87,7 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
             $this->fail("Expected exception not called");
         } catch (\DomainException $e) {
 
-            $this->assertEquals("There are no transactions in this month", $e->getMessage());
+            $this->assertEquals("There are no transactions in this month 2090-12-12", $e->getMessage());
         }
     }
 

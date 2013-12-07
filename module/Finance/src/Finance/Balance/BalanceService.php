@@ -47,7 +47,7 @@ class BalanceService implements
         $monthHasTransaction->setTransactionRepository($this->getTransactionRepository());
 
         if (!$monthHasTransaction->isSatisfiedBy($month)) {
-            throw new \DomainException("There are no transactions in this month");
+            throw new \DomainException("There are no transactions in this month ".$month->getStart()->format('Y-m-d'));
         }
 
         $canBeClosed = new BalanceCanBeClosed();
