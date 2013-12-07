@@ -61,7 +61,6 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
     }
 
 
-    // tests
     public function testCloseMonthWhenMonthIsNotInDatabase()
     {
 
