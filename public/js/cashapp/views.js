@@ -379,28 +379,33 @@ cashCode.Views.Buffers = Backbone.View.extend({
     activeMonth : NaN,
 
     initialize:function() {
-        this.collection.on('change',this.render,this);
-        this.collection.on('sync',this.render,this);
+        this.model.on('change',this.render,this);
+        this.model.on('sync',this.render,this);
         this.on('active_month', this.setMonth, this);
 
 
     },
 
     setMonth : function (month) {
+        console.log("Setting active month " + month);
         this.activeMonth = month;
-        this.collection.fetch({data:{month:month},reset:true});
+        this.model.fetch({data:{id:month}});
     },
 
 
     render : function() {
         this.$el.html('');
-        this.collection.forEach(this.addBuffer,this);
+        accounts = this.model.buffers();
+        accounts.forEach(this.addBuffer,this);
 
     },
 
     addBuffer : function(model)
     {
-        var view = new cashCode.Views.Buffer({model:model});
+        console.log("Adding buffer");
+        console.log(model);
+        var bModel = new Backbone.Model(model);
+        var view = new cashCode.Views.Buffer({model:bModel});
         this.$el.append(view.render().el);
     }
 

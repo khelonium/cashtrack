@@ -40,7 +40,14 @@ cashCode.Collections.Transaction = Backbone.Collection.extend({
 
 
 cashCode.Models.Buffer  = Backbone.Model.extend({
-    urlRoot:"/api/balance"
+    urlRoot:"/api/balance",
+
+    'buffers' :function() {
+        return this.attributes.accounts.filter(function(account) {
+                return account.type === 'buffer';
+            }
+        );
+    }
 });
 
 cashCode.Collections.Buffers = Backbone.Collection.extend({

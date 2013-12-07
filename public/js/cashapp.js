@@ -55,7 +55,7 @@ cashCode.CashRouter  =  Backbone.Router.extend({
 
 
         this.cashView    =  new cashCode.Views.CashView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
-        this.buffersView = new cashCode.Views.Buffers({collection: new cashCode.Collections.Buffers, el:$('#bufferList')});
+        this.buffersView = new cashCode.Views.Buffers({model: new cashCode.Models.Buffer, el:$('#bufferList')});
 
 
         this.members = [];
