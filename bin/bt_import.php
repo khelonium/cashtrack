@@ -8,11 +8,14 @@
 require_once 'bootstrap.php';
 
 
-$import = false;
+$import = true;
 $adapter = $sm->get('\Zend\Db\Adapter\Adapter');
 
 
-$dir = getcwd().DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.'2013/10';
+
+$dir = getcwd().DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.'2014/bulk';
+
+
 echo "\n";
 
 

@@ -28,18 +28,18 @@ cashCode.CashRouter  =  Backbone.Router.extend({
 
 
         var currentYear =[
-            {name:"Ianuarie", date:"2013-01-01"},
-            {name:"Februarie", date:"2013-02-01"},
-            {name:"Martie", date:"2013-03-01"},
-            {name:"Aprilie", date:"2013-04-01"},
-            {name:"Mai", date:"2013-05-01"},
-            {name:"Iunie", date:"2013-06-01"},
-            {name:"Iulie", date:"2013-07-01"},
-            {name:"August", date:"2013-08-01"},
-            {name:"Septembrie", date:"2013-09-01"},
-            {name:"Octombrie", date:"2013-10-01"},
-            {name:"Noiembrie", date:"2013-11-01"},
-            {name:"Decembrie", date:"2013-12-01"}
+            {name:"Ianuarie", date:"2014-01-01"},
+            {name:"Februarie", date:"2014-02-01"},
+            {name:"Martie", date:"2014-03-01"},
+            {name:"Aprilie", date:"2014-04-01"},
+            {name:"Mai", date:"2014-05-01"},
+            {name:"Iunie", date:"2014-06-01"},
+            {name:"Iulie", date:"2014-07-01"},
+            {name:"August", date:"2014-08-01"},
+            {name:"Septembrie", date:"2014-09-01"},
+            {name:"Octombrie", date:"2014-10-01"},
+            {name:"Noiembrie", date:"2014-11-01"},
+            {name:"Decembrie", date:"2014-12-01"}
 
         ];
 
