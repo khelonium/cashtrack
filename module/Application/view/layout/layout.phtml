@@ -30,13 +30,11 @@
            'js/vendor/jquery-ui-1.10.3.custom.min.js',
            'js/vendor/underscore-min.js',
            'js/vendor/backbone-min.js',
-           'js/cashapp.js',
            'js/plugins.js',
-           'js/cashapp/models.js',
-           'js/cashapp/views.js',
         );
-        foreach ($javascripts as $script) {
-            $this->headScript()->appendFile($this->basePath($script));
+
+        foreach (array_reverse($javascripts) as $script) {
+            $this->headScript()->prependFile($this->basePath($script));
         }
 
         echo $this->headScript();

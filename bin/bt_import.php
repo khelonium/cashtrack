@@ -13,7 +13,7 @@ $adapter = $sm->get('\Zend\Db\Adapter\Adapter');
 
 
 
-$dir = getcwd().DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.'2014/bulk';
+$dir = getcwd().DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.'2014/bulk2';
 
 
 echo "\n";
@@ -26,7 +26,9 @@ if ($import) {
 
 
 
-    $import = new \Import\BT\Import($sm->get('\Finance\Transaction\Repository'),$merchant_service->all());
+    $parser =  new \Import\BT\Parser(new \Import\BT\Matcher($merchant_service->all()));
+
+    $import = new \Import\BT\Importer($sm->get('\Finance\Transaction\Repository'), $parser);
 
 
     foreach (new DirectoryIterator($dir) as $element) {

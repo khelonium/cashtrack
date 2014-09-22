@@ -20,6 +20,17 @@ return array(
                     ),
                 ),
             ),
+
+            'accounts' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/accounts',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'account',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -63,6 +74,20 @@ return array(
                     ),
                 ),
             ),
+
+            'overview-rest' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/api/overview[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\API\Overview',
+                    ),
+                ),
+            ),
+
             'transaction-rest' => array(
                 'type'    => 'segment',
                 'options' => array(
@@ -126,7 +151,8 @@ return array(
             'Application\API\Account' => 'Application\API\Account',
             'Application\API\Transaction' => 'Application\API\Transaction',
             'Application\API\Balance' => 'Application\API\Balance',
-            'Application\API\CashFlow' => 'Application\API\CashFlow'
+            'Application\API\CashFlow' => 'Application\API\CashFlow',
+            'Application\API\Overview' => 'Application\API\Overview'
         ),
     ),
     'view_manager' => array(

@@ -1,0 +1,149 @@
+<?php
+
+$javascripts = array(
+    'js/vendor/d3.v3.min.js',
+);
+
+foreach ($javascripts as $script) {
+    $this->headScript()->appendFile($this->basePath($script));
+}
+?>
+
+<div class="row left-navigation">
+
+    <div class="col-md-12">
+                <script>
+
+                    var width = 1200,
+                        height = 600,
+                        padding = 2.5, // separation between same-color circles
+                        clusterPadding = 40, // separation between different-color circles
+                        maxRadius = 100;
+
+//
+//                    d3.xhr("/api/overview/2014", function(error,data){
+//
+//                        var nodes = data;
+//
+//                    });
+
+
+                    // The largest node for each cluster.
+                    var clusterLeads = [];
+
+                    var nodes =<?php echo $this->nodes ?>
+
+
+                    var n = nodes.length;
+
+
+                    for (var i =0; i< nodes.length; i++) {
+                        var clust = nodes[i];
+                        if (!clusterLeads[clust.cluster] || (clust.r > clusterLeads[clust.cluster].radius)) clusterLeads[clust.cluster] = clust;
+                    }
+
+
+
+
+                    var m = clusterLeads.length; // number of distinct clusterLeads
+
+                    var color = d3.scale.category20()
+                        .domain(d3.range(m));
+
+                    var force = d3.layout.force()
+                        .nodes(nodes)
+                        .size([width, height])
+                        .gravity(.02)
+                        .charge(0)
+                        .on("tick", tick)
+                        .start();
+
+                    var svg = d3.select("body").append("svg")
+                        .attr("width", width)
+                        .attr("height", height);
+
+                    var circle = svg.selectAll("circle")
+                        .data(nodes)
+                        .enter().append("circle")
+                        .attr("r", function(d) { return d.radius; })
+                        .style("fill", function(d) { return color(d.cluster); })
+                        .call(force.drag);
+
+
+                    var text = svg.selectAll("text")
+                        .data(nodes)
+                        .enter().append("text")
+                        .text(function(d){return d.name});
+
+
+
+                    function tick(e) {
+                        circle
+                            .each(cluster(10 * e.alpha * e.alpha))
+                            .each(collide(.5))
+                            .attr("cx", function(d) { return d.x; })
+                            .attr("cy", function(d) { return d.y; });
+
+
+                        text.each(positionText)
+                            .attr("dx", function(d) { return d.x -10 ; })
+                            .attr("dy", function(d) { return d.y; });
+
+
+                    }
+
+                    function positionText(element)
+                    {
+                        return element;
+                    }
+
+                    // Move d to be adjacent to the cluster node.
+                    function cluster(alpha) {
+                        return function(d) {
+                            var cluster = clusterLeads[d.cluster];
+                            if (cluster === d) return;
+                            var x = d.x - cluster.x,
+                                y = d.y - cluster.y,
+                                l = Math.sqrt(x * x + y * y),
+                                r = d.radius + cluster.radius;
+                            if (l != r) {
+                                l = (l - r) / l * alpha;
+                                d.x -= x *= l;
+                                d.y -= y *= l;
+                                cluster.x += x;
+                                cluster.y += y;
+                            }
+                        };
+                    }
+
+                    // Resolves collisions between d and all other circles.
+                    function collide(alpha) {
+                        var quadtree = d3.geom.quadtree(nodes);
+                        return function(d) {
+                            var r = d.radius + maxRadius + Math.max(padding, clusterPadding),
+                                nx1 = d.x - r,
+                                nx2 = d.x + r,
+                                ny1 = d.y - r,
+                                ny2 = d.y + r;
+                            quadtree.visit(function(quad, x1, y1, x2, y2) {
+                                if (quad.point && (quad.point !== d)) {
+                                    var x = d.x - quad.point.x,
+                                        y = d.y - quad.point.y,
+                                        l = Math.sqrt(x * x + y * y),
+                                        r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? padding : clusterPadding);
+                                    if (l < r) {
+                                        l = (l - r) / l * alpha;
+                                        d.x -= x *= l;
+                                        d.y -= y *= l;
+                                        quad.point.x += x;
+                                        quad.point.y += y;
+                                    }
+                                }
+                                return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                            });
+                        };
+                    }
+
+                </script>
+
+</div>

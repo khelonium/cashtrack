@@ -11,14 +11,14 @@ namespace Import\BT;
 
 use Finance\Transaction\Repository as TransactionService;
 
-class Import
+class Importer
 {
+    private $parser;
 
     /**
      * @var Finance\Transaction\Service|null
      */
     private $service   = null;
-    private $merchants = null;
 
 
 
@@ -26,10 +26,10 @@ class Import
      * @param TransactionService $transactionService
      * @param $merchants used to identify transactions FIXME - merchants not nice here
      */
-    public function __construct(TransactionService $transactionService , $merchants )
+    public function __construct(TransactionService $transactionService , Parser $parser )
     {
-        $this->service   = $transactionService;
-        $this->merchants = $merchants;
+        $this->service = $transactionService;
+        $this->parser  = $parser;
     }
 
     /**
@@ -43,8 +43,8 @@ class Import
 
     public function import($file)
     {
-        $parser       = new \Import\BT\Parser(new \Import\BT\Matcher($this->merchants));
-        $transactions = $parser->parse($file);
+
+        $transactions = $this->parser->parse($file);
 
         $parts   =  explode ("-",$file);
         $parts   =  explode ("/", $parts[0]);

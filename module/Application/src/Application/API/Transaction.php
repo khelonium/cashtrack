@@ -10,6 +10,7 @@
 namespace Application\API;
 
 
+use Application\API\Specification\Transaction as TransactionSpecification;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 use Finance\Transaction\Transaction as TransactionEntity;
@@ -37,7 +38,7 @@ class Transaction extends AbstractController
     public function getList()
     {
 
-        $spec = new \Application\API\Specification\Transaction($this->params());
+        $spec = new TransactionSpecification($this->params());
         $list = $this->getRepository()->fromSpecification($spec);
 
 

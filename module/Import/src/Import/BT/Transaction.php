@@ -22,6 +22,7 @@ class Transaction
     public $fromAccount     = null;
 
 
+
    /**
         array (
           0 => 'Data tranzactie',
@@ -61,6 +62,11 @@ class Transaction
 
     }
 
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
     private function toFloat($value)
     {
         return (float)str_replace(',','',$value);
@@ -83,14 +89,6 @@ class Transaction
     public function isIncome()
     {
         return $this->credit > 0;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMatched()
-    {
-        return $this->accountId !== null ;
     }
 
 

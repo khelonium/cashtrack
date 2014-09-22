@@ -2,6 +2,9 @@
 namespace Import;
 
 
+use Import\BT\Matcher;
+use Import\BT\Parser;
+
 class Module
 {
     public function getAutoloaderConfig()
@@ -23,10 +26,20 @@ class Module
         return include __DIR__ . '/config/module.config.php';
     }
 
+
     public function getServiceConfig()
     {
         return array(
+
             'factories' => array(
+               '\Import\BT\Matcher' => function ($sm) {
+                   return new Matcher($sm->get('\Finance\Merchant\Repository')->all());
+               },
+
+            '\Import\BT\Parser' => function ($sm) {
+                   return new Parser($sm->get('\Import\BT\Matcher'));
+               },
+
 
             ),
         );
