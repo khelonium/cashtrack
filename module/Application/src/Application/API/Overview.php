@@ -32,11 +32,16 @@ class Overview extends AbstractController
         /** @var Adapter $dbAdapter */
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
 
-        $statement = $dbAdapter->query(
-            "select id_category,category, name, round(sum(amount)) as total ".
-            "from expense_overview where month like '%$id%' group by category,name"
-        );
+//        $statement = $dbAdapter->query(
+//            "select id_category,category, name, round(sum(amount)) as total ".
+//            "from expense_overview where month like '%$id%' group by category,name"
+//        );
 
+
+        $statement = $dbAdapter->query(
+            "select id_category,category as name ,round(sum(amount)) as total ".
+            "from expense_overview   where month like '%$id%'  group by category"
+        );
 
 
        return new JsonOverview($statement->execute());

@@ -88,6 +88,20 @@ return array(
                 ),
             ),
 
+
+            'month-rest' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/api/month[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\API\Month',
+                    ),
+                ),
+            ),
+
             'transaction-rest' => array(
                 'type'    => 'segment',
                 'options' => array(
@@ -152,7 +166,8 @@ return array(
             'Application\API\Transaction' => 'Application\API\Transaction',
             'Application\API\Balance' => 'Application\API\Balance',
             'Application\API\CashFlow' => 'Application\API\CashFlow',
-            'Application\API\Overview' => 'Application\API\Overview'
+            'Application\API\Overview' => 'Application\API\Overview',
+            'Application\API\Month' => 'Application\API\Month',
         ),
     ),
     'view_manager' => array(

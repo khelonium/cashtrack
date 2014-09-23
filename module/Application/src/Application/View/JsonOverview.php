@@ -30,6 +30,8 @@ class JsonOverview extends JsonModel
             $el['radius']  = $el['total'] / $max * 100;
             $el['cluster'] = (int)$el['id_category'];
             $el['name'] = $el['name'].':'.$el['total'];
+            $el['cx'] = 100;
+            $el['cy'] = 100;
             return $el;
         };
 
