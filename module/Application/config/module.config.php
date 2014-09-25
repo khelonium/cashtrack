@@ -21,13 +21,13 @@ return array(
                 ),
             ),
 
-            'accounts' => array(
+            'visual' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/accounts',
+                    'route'    => '/visual',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Index',
-                        'action'     => 'account',
+                        'action'     => 'visual',
                     ),
                 ),
             ),
@@ -145,6 +145,9 @@ return array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
+        'factories' =>array(
+            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+        ),
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
@@ -196,4 +199,19 @@ return array(
             ),
         ),
     ),
+
+    'navigation' => array(
+     'default' => array(
+         array(
+             'label' => 'Cashflow',
+             'route' => 'home',
+         ),
+         array(
+             'label' => 'Reports',
+             'route' => 'visual',
+         ),
+
+
+     ),
+ ),
 );

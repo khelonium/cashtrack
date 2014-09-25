@@ -16,13 +16,13 @@ foreach ($javascripts as $script) {
 
             var width = 1200,
                 height = 600,
-                padding = 2.5, // separation between same-color circles
+                padding = 10, // separation between same-color circles
                 clusterPadding = 40, // separation between different-color circles
                 maxRadius = 100;
 
 
 
-            var svgBody = d3.select("body .container").append("svg")
+            var svgBody = d3.select("body .container").insert("svg",":first-child")
                 .attr("width", width)
                 .attr("height", height);
 
@@ -49,7 +49,7 @@ foreach ($javascripts as $script) {
                     return width + 10 + spacing(i-1);
                 }
 
-                var x = function(d,i){  var x = spacing(i-1) + width;console.log(i+ ':' + x); return x;};
+                var x = function(d,i){  var x = spacing(i-1) + width; return x;};
                 var tx = function(d,i) { return x(d,i) +15};
 
                 svgHeader.selectAll('rect')
@@ -62,9 +62,8 @@ foreach ($javascripts as $script) {
                     .attr("class", function(d) { return "month month-" + d.month; })
                     .attr('x', x)
                     .on("click", function(d) {
-                      load(d.month);
-                        svgHeader.selectAll(".month" ).style("fill", "darkgreen");
-                        svgHeader.selectAll(".month-" + d.month).style("fill", "darkred");
+                        load(d.month);
+
                     });
 
                 svgHeader.selectAll('text')
@@ -72,25 +71,37 @@ foreach ($javascripts as $script) {
                     .append('text')
                     .attr("x", tx )
                     .attr("y", height  )
-                    .text(function (d){return d.month});
+                    .text(function (d){return d.month})
+                    .on("click", function(d){
+                        load(d.month);
+                    });
             });
 
 
 
             var force = d3.layout.force()
                 .size([width, height])
-                .alpha(0.02)
+                .alpha(0.2)
                 .gravity(.02);
 
-            load('2014-8');
+            load('2014-9');
 
             var oldNodes = null;
 
+            var month = null;
 
-            function load(date) {
+            function load(date,category) {
 
-                force.alpha(0.001);
-                d3.json("/api/overview/" + date , function(error,data){
+//                force.alpha(0.001);
+
+                $url = "/api/overview/" + date;
+
+                console.log(category);
+                if (category) {
+                    $url = $url + '?expand=' + category;
+                }
+
+                d3.json($url , function(error,data){
 
                     var nodes = data.nodes;
 
@@ -98,7 +109,8 @@ foreach ($javascripts as $script) {
 
                         for (var i =0; i< nodes.length; i++) {
                             for (var j=0; j< oldNodes.length; j++) {
-                                if (nodes[i].id_category == oldNodes[j].id_category) {
+                                if (nodes[i].identifier == oldNodes[j].identifier) {
+                                    console.log(nodes[i]);
                                     nodes[i].x = oldNodes[j].x;
                                     nodes[i].y = oldNodes[j].y;
 
@@ -109,7 +121,10 @@ foreach ($javascripts as $script) {
                     console.log("loaded " +date);
 
 
+                    svgHeader.selectAll(".month" ).style("fill", "darkgreen");
+                    svgHeader.selectAll(".month-" + date).style("fill", "darkred");
 
+                    month = date;
                     update(nodes);
 
 
@@ -131,8 +146,9 @@ foreach ($javascripts as $script) {
 
                 for (var i =0; i< nodes.length; i++) {
                     var clust = nodes[i];
-                    if (!clusterLeads[clust.cluster] || (clust.r > clusterLeads[clust.cluster].radius)) clusterLeads[clust.cluster] = clust;
+                    if (!clusterLeads[clust.cluster] || (clust.radius > clusterLeads[clust.cluster].radius)) clusterLeads[clust.cluster] = clust;
                 }
+
 
                 var color = d3.scale.category20()
                     .domain(d3.range(clusterLeads.length));
@@ -140,10 +156,11 @@ foreach ($javascripts as $script) {
 
 
                 var circle = svg.selectAll("circle")
-                    .data(nodes, function(d) {return d.id_category});
+                    .data(nodes, function(d) {return d.identifier});
+
 
                 var text = svg.selectAll("text")
-                    .data(nodes, function(d) { return d.id_category});
+                    .data(nodes, function(d) { return d.identifier});
 
                 //update
                 circle.transition()
@@ -158,7 +175,10 @@ foreach ($javascripts as $script) {
                     circle.enter().append("circle")
                         .attr("r", function(d) { return d.radius; })
                         .style("fill", function(d) { return color(d.cluster); })
-                        .call(force.drag);
+                        .call(force.drag)
+                        .on('click',function(d){
+                            load(month, d.id_category);
+                        });
 
                     text.enter().append("text")
                         .attr("dx", 12)
@@ -183,6 +203,7 @@ foreach ($javascripts as $script) {
                     .remove();
 
                 function tick(e) {
+                    force.alpha(0.02);
                     oldNodes = nodes;
                     circle
                         .each(cluster(10 * e.alpha * e.alpha))

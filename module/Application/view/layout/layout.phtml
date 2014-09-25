@@ -47,14 +47,8 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-
-    <ul class="nav nav-pills">
-        <li class="active"><a href="/">Cashflow</a></li>
-        <li><a href="/merchants">Merchants</a></li>
-        <li><a href="accounts">Accounts</a></li>
-        <li><a href="/import">Import</a></li>
-
-    </ul>
+    <nav>
+    <?php echo $this->navigation('navigation')->menu()->setUlClass('nav nav-pills');; ?>
 
     </nav>
 
@@ -64,7 +58,7 @@
             <?php echo $this->content; ?>
             <hr>
             <footer>
-                <p>&copy; 2005 - <?php echo date('Y') ?> by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p>
+                <p>&copy; 20013 - <?php echo date('Y') ?> Cosmin Dordea. <?php echo $this->translate('All rights reserved.') ?></p>
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>

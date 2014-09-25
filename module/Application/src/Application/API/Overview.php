@@ -27,26 +27,87 @@ class Overview extends AbstractController
     public function get($id)
     {
 
+        $detailed = false;
 
+        return new JsonOverview(($detailed)? $this->getDetailed($id):$this->getRegular($id));
+    }
 
-        /** @var Adapter $dbAdapter */
-        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+    /**
+     * @param $id
+     * @param $dbAdapter
+     * @return mixed
+     */
+    private function getDetailed($month, $idCategory = null)
+    {
 
-//        $statement = $dbAdapter->query(
-//            "select id_category,category, name, round(sum(amount)) as total ".
-//            "from expense_overview where month like '%$id%' group by category,name"
-//        );
+        $adapter = $this->getAdapter();
 
+        $and = '';
 
-        $statement = $dbAdapter->query(
-            "select id_category,category as name ,round(sum(amount)) as total ".
-            "from expense_overview   where month like '%$id%'  group by category"
+        if ($idCategory) {
+            $and = " AND id_category = $idCategory ";
+        }
+
+        $statement = $adapter->query(
+            "select id_category, name ,round(sum(amount)) as total " .
+            "from expense_overview   where month like '%$month%' $and group by name"
         );
 
 
-       return new JsonOverview($statement->execute());
+        return $this->asArray($statement->execute());
     }
 
+    /**
+     * @param $id
+     * @param $dbAdapter
+     * @return mixed
+     */
+    private function getRegular($month)
+    {
+
+        $expand = $this->params()->fromQuery('expand');
+        $and    = '';
+        $out = [];
+
+        if ($expand) {
+            $and = " AND id_category != $expand ";
+            $out = $this->getDetailed($month, $expand);
+        }
+
+        $statement = $this->getAdapter()->query(
+            "select id_category, category  as name,round(sum(amount)) as total " .
+            "from expense_overview   where month like '%$month%' $and group by category"
+        );
+
+
+        return array_merge($out, $this->asArray($statement->execute()));
+
+    }
+
+
+    /**
+     * @return Adapter
+     */
+    private function getAdapter()
+    {
+        /** @var Adapter $dbAdapter */
+        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+        return $dbAdapter;
+    }
+
+    /**
+     * @param $result
+     * @return array
+     */
+    private function asArray($result)
+    {
+        $out = [];
+
+        foreach ($result as $entry) {
+            $out[] = $entry;
+        }
+        return $out;
+    }
 
 
 }
