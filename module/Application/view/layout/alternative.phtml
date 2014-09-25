@@ -22,24 +22,6 @@
                         ?>
 
         <!-- Scripts -->
-        <?php
-
-        $javascripts = array(
-           'js/vendor/modernizr-2.6.2.min.js',
-           'js/vendor/jquery-1.10.2.min.js',
-           'js/vendor/jquery-ui-1.10.3.custom.min.js',
-           'js/vendor/underscore-min.js',
-           'js/vendor/backbone-min.js',
-           'js/plugins.js',
-        );
-
-        foreach (array_reverse($javascripts) as $script) {
-            $this->headScript()->prependFile($this->basePath($script));
-        }
-
-        echo $this->headScript();
-
-    ?>
 
     </head>
     <body>
@@ -48,10 +30,6 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <nav>
-    <?php echo $this->navigation('navigation')->menu()->setUlClass('nav nav-pills');; ?>
-
-    </nav>
 
         <div class="container">
 

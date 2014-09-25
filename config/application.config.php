@@ -5,6 +5,9 @@ return array(
         'Application',
         'Finance',
         'Import',
+        'ZfcBase',
+        'ZfcUser',
+        'Auth',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

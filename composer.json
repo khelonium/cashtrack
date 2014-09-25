@@ -16,6 +16,7 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": ">2.2.0rc1",
-        "ro.refactoring": "*"
+        "ro.refactoring": "*",
+        "zf-commons/zfc-user": "dev-master"
     }
 }
