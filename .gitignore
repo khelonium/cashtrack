@@ -6,6 +6,7 @@ nbproject
 .idea
 .project
 .settings
+vendor/*
 vendor/bin
 vendor/ro.refactoring
 data/export

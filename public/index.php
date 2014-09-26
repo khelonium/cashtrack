@@ -13,5 +13,21 @@ if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['RE
 // Setup autoloading
 require 'init_autoloader.php';
 
+$env = getenv('APPLICATION_ENV');
+
+$config = '';
+
+switch ($env) {
+    case 'development':
+        $config = 'application.dev.config.php';
+        break;
+    case 'testing':
+        $config = 'application.test.config.php';
+        break;
+    default:
+        $config = 'application.config.php';
+        break;
+}
+
 // Run the application!
-Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+Zend\Mvc\Application::init(require 'config/'.$config)->run();
