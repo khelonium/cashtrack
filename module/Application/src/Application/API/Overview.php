@@ -79,7 +79,6 @@ class Overview extends AbstractController
             "from expense_overview   where month like '%$month%' $and group by category"
         );
 
-
         return array_merge($out, $this->asArray($statement->execute()));
 
     }
