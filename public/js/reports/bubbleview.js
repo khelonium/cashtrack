@@ -8,7 +8,13 @@ var ChartView = function(chart) {
 
     this.add = function(nodes) {
 
+
         that.leads = new Leads(nodes, chart.getConfig());
+
+        nodes.forEach(function(d){
+            d.radius = that.leads.scaleR(d.total);
+        });
+
         this.circle = chart.chart.selectAll("circle")
             .data(nodes, function(d) {return d.identifier});
 

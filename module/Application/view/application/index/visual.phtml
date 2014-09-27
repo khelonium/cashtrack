@@ -79,9 +79,9 @@ foreach ($javascripts as $script) {
 
                 // Resolves collisions between d and all other circles.
                 function collide(alpha) {
-                    var clusterLeads = chartEngine.leads.clusterLeads;
 
                     var quadtree = d3.geom.quadtree(nodes);
+
                     return function(d) {
 
                         var r = d.radius + config.maxRadius + Math.max(config.padding, config.clusterPadding),
@@ -90,10 +90,11 @@ foreach ($javascripts as $script) {
                             ny1 = d.y - r,
                             ny2 = d.y + r;
                         quadtree.visit(function(quad, x1, y1, x2, y2) {
+
                             if (quad.point && (quad.point !== d)) {
                                 var x = d.x - quad.point.x,
                                     y = d.y - quad.point.y,
-                                    l = Math.sqrt(x * x + y * y),
+                                    l = Math.sqrt(x * x + y * y);
                                     r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? config.padding : config.clusterPadding);
                                 if (l < r) {
                                     l = (l - r) / l * alpha;
