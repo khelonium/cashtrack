@@ -3,13 +3,11 @@ cashtrack
 
 Install
 -------
-Check the travis build file for some tips
+
+Install Vagrant and then do a vagrant up. If you encounter problems, check the travis build file for some tips
 
 
-TO BE DONE 
----------
 
-vagrant box to set it up
 
 
 What this does
