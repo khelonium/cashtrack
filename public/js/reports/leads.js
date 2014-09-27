@@ -91,10 +91,13 @@ var Leads = function(nodes, config) {
                 foci[node.cluster] =
                 {
                     'cluster':node.cluster,
-                    'total':+node.total
+                    'total':+node.total,
+                    'multiple':false
                 };
             } else {
-                foci[node.cluster].total += +node.total;
+                foci[node.cluster].total    += +node.total;
+                foci[node.cluster].multiple = true;
+
             };
 
 

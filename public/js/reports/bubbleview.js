@@ -1,14 +1,17 @@
 var ChartView = function(chart) {
 
 
-    this.circle = chart.chart.selectAll("circle");
-    this.text   = chart.chart.selectAll("text");
+    this.circle   = chart.chart.selectAll("circle");
+    this.text     = chart.chart.selectAll("text");
+    this.isUpdating = false;
+
     var that    = this;
+
 
 
     this.add = function(nodes) {
 
-
+        this.isUpdating =  false;
         that.leads = new Leads(nodes, chart.getConfig());
 
         nodes.forEach(function(d){
@@ -42,25 +45,25 @@ var ChartView = function(chart) {
         that.circle.transition()
             .attr("r", function(d) { return that.leads.scaleR(d.total)})
             .attr('cx',function(d){return that.leads.scaleX(d.total)})
-            .attr('cy',function(d){return that.leads.scaleY(d.total)})
-            .duration(3000)
+            .attr('cy',function(d){return that.leads.scaleY(d.total)});
+
         ;
 
         that.text.transition()
-            .duration(2000)
+            .duration(1000)
             .text(function(d){return d.name});
     };
 
     function enterTransition() {
         that.circle.enter().append("circle")
             .style("fill", function(d) { return that.leads.color(d.cluster); })
-            .call(chart.force.drag)
             .attr("r", function(d) { return that.leads.scaleR(d.total)})
             .attr('cx',function(d){return that.leads.scaleX(d.total)})
             .attr('cy',function(d){return that.leads.scaleY(d.total)})
             .on('click',function(d){
                 load(month, d.id_category);
-            });
+            })
+           ;
 
 
         that.text.enter().append("text")

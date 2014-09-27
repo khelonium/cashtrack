@@ -23,6 +23,32 @@ foreach ($javascripts as $script) {
         font-family: sans-serif;
         font-size: 11px;
     }
+
+    #tooltip {
+        position: absolute;
+        width: 200px;
+        height: auto;
+        padding: 10px;
+        background-color: white;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+        pointer-events: none;
+    }
+
+    #tooltip.hidden {
+        display: none;
+    }
+
+    #tooltip p {
+        margin: 0;
+        font-family: sans-serif;
+        font-size: 16px;
+        line-height: 20px;
+    }
 </style>
 <div class="row left-navigation">
 
@@ -34,7 +60,7 @@ foreach ($javascripts as $script) {
                 height:600,
                 padding:40,
                 clusterPadding:40,
-                maxRadius:100,
+                maxRadius:75,
                 topMargin:60
             };
 
@@ -56,9 +82,15 @@ foreach ($javascripts as $script) {
                     .start();
 
                 function tick(e) {
+
+                    if(chartEngine.isUpdating) {
+                        return;
+                    }
+
                     chartEngine.circle
                         .each(cluster(.1 * e.alpha))
                         .each(collide(.02))
+                        .each(margin(e.alpha))
                         .attr("cx", function(d) { return d.x; })
                         .attr("cy", function(d) { return d.y; });
 
@@ -71,12 +103,32 @@ foreach ($javascripts as $script) {
                 // Move d to be adjacent to the cluster node.
                 function cluster(alpha) {
                     var foci         = chartEngine.leads.getFoci();
+
                     return function(o, i) {
+                        if(foci[o.cluster].multiple) {
                             o.y += (foci[o.cluster].y - o.y) * alpha;
                             o.x += (foci[o.cluster].x - o.x) * alpha;
-                        };
+                        }
+                    };
                 }
 
+                function margin(alpha){
+                    return function (d,i) {
+                        if ((d.x - d.radius) <0) {
+                            var increment = (d.x - d.radius)/ d.radius ;
+
+                            d.x -= increment;
+
+                        }
+
+                        if ((d.y - d.radius  -60) < 0) {
+                            var increment = ((d.y - d.radius - 60)/ (d.radius +60))  ;
+
+                            d.y -= increment;
+
+                        }
+                    }
+                }
                 // Resolves collisions between d and all other circles.
                 function collide(alpha) {
 
