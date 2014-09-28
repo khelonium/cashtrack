@@ -1,7 +1,7 @@
 <?php
 
 namespace Finance\Transaction;
-use Report\Transaction\Entity;
+use Reporter\Transaction\Entity;
 
 /**
  * Class Factory

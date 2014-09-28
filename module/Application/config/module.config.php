@@ -169,7 +169,6 @@ return array(
             'Application\API\Transaction' => 'Application\API\Transaction',
             'Application\API\Balance' => 'Application\API\Balance',
             'Application\API\CashFlow' => 'Application\API\CashFlow',
-            'Application\API\Overview' => 'Application\API\Overview',
             'Application\API\Month' => 'Application\API\Month',
         ),
     ),

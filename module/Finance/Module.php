@@ -34,7 +34,7 @@ class Module
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                    'Report' => __DIR__ . '/src/Report',
+                    'Reporter' => __DIR__ . '/src/Reporter',
 
                 ),
             ),
@@ -142,10 +142,6 @@ class Module
                     return new \Finance\Balance\BalanceService($sm->get('Zend\Db\Adapter\Adapter'));
                 },
 
-                '\Report\CashFlow' => function ($sm) {
-                    return new \Report\CashFlow();
-                },
-
                 '\Finance\AccountValue\AccountValueFactory' => function ($sm) {
                     return new AccountValueFactory();
                 },
@@ -159,6 +155,14 @@ class Module
 
                 '\Finance\Balance\History\Repository' => function ($sm) {
                     return new GenericRepository($sm->get('\Finance\Dao\BalanceGateway'));
+                },
+
+                '\Reporter\CashFlow' => function ($sm) {
+                    return new \Reporter\CashFlow();
+                },
+
+                '\Reporter\Overview' => function () {
+                    return new \Reporter\Overview();
                 },
 
             ),

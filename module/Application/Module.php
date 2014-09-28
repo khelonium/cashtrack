@@ -9,6 +9,7 @@
 
 namespace Application;
 
+use Application\API\Overview;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -33,6 +34,21 @@ class Module
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
+            ),
+        );
+    }
+
+    public function getControllerConfig()
+    {
+        return array(
+            'factories' => array(
+                'Application\API\Overview' => function ($sm) {
+                    $locator    = $sm->getServiceLocator();
+                    $reporter   = $locator->get('Reporter\Overview');
+                    $controller = new Overview();
+                    $controller->setOverviewReporter($reporter);
+                    return $controller;
+                },
             ),
         );
     }

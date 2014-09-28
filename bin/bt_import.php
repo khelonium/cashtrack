@@ -47,7 +47,7 @@ if ($import) {
 
 /** @var \Zend\Db\Adapter\Adapter $adapter */
 
-$report_service = new Report\Account\Service($adapter);
+$report_service = new Reporter\Account\Service($adapter);
 
 
 $start = new \DateTime('2013-09-01');

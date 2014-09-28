@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace  Report;
+namespace  Reporter;
 
 use Refactoring\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;

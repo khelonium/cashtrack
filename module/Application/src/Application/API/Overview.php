@@ -12,100 +12,37 @@ namespace Application\API;
 
 
 use Application\View\JsonOverview;
-use Finance\Account\Repository;
-use Zend\Db\Adapter\Adapter;
-use Zend\Json\Json;
-use Zend\Mvc\Controller\AbstractRestfulController;
-use Zend\View\Model\JsonModel;
 
 class Overview extends AbstractController
 {
 
-    protected $repositoryServiceKey = 'Finance\Account\Repository';
 
+    /**
+     * @var \Reporter\Overview
+     */
+    private $reporter = null;
 
     public function get($id)
     {
+        $expand   = $this->params()->fromQuery('expand');
 
-        $detailed = false;
-
-        return new JsonOverview(($detailed)? $this->getDetailed($id):$this->getRegular($id));
-    }
-
-    /**
-     * @param $id
-     * @param $dbAdapter
-     * @return mixed
-     */
-    private function getDetailed($month, $idCategory = null)
-    {
-
-        $adapter = $this->getAdapter();
-
-        $and = '';
-
-        if ($idCategory) {
-            $and = " AND id_category = $idCategory ";
-        }
-
-        $statement = $adapter->query(
-            "select id_category, name ,round(sum(amount)) as total " .
-            "from expense_overview   where month like '%$month%' $and group by name"
+        return new JsonOverview(
+            $this->getOverviewReporter()->getOverview($id, $expand?explode(',', $expand):[])
         );
+    }
 
-
-        return $this->asArray($statement->execute());
+    public function setOverviewReporter(\Reporter\Overview $reporter)
+    {
+        $this->reporter = $reporter;
     }
 
     /**
-     * @param $id
-     * @param $dbAdapter
-     * @return mixed
+     * @return \Reporter\Overview
      */
-    private function getRegular($month)
+    private function getOverviewReporter()
     {
+        return $this->reporter;
 
-        $expand = $this->params()->fromQuery('expand');
-        $and    = '';
-        $out = [];
-
-        if ($expand) {
-            $and = " AND id_category != $expand ";
-            $out = $this->getDetailed($month, $expand);
-        }
-
-        $statement = $this->getAdapter()->query(
-            "select id_category, category  as name,round(sum(amount)) as total " .
-            "from expense_overview   where month like '%$month%' $and group by category"
-        );
-
-        return array_merge($out, $this->asArray($statement->execute()));
-
-    }
-
-
-    /**
-     * @return Adapter
-     */
-    private function getAdapter()
-    {
-        /** @var Adapter $dbAdapter */
-        $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
-        return $dbAdapter;
-    }
-
-    /**
-     * @param $result
-     * @return array
-     */
-    private function asArray($result)
-    {
-        $out = [];
-
-        foreach ($result as $entry) {
-            $out[] = $entry;
-        }
-        return $out;
     }
 
 
