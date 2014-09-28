@@ -13,3 +13,4 @@ data/export
 tests/_log/*
 codeception.yml
 composer.lock
+public/d3-book
