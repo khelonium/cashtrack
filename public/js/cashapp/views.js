@@ -308,7 +308,7 @@ cashCode.Views.CategoryList = cashCode.Views.AbstractTransaction.extend({
 
 cashCode.Views.NavigationMonth = Backbone.View.extend({
     tagName:'li',
-    template: _.template('<a data-cashmonth="<%= date %>" href="#/cashflow/<%= date %>"><%= name %></a>'),
+    template: _.template('<a class="month-view" data-cashmonth="<%= date %>" href="#/cashflow/<%= date %>"><%= name %></a>'),
 
     events:  {
         'click a':'toggleActive'
@@ -343,7 +343,29 @@ cashCode.Views.NavigationMonth = Backbone.View.extend({
 
 cashCode.Views.NavigationYearView = Backbone.View.extend({
 
+    initialize:function() {
+
+        var date = new Date();
+        this.year       = new Year(date.getFullYear());
+        this.collection = new cashCode.Collections.NavigationYear(this.year.getMonths());
+
+        this.collection.on('reset',this.render,this);
+        this.$el.find('.prev-year a').bind('click', $.proxy(function(e) {
+            e.preventDefault();
+            this.collection.reset( this.year.prevYear().getMonths());
+            $('.current-year a').html(this.year.year);
+
+        },this));
+
+        this.$el.find('.next-year a').bind('click', $.proxy(function(e) {
+            e.preventDefault();
+            this.collection.reset( this.year.nextYear().getMonths());
+            $('.current-year a').html(this.year.year);
+
+        },this));
+    },
     render : function() {
+        this.$el.find('.month-view').remove();
         this.collection.forEach(this.addMonth,this);
     },
 

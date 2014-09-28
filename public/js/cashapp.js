@@ -26,33 +26,13 @@ cashCode.CashRouter  =  Backbone.Router.extend({
     },
     initialize: function(){
 
-
-        var currentYear =[
-            {name:"Ianuarie", date:"2014-01-01"},
-            {name:"Februarie", date:"2014-02-01"},
-            {name:"Martie", date:"2014-03-01"},
-            {name:"Aprilie", date:"2014-04-01"},
-            {name:"Mai", date:"2014-05-01"},
-            {name:"Iunie", date:"2014-06-01"},
-            {name:"Iulie", date:"2014-07-01"},
-            {name:"August", date:"2014-08-01"},
-            {name:"Septembrie", date:"2014-09-01"},
-            {name:"Octombrie", date:"2014-10-01"},
-            {name:"Noiembrie", date:"2014-11-01"},
-            {name:"Decembrie", date:"2014-12-01"}
-
-        ];
-
-
         this.categoryList     = new cashCode.Collections.CategoryList();
         this.transactions     = new cashCode.Collections.Transaction();
-        this.navigationYear   = new cashCode.Collections.NavigationYear(currentYear);
 
-        this.cashNavigation     = new cashCode.Views.NavigationYearView({collection:this.navigationYear, el:$('.pagination')});
+        this.cashNavigation     = new cashCode.Views.NavigationYearView({el:$('.pagination')});
         this.addTransactionForm = new cashCode.Forms.AddTransaction({model: this.emptyTransaction(), el:$('#addTransactionForm')});
 
         this.cashNavigation.render();
-
 
         this.cashView    =  new cashCode.Views.CashView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
         this.buffersView = new cashCode.Views.MonthOperation({model: new cashCode.Models.Buffer, el:$('#monthOperations')});
@@ -69,6 +49,7 @@ cashCode.CashRouter  =  Backbone.Router.extend({
 
         $('#accountView').bind('click', $.proxy(function(e) {e.preventDefault(); $('.panel-title').html('Category View'); this.raise('view_mode','category');}, this));
         $('#transactionView').bind('click', $.proxy(function(e) {e.preventDefault();$('.panel-title').html('Transaction View'); this.raise('view_mode','transaction');}, this));
+
 
         this.cashView.render();
 
@@ -105,7 +86,6 @@ cashCode.CashRouter  =  Backbone.Router.extend({
     showAddTransaction : function() {
 
         if (this.addTransactionForm.model.get('id')) {
-            console.log("I found an id so i must re-init");
             this.addTransactionForm.switchModel(this.emptyTransaction());
         }
 
