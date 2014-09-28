@@ -9,6 +9,7 @@
 
 namespace Application;
 
+use Application\API\Merchant;
 use Application\API\Overview;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
@@ -47,6 +48,13 @@ class Module
                     $reporter   = $locator->get('Reporter\Overview');
                     $controller = new Overview();
                     $controller->setOverviewReporter($reporter);
+                    return $controller;
+                },
+
+                'Application\API\Merchant' => function ($sm) {
+                    $locator    = $sm->getServiceLocator();
+                    $controller = new Merchant();
+                    $controller->setRepository($locator->get('\Finance\Merchant\Repository'));
                     return $controller;
                 },
             ),

@@ -31,6 +31,17 @@ return array(
                     ),
                 ),
             ),
+            'merchants' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/merchants',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'merchant',
+                    ),
+                ),
+            ),
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -82,8 +93,23 @@ return array(
                     'constraints' => array(
                         'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
                     ),
+
                     'defaults' => array(
                         'controller' => 'Application\API\Overview',
+                    ),
+                ),
+            ),
+
+
+            'merchant-rest' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/api/merchant[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+?',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\API\Merchant',
                     ),
                 ),
             ),
@@ -208,6 +234,11 @@ return array(
          array(
              'label' => 'Reports',
              'route' => 'visual',
+         ),
+
+         array(
+             'label' => 'Merchants',
+             'route' => 'merchants',
          ),
 
 

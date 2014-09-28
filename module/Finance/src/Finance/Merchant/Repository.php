@@ -13,7 +13,6 @@ namespace Finance\Merchant;
 
 
 use Refactoring\Repository\AbstractRepository;
-use Zend\Db\ResultSet\ResultSet;
 
 class Repository extends AbstractRepository
 {
