@@ -19,15 +19,16 @@ class Repository extends AbstractRepository
 
     public function addFromName($identifier, $name = null)
     {
-
         if (null == $name) {
             $name = $identifier;
         }
+
         if (!is_string($name) || !is_string($identifier)) {
             throw new \InvalidArgumentException(" Provided argument is not string");
         }
 
         return $this->add(new Merchant(array('name' => $name)));
+
     }
 
 
