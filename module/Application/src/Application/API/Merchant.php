@@ -24,6 +24,11 @@ class Merchant extends AbstractRestfulController
      */
     private $repository = null;
 
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function get($id)
     {
         return new JsonModel([]);
@@ -44,11 +49,6 @@ class Merchant extends AbstractRestfulController
         $merchant = new MerchantEntity($data);
         $this->repository->update($merchant);
         return new JsonModel($merchant);
-    }
-
-    public function setRepository(Repository $merchants)
-    {
-        $this->repository = $merchants;
     }
 
 }

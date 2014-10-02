@@ -22,28 +22,20 @@ class Overview extends AbstractController
      */
     private $reporter = null;
 
+    public function __construct(\Reporter\Overview $reporter)
+    {
+        $this->reporter = $reporter;
+    }
+
     public function get($id)
     {
         $expand   = $this->params()->fromQuery('expand');
 
         return new JsonOverview(
-            $this->getOverviewReporter()->getOverview($id, $expand?explode(',', $expand):[])
+            $this->reporter->getOverview($id, $expand?explode(',', $expand):[])
         );
     }
 
-    public function setOverviewReporter(\Reporter\Overview $reporter)
-    {
-        $this->reporter = $reporter;
-    }
-
-    /**
-     * @return \Reporter\Overview
-     */
-    private function getOverviewReporter()
-    {
-        return $this->reporter;
-
-    }
 
 
 }

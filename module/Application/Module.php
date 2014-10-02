@@ -45,17 +45,12 @@ class Module
             'factories' => array(
                 'Application\API\Overview' => function ($sm) {
                     $locator    = $sm->getServiceLocator();
-                    $reporter   = $locator->get('Reporter\Overview');
-                    $controller = new Overview();
-                    $controller->setOverviewReporter($reporter);
-                    return $controller;
+                    return new Overview($locator->get('Reporter\Overview'));
                 },
 
                 'Application\API\Merchant' => function ($sm) {
                     $locator    = $sm->getServiceLocator();
-                    $controller = new Merchant();
-                    $controller->setRepository($locator->get('\Finance\Merchant\Repository'));
-                    return $controller;
+                    return new Merchant($locator->get('\Finance\Merchant\Repository'));
                 },
             ),
         );
