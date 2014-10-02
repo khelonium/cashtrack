@@ -94,14 +94,12 @@ cashCode.Views.Category = Backbone.View.extend({
     },
     initialize:function(){
 
-        this.accountList = new cashCode.Collections.AccountList();
+        this.accountList = new  Cash.Models.Accounts();
         this.listenTo(this.model, 'change',this.render);
         this.listenTo(this.model, 'canHide',this.hide);
         this.initModelListeners(this.model);
         this.on('working_month',this.setDate,this);
         this.accountList.fetch();
-
-
 
     },
 

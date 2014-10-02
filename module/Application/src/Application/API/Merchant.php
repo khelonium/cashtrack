@@ -11,6 +11,7 @@ namespace Application\API;
 
 
 
+use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Merchant\Repository;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
@@ -33,9 +34,21 @@ class Merchant extends AbstractRestfulController
         return new JsonModel($this->repository->all());
     }
 
+    /**
+     * @param mixed $id
+     * @param mixed $data
+     * @return mixed|void
+     */
+    public function update($id, $data)
+    {
+        $merchant = new MerchantEntity($data);
+        $this->repository->update($merchant);
+        return new JsonModel($merchant);
+    }
 
     public function setRepository(Repository $merchants)
     {
         $this->repository = $merchants;
     }
+
 }

@@ -19,14 +19,7 @@ cashCode.Collections.CategoryList = Backbone.Collection.extend({
 
 cashCode.Collections.NavigationYear = Backbone.Collection.extend();
 
-cashCode.Models.Account = Backbone.Model.extend({
-    urlRoot:"/api/account"
-});
 
-cashCode.Collections.AccountList = Backbone.Collection.extend({
-    model:cashCode.Models.Account,
-    url:"/api/account"
-});
 
 
 cashCode.Models.Transaction  = Backbone.Model.extend({

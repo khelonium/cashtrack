@@ -1,7 +1,11 @@
 <?php
 
+$this->headStyle()->appendStyle('/css/bootstrap-editable.css');
+
 $javascripts = array(
     'js/vendor/d3.v3.min.js',
+    'js/plugins/bootstrap-editable.js',
+    'js/module/account/collection.js',
     'js/module/merchant/collection.js',
     'js/module/merchant/view.js',
 );
@@ -9,11 +13,12 @@ $javascripts = array(
 foreach ($javascripts as $script) {
     $this->headScript()->appendFile($this->basePath($script));
 }
+
+
 ?>
 <div class="merchants-container col-md-12">
 
     <script>
-        var view = new MerchantsView();
-
+        var view = new Cash.Views.Merchants();
     </script>
 </div>

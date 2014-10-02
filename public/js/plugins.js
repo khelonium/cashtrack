@@ -19,4 +19,15 @@
             console[method] = noop;
         }
     }
+
+    window.Cash = {
+        Models: {},
+        Collections: {},
+        Views: {}
+    };
+
+    window.template = function(id){
+        return _.template( $('#'+ id).html());
+    };
+
 }());

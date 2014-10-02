@@ -1,45 +1,90 @@
-var MerchantsView = Backbone.View.extend({
+Cash.Views.Merchants = Backbone.View.extend({
+
     initialize:function(){
+        this.initTable();
 
-        this.table  = d3.select("body .merchants-container").insert("table",":first-child")
-            .attr("class","table table-hover");
-
-        this.thead = this.table.append('thead');
-        this.tbody = this.table.append('tbody');
-
-        this.collection = new Merchants();
+        this.collection = new Cash.Models.Merchants();
         this.collection.fetch();
-        this.collection.on('change',this.render,this);
         this.collection.on('sync',this.render,this);
-
+        this.accounts = new Cash.Models.Accounts();
+        this.accounts.fetch({async:false});
     },
 
     render:function(){
+        this.renderTable();
+        this.addEditBehaviour();
+        return this;
+    },
 
+    renderTable: function () {
         var data = this.collection.toJSON();
+        var columns = d3.keys(data[0]);
+        var that = this;
 
-        console.log("Rendering dta");
-        console.log(data);
-        this.thead.append("tr")
+       this.thead
             .selectAll("th")
-            .data(d3.keys(data[0]))
+            .data(columns, function (d) {return d })
             .enter()
             .append("th")
-            .text(function(column) { return column; });
+            .text(function (column) {return column;});
 
-        var rows = this.tbody.selectAll("tr")
+
+
+        this.tbody.selectAll("tr")
             .data(data)
             .enter()
-            .append("tr");
-
-        var cells = rows.selectAll("td")
-            .data(function(d){return d3.values(d);})
+            .append("tr")
+            .selectAll("td")
+            .data(function (d) {
+                return d3.values(d);
+            })
             .enter()
             .append("td")
-            .text(function(d) {return d});
+            .attr("class", function (d, i) {
+                return 'merchant-' + columns[i]
+            })
+            .attr('data-type', function (d, i) {
+                if (i == 3) {
+                    return 'select';
+                }
+                return ''
+            })
+            .attr('data-pk', function (d, i) {
+                return d;
+            })
+            .attr('data-value', function (d, i) {
+                return d
+            })
+            .attr('data-name', function (d, i) {
+                return columns[i];
+            })
+            .text(function (d, i) {
+                if (i < 3) return d;
+                return that.accounts.getNameFor(d)
+            });
+        },
 
-        return this;
+        addEditBehaviour:function(){
+            var that = this;
+            $('.merchant-accountId').editable({
+                source: this.accounts.map(function(account){
+                    return {value:account.get('id'), text:account.get('name') };
+                }),
+                success: function(response, newValue) {
+                    that.collection.merchant($(this).data('pk'))
+                        .set('accountId',newValue)
+                        .save();
+                }
+            });
+        },
+
+    initTable: function () {
+        this.table = d3.select("body .merchants-container").insert("table", ":first-child")
+            .attr("class", "table table-hover");
+
+        this.thead = this.table.append('thead').append("tr");
+        this.tbody = this.table.append('tbody');
     }
-});/**
- * Created by cdordea on 29/09/14.
- */
+
+
+});
