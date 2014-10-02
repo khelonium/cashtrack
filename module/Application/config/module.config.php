@@ -232,15 +232,13 @@ return array(
              'route' => 'home',
          ),
          array(
-             'label' => 'Reports',
-             'route' => 'visual',
-         ),
-
-         array(
              'label' => 'Merchants',
              'route' => 'merchants',
          ),
-
+         array(
+             'label' => 'Reports',
+             'route' => 'visual',
+         ),
 
      ),
  ),

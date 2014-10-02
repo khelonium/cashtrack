@@ -22,4 +22,21 @@ class AccountRepository extends  AbstractRepository
         return $this->getServiceManager()->get('\Finance\Dao\AccountGateway');
     }
 
+    /**
+     *
+     */
+    public function getList($idList)
+    {
+        $select = $this->gateway()->getSql()->select();
+        $select->where->in('id_account',$idList);
+
+        $out = [];
+
+        foreach ($this->gateway()->selectWith($select) as $result) {
+            $out[] = $result;
+        }
+
+        return;
+    }
+
 }
