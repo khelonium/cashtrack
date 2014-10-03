@@ -1,12 +1,17 @@
+Cash.Models.Account = Backbone.Model.extend({
+    urlRoot:"/api/account"
+});
+
 Cash.Models.Accounts = Backbone.Collection.extend({
     url:"/api/account",
+    model: Cash.Models.Account,
 
     getNameFor: function(idAccount){
         var wantedAccount =this.filter(function(account){
             return account.get('id') == idAccount;
         });
 
-        if(wantedAccount.length > 0) return wantedAccount[0].get('name');
+        return wantedAccount[0].get('name');
     }
 
 });

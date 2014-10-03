@@ -1,14 +1,18 @@
 Cash.Views.Merchants = Backbone.View.extend({
 
-    initialize:function(){
+    initialize:function(options){
+        console.log(options);
         this.initTable();
 
         this.collection = new Cash.Models.Merchants();
         this.collection.fetch();
         this.collection.on('sync',this.render,this);
-        this.accounts = new Cash.Models.Accounts();
-        this.accounts.fetch({async:false});
+
+        this.accounts = (options && options.accounts) || new Cash.Models.Accounts();
+        (this.accounts.length > 0) || this.accounts.fetch();
+
     },
+
 
     render:function(){
         this.renderTable();
@@ -79,12 +83,53 @@ Cash.Views.Merchants = Backbone.View.extend({
         },
 
     initTable: function () {
-        this.table = d3.select("body .merchants-container").insert("table", ":first-child")
+        this.table = d3.select("body .merchants-container").append("table")
             .attr("class", "table table-hover");
 
         this.thead = this.table.append('thead').append("tr");
         this.tbody = this.table.append('tbody');
     }
 
+
+});
+
+
+Cash.Views.AddMerchant = Backbone.View.extend({
+    events: {
+        'submit': 'save'
+    },
+    initialize: function (options) {
+
+
+        this.model = new Cash.Models.Merchant();
+        this.accounts = (options && options.accounts) || new Cash.Models.Accounts();
+        (this.accounts.length > 0) || this.accounts.fetch();
+
+    },
+
+    save: function ($e) {
+
+        $e.preventDefault();
+
+        var name       = this.$('input[name=merchantName]').val();
+        var identifier = this.$('input[name=merchantIdentifier]').val();
+        var accountId  = this.$('input[name=merchantAccount]').val();
+
+        var that = this;
+
+        this.model.save({name:name,identifier:identifier,accountId:accountId}, {'success':function(){
+            console.log
+            that.model.clear();
+            that.clearFields();
+            that.model.trigger('updatedForm');
+
+        }});
+
+    },
+    clearFields:function(){
+        this.$('input[name=merchantName]').val('');
+        this.$('input[name=merchantIdentifier]').val('');
+        this.$('input[name=merchantAccount]').val('');
+    }
 
 });

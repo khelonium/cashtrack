@@ -1,3 +1,8 @@
+Cash.Models.Merchant = Backbone.Model.extend({
+    urlRoot:"/api/merchant"
+});
+
+
 Cash.Models.Merchants = Backbone.Collection.extend({
     url: '/api/merchant',
     merchant:function(id){

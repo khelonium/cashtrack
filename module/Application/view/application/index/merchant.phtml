@@ -13,12 +13,44 @@ $javascripts = array(
 foreach ($javascripts as $script) {
     $this->headScript()->appendFile($this->basePath($script));
 }
-
-
 ?>
-<div class="merchants-container col-md-12">
 
-    <script>
-        var view = new Cash.Views.Merchants();
-    </script>
+<div class="row">
+    <form id="addMerchant" class="form-inline" role="form">
+        <div class="form-group">
+            <label class="sr-only" for="merchantName">Name</label>
+            <input type="text" class="form-control" name="merchantName" placeholder="Merchant name">
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <label class="sr-only" for="merchantIdentifier">Identifier</label>
+                <input class="form-control" type="text" name="merchantIdentifier" placeholder="Enter identifier">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <label class="sr-only" for="merchantAccount">Account</label>
+                <input class="form-control" type="text" name="merchantAccount" placeholder="Enter identifier">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">Add</button>
+    </form>
+
 </div>
+
+<div class="row">
+    <div class="col-md-12 merchants-container">
+
+
+    </div>
+</div>
+
+<script>
+
+    var accounts = new Cash.Models.Accounts();
+    accounts.fetch({async:false});
+    var merchants   =  new Cash.Views.Merchants({accounts:accounts});
+    var addMerchant = new Cash.Views.AddMerchant({el:$('#addMerchant'), accounts:accounts});
+
+    merchants.listenTo(addMerchant.model, 'updatedForm', function(){console.log('trigger');merchants.collection.fetch()});
+</script>

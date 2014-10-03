@@ -92,6 +92,7 @@ cashCode.Views.Category = Backbone.View.extend({
     events : {
       'submit' : 'save'
     },
+
     initialize:function(){
 
         this.accountList = new  Cash.Models.Accounts();
@@ -118,7 +119,6 @@ cashCode.Views.Category = Backbone.View.extend({
 
 
       this.model.save({description:description, amount:amount, date:date, toAccount:idAccount},{success :function(model,response,options){
-          //how to properly do this?
           model.trigger('canHide');
 
       }});
