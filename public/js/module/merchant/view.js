@@ -118,7 +118,6 @@ Cash.Views.AddMerchant = Backbone.View.extend({
         var that = this;
 
         this.model.save({name:name,identifier:identifier,accountId:accountId}, {'success':function(){
-            console.log
             that.model.clear();
             that.clearFields();
             that.model.trigger('updatedForm');
