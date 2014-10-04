@@ -28,7 +28,7 @@ before_script:
   - cp -f build/local.php ./config/autoload/local.php
   - cat build/codeception.yml
   - composer install
-  - mkdir ./oldtests/_log
+#  - mkdir ./oldtests/_log
   - sudo chmod a+w ./oldtests/_log
   - ./vendor/bin/codecept build
 
