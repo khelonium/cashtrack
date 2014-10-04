@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>ZF2 Skeleton Application</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Le styles -->
+        <link href="/css/main.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/css/normalize.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/css/ui-lightness/jquery-ui-1.10.3.custom.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/css/bootstrap-theme.min.css" media="screen" rel="stylesheet" type="text/css">
+<link href="/img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+        <!-- Scripts -->
+        <script type="text/javascript" src="/js/vendor/modernizr-2.6.2.min.js"></script>
+<script type="text/javascript" src="/js/vendor/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/js/vendor/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" src="/js/vendor/underscore-min.js"></script>
+<script type="text/javascript" src="/js/vendor/backbone-min.js"></script>
+<script type="text/javascript" src="/js/vendor/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/plugins.js"></script>
+    </head>
+    <body>
+
+    <!--[if lt IE 8]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <nav>
+    <ul class="nav&#x20;nav-pills">
+    <li>
+        <a href="&#x2F;">Cashflow</a>
+    </li>
+    <li>
+        <a href="&#x2F;merchants">Merchants</a>
+    </li>
+    <li>
+        <a href="&#x2F;visual">Reports</a>
+    </li>
+</ul>
+    </nav>
+
+        <div class="container">
+
+
+            <h1>An error occurred</h1>
+<h2>An error occurred during execution; please try again later.</h2>
+
+
+<hr/>
+<h2>Additional information:</h2>
+<h3>RuntimeException</h3>
+<dl>
+    <dt>File:</dt>
+    <dd>
+        <pre class="prettyprint linenums">/var/www/module/Finance/src/Finance/AccountValue/AccountValueFactoryAwareTrait.php:31</pre>
+    </dd>
+    <dt>Message:</dt>
+    <dd>
+        <pre class="prettyprint linenums">Account Value Factory not set</pre>
+    </dd>
+    <dt>Stack trace:</dt>
+    <dd>
+        <pre class="prettyprint linenums">#0 /var/www/module/Finance/src/Finance/Balance/BalanceService.php(114): Finance\Balance\BalanceService->getAccountValueFactory()
+#1 /var/www/module/Application/src/Application/API/Balance.php(35): Finance\Balance\BalanceService->getBalance(Object(Refactoring\Interval\SpecificMonth))
+#2 /var/www/vendor/zendframework/zendframework/library/Zend/Mvc/Controller/AbstractRestfulController.php(364): Application\API\Balance->get('2013-06-01')
+#3 [internal function]: Zend\Mvc\Controller\AbstractRestfulController->onDispatch(Object(Zend\Mvc\MvcEvent))
+#4 /var/www/vendor/zendframework/zendframework/library/Zend/EventManager/EventManager.php(468): call_user_func(Array, Object(Zend\Mvc\MvcEvent))
+#5 /var/www/vendor/zendframework/zendframework/library/Zend/EventManager/EventManager.php(207): Zend\EventManager\EventManager->triggerListeners('dispatch', Object(Zend\Mvc\MvcEvent), Object(Closure))
+#6 /var/www/vendor/zendframework/zendframework/library/Zend/Mvc/Controller/AbstractController.php(117): Zend\EventManager\EventManager->trigger('dispatch', Object(Zend\Mvc\MvcEvent), Object(Closure))
+#7 /var/www/vendor/zendframework/zendframework/library/Zend/Mvc/Controller/AbstractRestfulController.php(300): Zend\Mvc\Controller\AbstractController->dispatch(Object(Zend\Http\PhpEnvironment\Request), Object(Zend\Http\PhpEnvironment\Response))
+#8 /var/www/vendor/zendframework/zendframework/library/Zend/Mvc/DispatchListener.php(114): Zend\Mvc\Controller\AbstractRestfulController->dispatch(Object(Zend\Http\PhpEnvironment\Request), Object(Zend\Http\PhpEnvironment\Response))
+#9 [internal function]: Zend\Mvc\DispatchListener->onDispatch(Object(Zend\Mvc\MvcEvent))
+#10 /var/www/vendor/zendframework/zendframework/library/Zend/EventManager/EventManager.php(468): call_user_func(Array, Object(Zend\Mvc\MvcEvent))
+#11 /var/www/vendor/zendframework/zendframework/library/Zend/EventManager/EventManager.php(207): Zend\EventManager\EventManager->triggerListeners('dispatch', Object(Zend\Mvc\MvcEvent), Object(Closure))
+#12 /var/www/vendor/zendframework/zendframework/library/Zend/Mvc/Application.php(313): Zend\EventManager\EventManager->trigger('dispatch', Object(Zend\Mvc\MvcEvent), Object(Closure))
+#13 /var/www/public/index.php(33): Zend\Mvc\Application->run()
+#14 {main}</pre>
+    </dd>
+</dl>
+
+
+            <hr>
+
+            <footer>
+
+                <p>&copy; 2013 - 2014 Cosmin Dordea. All rights reserved.</p>
+            </footer>
+        </div> <!-- /container -->
+        
+    </body>
+</html>
