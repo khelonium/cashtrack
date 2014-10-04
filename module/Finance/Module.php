@@ -3,7 +3,7 @@
 namespace Finance;
 
 use Finance\Account\AccountFactory;
-use Finance\AccountValue\AccountValueFactory;
+use Database\AccountValue\AccountValueFactory;
 
 
 use Refactoring\Repository\GenericRepository;

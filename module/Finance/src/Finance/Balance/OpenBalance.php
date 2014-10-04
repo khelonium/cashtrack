@@ -8,7 +8,7 @@ namespace Finance\Balance;
 
 
 
-use Finance\AccountValue\AccountValueFactory;
+use Database\AccountValue\AccountValueFactory;
 use Finance\AccountValue\AccountValueFactoryAwareTrait;
 use Refactoring\Interval\SpecificMonth;
 use Zend\Stdlib\ArrayObject;
@@ -22,7 +22,7 @@ class OpenBalance extends AbstractBalance
     private $interval        = null;
 
     /**
-     * @var \Finance\AccountValue\AccountValueFactory
+     * @var \Database\AccountValue\AccountValueFactory
      */
     private $accountFactory = null;
 

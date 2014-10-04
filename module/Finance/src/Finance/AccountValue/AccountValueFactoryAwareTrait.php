@@ -8,6 +8,8 @@
 namespace Finance\AccountValue;
 
 
+use Database\AccountValue\AccountValueFactory;
+
 trait AccountValueFactoryAwareTrait
 {
 

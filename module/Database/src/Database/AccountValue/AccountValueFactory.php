@@ -5,24 +5,27 @@
  * Date: 12/1/13
  */
 
-namespace Finance\AccountValue;
+namespace Database\AccountValue;
 
 
 use Finance\Account\AccountFactoryAwareInterface;
 use Finance\Account\AccountFactoryAwareTrait;
 use Finance\Account\AccountRepositoryAwareInterface;
 use Finance\Account\AccountRepositoryAwareTrait;
+use Finance\AccountValue\AccountValue;
 use Refactoring\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
-use Zend\Stdlib\ArrayObject;
 
 /**
  * Class AccountFactory
  * not sure if this is really a factory
  * @package Finance\AccountValue
  */
-class AccountValueFactory implements  AdapterAwareInterface, AccountFactoryAwareInterface, AccountRepositoryAwareInterface
+class AccountValueFactory implements
+    AdapterAwareInterface,
+    AccountFactoryAwareInterface,
+    AccountRepositoryAwareInterface
 {
 
     use AdapterAwareTrait;
@@ -67,7 +70,6 @@ class AccountValueFactory implements  AdapterAwareInterface, AccountFactoryAware
         $accounts = $this->getAccountRepository()->all();
 
         if (null === $this->accountIds) {
-            //fixme implement entity holder
             $this->accountIds = array();
             foreach ($accounts as $account) {
                 $this->accountIds[]= $account['id'];
@@ -90,7 +92,7 @@ class AccountValueFactory implements  AdapterAwareInterface, AccountFactoryAware
 
         foreach ($accountIds as $id) {
             $account = $this->get($id, $interval);
-            if ($account->getCredit() >0 || $account->getDebit()  ) {
+            if ($account->getCredit() >0 || $account->getDebit()) {
                 $out []= $account;
             }
         }
@@ -113,7 +115,7 @@ class AccountValueFactory implements  AdapterAwareInterface, AccountFactoryAware
 
     private function getSqlFor($account, IntervalInterface $interval)
     {
-        $sql =  "SELECT
+        $sql = "SELECT
             (SELECT round(SUM(amount),2)
                 from transaction where to_account=%s
                 and  transaction_date >= '%s'

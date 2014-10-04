@@ -6,6 +6,8 @@
 
 namespace Finance\AccountValue;
 
+use Database\AccountValue\AccountValueFactory;
+
 
 /**
  * Class AccountValueFactoryAwareInterface

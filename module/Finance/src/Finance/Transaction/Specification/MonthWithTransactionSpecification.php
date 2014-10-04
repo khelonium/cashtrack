@@ -6,7 +6,6 @@
 
 namespace Finance\Transaction\Specification;
 
-use Finance\Month\unknown_type;
 use Finance\Transaction\TransactionRepositoryAwareInterface;
 use Finance\Transaction\TransactionRepositoryAwareTrait;
 use Refactoring\Interval\SpecificMonth;
