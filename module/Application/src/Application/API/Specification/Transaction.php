@@ -2,7 +2,7 @@
 
 namespace Application\API\Specification;
 
-use Finance\Transaction\Repository\Specification;
+use Database\Transaction\Repository\Specification;
 use Refactoring\Db\SqlSpecification;
 use Refactoring\Interval\SpecificMonth;
 use Refactoring\Interval\ThisMonth;

@@ -1,9 +1,7 @@
 <?php
-namespace Finance\Transaction\Repository;
+namespace Database\Transaction\Repository;
 
 
-use Finance\Transaction\Transaction;
-use Finance\Transaction\Repository;
 use Zend\Db\Sql\Select;
 
 class Specification
@@ -24,7 +22,7 @@ class Specification
      * @param callable $mapper The mapper knows how to convert from model key to db key
      * @return Select
      */
-    public function specify(Select $select, $mapper )
+    public function specify(Select $select, $mapper)
     {
 
         foreach ($this->equalTo as $key => $val) {

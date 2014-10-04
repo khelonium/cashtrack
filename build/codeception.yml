@@ -1,5 +1,5 @@
 paths:
-    oldtests: oldtests
+    test: oldtests
     log: oldtests/_log
     data: oldtests/_data
     helpers: oldtests/_helpers

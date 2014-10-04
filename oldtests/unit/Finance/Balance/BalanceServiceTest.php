@@ -180,7 +180,7 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
             },
         ];
 
-        return Stub::make('\Finance\Transaction\Repository', $methods);
+        return Stub::make('\Database\Transaction\Repository', $methods);
     }
 
     public function testThatDbIsRestored()
