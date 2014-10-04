@@ -2,6 +2,7 @@
 
 namespace Database;
 
+use Database\AccountValue\AccountValueFactory;
 use Database\Merchant\Repository as MerchantRepository;
 use Finance\Account\Account;
 use Finance\Account\AccountFactoryAwareInterface;
@@ -45,11 +46,9 @@ class Module
         return array(
             'initializers' => array(
                 'database' => function ($service, $sm) {
-
                     if ($service instanceof AdapterAwareInterface) {
                         $service->setDbAdapter($sm->get('Zend\Db\Adapter\Adapter'));
                     }
-
                 },
 
                 'accountRepository' => function ($service, $sm) {
@@ -57,16 +56,10 @@ class Module
                         $service->setAccountRepository($sm->get('Database\Account\Repository'));
                     }
                 },
-                'accountFactory' => function ($service, $sm) {
-                    if ($service instanceof AccountFactoryAwareInterface) {
-                        $service->setAccountFactory($sm->get('Finance\Account\AccountFactory'));
-                    }
-                },
 
                 'accountValueFactory' => function ($service, $sm) {
-
                     if ($service instanceof AccountValueFactoryAwareInterface) {
-                        $service->setAccountValueFactory($sm->get('Finance\AccountValue\AccountValueFactory'));
+                        $service->setAccountValueFactory($sm->get('Database\AccountValue\AccountValueFactory'));
                     }
                 },
 
@@ -86,6 +79,12 @@ class Module
             ),
 
             'factories' => array(
+
+                '\Database\AccountValue\AccountValueFactory' => function ($sm) {
+                    $factory = new AccountValueFactory();
+                    $factory->setAccountFactory($sm->get('Finance\Account\AccountFactory'));
+                    return $factory;
+                },
 
 
                 '\Database\Transaction\Repository' => function ($sm) {

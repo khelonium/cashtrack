@@ -46,9 +46,6 @@ class Module
                     return new \Finance\Balance\BalanceService($sm->get('Zend\Db\Adapter\Adapter'));
                 },
 
-                '\Finance\AccountValue\AccountValueFactory' => function ($sm) {
-                    return new AccountValueFactory();
-                },
                 '\Finance\Account\AccountFactory' => function ($sm) {
                     return new AccountFactory();
                 },

@@ -11,6 +11,7 @@ vendor/bin
 vendor/ro.refactoring
 data/export
 tests/_log/*
+oldtests/_log/*
 codeception.yml
 composer.lock
 public/d3-book

@@ -168,7 +168,7 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
     public function getAccountValueFactory()
     {
         $methods = [];
-        return Stub::make('\Finance\AccountValue\AccountValueFactory', $methods);
+        return Stub::make('\Database\AccountValue\AccountValueFactory', $methods);
     }
 
     public function getTransactionRepository()

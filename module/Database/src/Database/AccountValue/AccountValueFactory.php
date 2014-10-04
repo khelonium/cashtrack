@@ -8,8 +8,7 @@
 namespace Database\AccountValue;
 
 
-use Finance\Account\AccountFactoryAwareInterface;
-use Finance\Account\AccountFactoryAwareTrait;
+use Finance\Account\AccountFactory;
 use Finance\Account\AccountRepositoryAwareInterface;
 use Finance\Account\AccountRepositoryAwareTrait;
 use Finance\AccountValue\AccountValue;
@@ -24,17 +23,20 @@ use Zend\Db\Adapter\AdapterAwareTrait;
  */
 class AccountValueFactory implements
     AdapterAwareInterface,
-    AccountFactoryAwareInterface,
     AccountRepositoryAwareInterface
 {
-
     use AdapterAwareTrait;
-
-    use AccountFactoryAwareTrait;
-
     use AccountRepositoryAwareTrait;
 
+    /**
+     * @var AccountFactory
+     */
+    private $accountFactory = null;
 
+    public function setAccountFactory(AccountFactory $factory)
+    {
+        $this->accountFactory = $factory;
+    }
 
     /**
      * Returns the balance for a certain account
@@ -45,12 +47,15 @@ class AccountValueFactory implements
     public function get($account, IntervalInterface $interval)
     {
 
+        if (null === $this->accountFactory) {
+            throw new \RuntimeException("Account Factory not configured");
+        }
         $sql        = $this->getSqlFor($account, $interval);
         $statement = $this->getAdapter()->query($sql);
         $result = $statement->execute();
         $current = $result->current();
 
-        $account = $this->getAccountFactory()->fromDatabaseArray($current);
+        $account = $this->accountFactory->fromDatabaseArray($current);
 
         return new AccountValue($interval, $account, $current['credit'], $current['debit']);
 
