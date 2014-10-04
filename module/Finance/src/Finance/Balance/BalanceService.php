@@ -10,7 +10,7 @@ use Finance\Balance\History\BalanceRepositoryAwareTrait;
 use Finance\Balance\History\History;
 use Finance\Balance\Specification\BalanceCanBeClosed;
 use Finance\Balance\Specification\ClosedMonth;
-use Finance\Month\MonthWithTransactionSpecification;
+use Finance\Transaction\Specification\MonthWithTransactionSpecification;
 use Finance\Transaction\Transaction;
 use Finance\Transaction\TransactionRepositoryAwareInterface;
 use Finance\Transaction\TransactionRepositoryAwareTrait;
