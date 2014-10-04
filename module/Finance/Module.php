@@ -3,7 +3,6 @@
 namespace Finance;
 
 use Finance\Account\AccountFactory;
-use Database\Account\AccountRepository;
 use Finance\AccountValue\AccountValueFactory;
 
 
@@ -56,10 +55,6 @@ class Module
                 },
                 '\Finance\Account\AccountFactory' => function ($sm) {
                     return new AccountFactory();
-                },
-
-                '\Finance\Account\AccountRepository' => function ($sm) {
-                    return new AccountRepository();
                 },
 
                 '\Finance\Balance\History\Repository' => function ($sm) {

@@ -18,7 +18,7 @@ use Zend\View\Model\JsonModel;
 class Account extends AbstractController
 {
 
-    protected $repositoryServiceKey = 'Finance\Account\Repository';
+    protected $repositoryServiceKey = 'Database\Account\Repository';
 
     public function get($id)
     {

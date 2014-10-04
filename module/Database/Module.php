@@ -54,7 +54,7 @@ class Module
 
                 'accountRepository' => function ($service, $sm) {
                     if ($service instanceof AccountRepositoryAwareInterface) {
-                        $service->setAccountRepository($sm->get('Finance\Account\AccountRepository'));
+                        $service->setAccountRepository($sm->get('Database\Account\Repository'));
                     }
                 },
                 'accountFactory' => function ($service, $sm) {
@@ -91,7 +91,7 @@ class Module
                     return new MerchantRepository();
                 },
 
-                '\Finance\Account\Repository' => function ($sm) {
+                '\Database\Account\Repository' => function ($sm) {
                     return new \Database\Account\AccountRepository();
                 },
 
