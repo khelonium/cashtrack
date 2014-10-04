@@ -2,8 +2,9 @@
 return array(
     'modules' => array(
         'Application',
-        'Finance',
+        'Database',
         'Import',
+        'Finance',
     ),
 
     'module_listener_options' => array(

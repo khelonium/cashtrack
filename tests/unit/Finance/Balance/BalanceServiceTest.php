@@ -129,10 +129,6 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
 
     public function testCanCloseMonth()
     {
-        $this->codeGuy->dontSeeInDatabase(
-            'transaction',
-            array('from_account' => 55, 'to_account' => 47, 'amount' => 353, 'transaction_date', '2013-07-01')
-        );
 
         //todo move functional in functional test suite
         /** @var \Finance\Balance\BalanceService $balance */

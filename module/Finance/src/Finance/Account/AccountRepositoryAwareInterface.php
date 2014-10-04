@@ -8,6 +8,8 @@
 namespace Finance\Account;
 
 
+use Database\Account\AccountRepository;
+
 interface AccountRepositoryAwareInterface
 {
     public function setAccountRepository(AccountRepository $repository);

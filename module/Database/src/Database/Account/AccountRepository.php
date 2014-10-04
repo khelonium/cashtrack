@@ -1,20 +1,18 @@
 <?php
 /**
- * @author Cosmin Dordea <cosmin.dordea@yahoo.com>
- * @link      http://github.com/khelonium/zentrack
- * @license  New BSD
+ * 
+ * @author Cosmin Dordea <cosmin.dordea@refactoring.ro>
+ * Date: 12/1/13
  */
 
+namespace Database\Account;
 
 
-
-namespace Finance\Account;
-
-use Refactoring\Db\Entity as RefactoringEntity;
-
+use Finance\Account\Account;
 use Refactoring\Repository\AbstractRepository;
 
-class Repository extends AbstractRepository
+
+class AccountRepository extends AbstractRepository
 {
 
     public function addFromName($name)
@@ -27,6 +25,22 @@ class Repository extends AbstractRepository
     }
 
 
+    /**
+     * @param $idList
+     */
+    public function getList(array $idList)
+    {
+        $select = $this->gateway()->getSql()->select();
+        $select->where->in('id_account', $idList);
+
+        $out = [];
+
+        foreach ($this->gateway()->selectWith($select) as $result) {
+            $out[] = $result;
+        }
+
+        return;
+    }
 
     /**
      * @param $accountName

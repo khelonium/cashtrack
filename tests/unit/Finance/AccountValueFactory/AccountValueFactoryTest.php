@@ -14,13 +14,6 @@ class AccountValueFactoryTest extends \Codeception\TestCase\Test
     */
     protected $codeGuy;
 
-    protected function _before()
-    {
-    }
-
-    protected function _after()
-    {
-    }
 
     /**
      * NOT really unit test here

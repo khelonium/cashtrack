@@ -4,6 +4,6 @@ modules:
     enabled: [PhpBrowser, REST, ApiHelper]
     config:
       PhpBrowser:
-          url: http://cashtrack.dev/
+          url: http://cashtrack.test/
       REST:
-          url: http://cashtrack.dev/api/
+          url: http://cashtrack.test/api/

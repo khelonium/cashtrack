@@ -8,6 +8,8 @@
 namespace Finance\Account;
 
 
+use Database\Account\AccountRepository;
+
 trait AccountRepositoryAwareTrait
 {
 
