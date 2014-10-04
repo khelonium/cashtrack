@@ -2,6 +2,7 @@
 
 namespace Database;
 
+use Database\Merchant\Repository as MerchantRepository;
 use Finance\Account\Account;
 use Finance\Account\AccountFactoryAwareInterface;
 use Finance\Account\AccountRepositoryAwareInterface;
@@ -85,6 +86,11 @@ class Module
             ),
 
             'factories' => array(
+
+                '\Database\Merchant\Repository' => function ($sm) {
+                    return new MerchantRepository();
+                },
+
                 '\Finance\Account\Repository' => function ($sm) {
                     return new \Database\Account\AccountRepository();
                 },

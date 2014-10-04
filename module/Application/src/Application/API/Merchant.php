@@ -12,7 +12,7 @@ namespace Application\API;
 
 
 use Finance\Merchant\Merchant as MerchantEntity;
-use Finance\Merchant\Repository;
+use Database\Merchant\Repository;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 

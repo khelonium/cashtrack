@@ -50,7 +50,7 @@ class Module
 
                 'Application\API\Merchant' => function ($sm) {
                     $locator    = $sm->getServiceLocator();
-                    return new Merchant($locator->get('\Finance\Merchant\Repository'));
+                    return new Merchant($locator->get('\Database\Merchant\Repository'));
                 },
             ),
         );

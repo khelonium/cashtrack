@@ -8,8 +8,7 @@
 
 
 
-namespace Finance\Merchant;
-
+namespace Database\Merchant;
 
 
 use Refactoring\Repository\AbstractRepository;

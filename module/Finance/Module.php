@@ -43,11 +43,6 @@ class Module
 
             'factories' => array(
 
-
-                '\Finance\Merchant\Repository' => function ($sm) {
-                    return new \Finance\Merchant\Repository();
-                },
-
                 '\Finance\Transaction\Repository' => function ($sm) {
                     return new \Finance\Transaction\Repository();
                 },
