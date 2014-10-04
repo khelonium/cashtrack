@@ -6,6 +6,8 @@
 
 namespace Finance\Transaction;
 
+use Database\Transaction\Repository;
+
 
 /**
  * Class TransactionRepositoryAwareTrait

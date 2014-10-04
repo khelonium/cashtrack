@@ -8,13 +8,12 @@
 
 
 
-namespace Finance\Transaction;
+namespace Database\Transaction;
 
 
 
 use Refactoring\Interval\IntervalInterface;
 use Refactoring\Repository\AbstractRepository;
-use Zend\Db\ResultSet\ResultSet;
 
 class Repository extends AbstractRepository
 {

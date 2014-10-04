@@ -18,7 +18,7 @@ use Finance\Transaction\Transaction as TransactionEntity;
 class Transaction extends AbstractController
 {
 
-    protected $repositoryServiceKey = 'Finance\Transaction\Repository';
+    protected $repositoryServiceKey = 'Database\Transaction\Repository';
 
     /**
      * @param mixed $id

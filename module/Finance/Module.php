@@ -42,10 +42,6 @@ class Module
 
             'factories' => array(
 
-                '\Finance\Transaction\Repository' => function ($sm) {
-                    return new \Finance\Transaction\Repository();
-                },
-
                 '\Finance\Balance\BalanceService' => function ($sm) {
                     return new \Finance\Balance\BalanceService($sm->get('Zend\Db\Adapter\Adapter'));
                 },

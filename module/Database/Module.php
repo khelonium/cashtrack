@@ -73,7 +73,7 @@ class Module
                 'transactionRepository' => function ($service, $sm) {
 
                     if ($service instanceof TransactionRepositoryAwareInterface) {
-                        $service->setTransactionRepository($sm->get('Finance\Transaction\Repository'));
+                        $service->setTransactionRepository($sm->get('Database\Transaction\Repository'));
                     }
                 },
 
@@ -86,6 +86,11 @@ class Module
             ),
 
             'factories' => array(
+
+
+                '\Database\Transaction\Repository' => function ($sm) {
+                    return new \Database\Transaction\Repository();
+                },
 
                 '\Database\Merchant\Repository' => function ($sm) {
                     return new MerchantRepository();

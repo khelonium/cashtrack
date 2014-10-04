@@ -19,7 +19,7 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         /** @var \Finance\Account\Repository $repo */
-        $repo    = $this->getServiceLocator()->get('Finance\Account\Repository');
+        $repo    = $this->getServiceLocator()->get('Database\Account\Repository');
         return new ViewModel(array('buffers' => $repo->getByType('buffer')));
     }
 

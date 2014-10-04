@@ -7,6 +7,8 @@
 namespace Finance\Transaction;
 
 
+use Database\Transaction\Repository;
+
 interface TransactionRepositoryAwareInterface
 {
     /**
