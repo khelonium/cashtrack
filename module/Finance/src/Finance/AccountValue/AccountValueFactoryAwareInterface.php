@@ -6,8 +6,6 @@
 
 namespace Finance\AccountValue;
 
-use Database\AccountValue\AccountValueFactory;
-
 
 /**
  * Class AccountValueFactoryAwareInterface
@@ -17,8 +15,8 @@ use Database\AccountValue\AccountValueFactory;
 interface AccountValueFactoryAwareInterface
 {
     /**
-     * @param AccountValueFactory $factory
+     * @param AccountValueFactoryInterface $factory
      * @return null
      */
-    public function setAccountValueFactory(AccountValueFactory $factory);
+    public function setAccountValueFactory(AccountValueFactoryInterface $factory);
 }

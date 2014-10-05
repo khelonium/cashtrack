@@ -12,6 +12,7 @@ use Finance\Account\AccountFactory;
 use Finance\Account\AccountRepositoryAwareInterface;
 use Finance\Account\AccountRepositoryAwareTrait;
 use Finance\AccountValue\AccountValue;
+use Finance\AccountValue\AccountValueFactoryInterface;
 use Refactoring\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
@@ -23,7 +24,7 @@ use Zend\Db\Adapter\AdapterAwareTrait;
  */
 class AccountValueFactory implements
     AdapterAwareInterface,
-    AccountRepositoryAwareInterface
+    AccountRepositoryAwareInterface, AccountValueFactoryInterface
 {
     use AdapterAwareTrait;
     use AccountRepositoryAwareTrait;

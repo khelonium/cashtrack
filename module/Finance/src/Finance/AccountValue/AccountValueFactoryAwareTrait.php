@@ -8,23 +8,22 @@
 namespace Finance\AccountValue;
 
 
-use Database\AccountValue\AccountValueFactory;
 
 trait AccountValueFactoryAwareTrait
 {
 
     /**
-     * @var accountValueFactory
+     * @var AccountValueFactoryInterface
      */
     private $accountValueFactory = null;
 
-    public function setAccountValueFactory(AccountValueFactory $factory)
+    public function setAccountValueFactory(AccountValueFactoryInterface $factory)
     {
         $this->accountValueFactory =  $factory;
     }
 
     /**
-     * @return accountValueFactory
+     * @return AccountValueFactoryInterface
      * @throws \RuntimeException
      */
     protected function getAccountValueFactory()
