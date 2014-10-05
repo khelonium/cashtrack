@@ -3,7 +3,7 @@ namespace FinanceTest\Balance;
 
 use Codeception\Util\Stub;
 use Finance\Balance\AbstractBalance;
-use Finance\Balance\BalanceService;
+use Finance\Balance\Balancer;
 use Refactoring\Interval\SpecificMonth;
 use Zend\View\Exception\DomainException;
 
@@ -12,7 +12,7 @@ use Zend\View\Exception\DomainException;
  * @package FinanceTest\Balance
  * @group balance
  */
-class BalanceServiceTest extends \Codeception\TestCase\Test
+class BalancerTest extends \Codeception\TestCase\Test
 {
     /**
      * @var \CodeGuy
@@ -77,7 +77,7 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
             )
         );
 
-        $service = new BalanceService();
+        $service = new Balancer();
         $service->setTransactionRepository($this->getTransactionRepository());
         $service->setAccountValueFactory($this->getAccountValueFactory());
 
@@ -99,7 +99,7 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
 
         //fixme not really unit test, more like functional
         //todo move functional in functional test suite
-        /** @var \Finance\Balance\BalanceService $balance */
+        /** @var \Finance\Balance\Balancer $balance */
         $balance = \ApplicationTest\Bootstrap::getServiceManager()->get('\Finance\Balance\BalanceService');
         try {
             $balance->closeMonth(new SpecificMonth(new \DateTime('2013-10-01')));
@@ -114,7 +114,7 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
     public function testCanNotCloseMonthTwice()
     {
         $this->testCanCloseMonth();
-        /** @var \Finance\Balance\BalanceService $balance */
+        /** @var \Finance\Balance\Balancer $balance */
         $balance = \ApplicationTest\Bootstrap::getServiceManager()->get('\Finance\Balance\BalanceService');
 
         try {
@@ -131,7 +131,7 @@ class BalanceServiceTest extends \Codeception\TestCase\Test
     {
 
         //todo move functional in functional test suite
-        /** @var \Finance\Balance\BalanceService $balance */
+        /** @var \Finance\Balance\Balancer $balance */
         $balance = \ApplicationTest\Bootstrap::getServiceManager()->get('\Finance\Balance\BalanceService');
         try {
             $closed = $balance->closeMonth(new SpecificMonth(new \DateTime('2013-06-01')));

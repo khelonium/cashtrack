@@ -18,10 +18,11 @@ use Refactoring\Interval\SpecificMonth;
 
 /**
  * Class BalanceService
- * Computes transients balances for any interval
+ * Computes  balances for any interval
+ * Boundary between delivery and business
  * @package Finance\Balance
  */
-class BalanceService implements
+class Balancer implements
     AccountValueFactoryAwareInterface,
     TransactionRepositoryAwareInterface,
     BalanceRepositoryAwareInterface
@@ -97,9 +98,6 @@ class BalanceService implements
     }
 
     /**
-     * This is not in repository or factory because we don't know if we want an
-     * open balance or a closed balance.
-     * yet.
      * @param \Refactoring\Interval\SpecificMonth $month
      * @param SpecificMonth $month
      * @return \Finance\Balance\ClosedBalance|\Finance\Balance\OpenBalance

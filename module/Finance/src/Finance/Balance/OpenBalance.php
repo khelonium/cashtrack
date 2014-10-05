@@ -8,10 +8,8 @@ namespace Finance\Balance;
 
 
 
-use Database\AccountValue\AccountValueFactory;
-use Finance\AccountValue\AccountValueFactoryAwareTrait;
+use Finance\AccountValue\AccountValueFactoryInterface;
 use Refactoring\Interval\SpecificMonth;
-use Zend\Stdlib\ArrayObject;
 
 class OpenBalance extends AbstractBalance
 {
@@ -22,7 +20,7 @@ class OpenBalance extends AbstractBalance
     private $interval        = null;
 
     /**
-     * @var \Database\AccountValue\AccountValueFactory
+     * @var AccountValueFactoryInterface
      */
     private $accountFactory = null;
 
@@ -50,7 +48,7 @@ class OpenBalance extends AbstractBalance
      */
     public function accounts()
     {
-        if ($this->list === null ) {
+        if ($this->list === null) {
             $this->list = $this->accountFactory->forAllAccounts($this->interval);
         }
 

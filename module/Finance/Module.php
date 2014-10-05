@@ -43,7 +43,7 @@ class Module
             'factories' => array(
 
                 '\Finance\Balance\BalanceService' => function ($sm) {
-                    return new \Finance\Balance\BalanceService($sm->get('Zend\Db\Adapter\Adapter'));
+                    return new \Finance\Balance\Balancer($sm->get('Zend\Db\Adapter\Adapter'));
                 },
 
                 '\Finance\Account\AccountFactory' => function ($sm) {

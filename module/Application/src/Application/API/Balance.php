@@ -13,7 +13,7 @@ namespace Application\API;
 
 use Application\Library\Interval\ThisOrSpecificMonth;
 use Application\View\JsonBalance;
-use Finance\Balance\BalanceService;
+use Finance\Balance\Balancer;
 use Finance\Balance\SubsetBalance;
 use Finance\Transaction\Transaction;
 use Refactoring\Interval\ThisMonth;
@@ -84,7 +84,7 @@ class Balance extends AbstractRestfulController
     }
 
     /**
-     * @return BalanceService
+     * @return Balancer
      */
     private function getBalanceService()
     {
