@@ -67,8 +67,8 @@ foreach ($javascripts as $script) {
                 var loader = function(date){ var parts=date.split('-');load(parts[0] + '-' + parts[1])};
 
                 var config = {
-                    width:$(window).width(),
-                    height:600,
+                    width:(0.80 * $(window).width()),
+                    height:(0.75 * $(window).height()),
                     padding:40,
                     clusterPadding:40,
                     maxRadius:75,
@@ -129,10 +129,12 @@ foreach ($javascripts as $script) {
                     function margin(alpha){
                         return function (d,i) {
                             if ((d.x - d.radius) <0) {
-                                var increment = (d.x - d.radius)/ d.radius ;
+                                var increment = ( d.radius - d.x)/ d.radius ;
+                                d.x += increment;
+                            }
 
-                                d.x -= increment;
-
+                            if ((d.x + d.radius + (1.2*config.padding)) > config.width) {
+                                d.x -= 0.5;
                             }
 
                             if ((d.y - d.radius ) < 0) {
