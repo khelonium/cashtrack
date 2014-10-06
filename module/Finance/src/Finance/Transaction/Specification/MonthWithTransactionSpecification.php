@@ -23,7 +23,7 @@ class MonthWithTransactionSpecification extends AbstractSpecification implements
 
     /**
      *
-     * @param unknown_type $object
+     * @param mixed $object
      * @throws \InvalidArgumentException
      * @return bool
      */

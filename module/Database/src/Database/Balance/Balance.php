@@ -4,10 +4,10 @@
  * @author Cosmin Dordea <cosmin.dordea@refactoring.ro>
  */
 
-namespace Finance\Balance\History;
+namespace Database\Balance;
 
 use Refactoring\Db\Entity;
 
-class History extends Entity
+class Balance extends Entity
 {
 }

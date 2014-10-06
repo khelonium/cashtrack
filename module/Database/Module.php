@@ -8,13 +8,14 @@ use Finance\Account\Account;
 use Finance\Account\AccountFactoryAwareInterface;
 use Database\Account\AccountRepositoryAwareInterface;
 use Finance\AccountValue\AccountValueFactoryAwareInterface;
-use Finance\Balance\History\BalanceRepositoryAwareInterface;
-use Finance\Balance\History\History;
+use Database\Balance\BalanceRepositoryAwareInterface;
+use Database\Balance\Balance;
 use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Transaction\Transaction as TransactionEntity;
 
 
 use Finance\Transaction\TransactionRepositoryAwareInterface;
+use Refactoring\Repository\GenericRepository;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -73,7 +74,7 @@ class Module
                 'balanceRepository' => function ($service, $sm) {
 
                     if ($service instanceof BalanceRepositoryAwareInterface) {
-                            $service->setBalanceRepository($sm->get('\Finance\Balance\History\Repository'));
+                            $service->setBalanceRepository($sm->get('\Database\Balance\Repository'));
                     }
                 },
             ),
@@ -119,11 +120,15 @@ class Module
                     return new TableGateway('transaction', $dbAdapter, null, $resultSetPrototype);
                 },
 
-                '\Finance\Dao\BalanceGateway' => function ($sm) {
+                '\Database\Dao\BalanceGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new History());
+                    $resultSetPrototype->setArrayObjectPrototype(new Balance());
                     return new TableGateway('balance', $dbAdapter, null, $resultSetPrototype);
+                },
+
+                '\Database\Balance\Repository' => function ($sm) {
+                    return new GenericRepository($sm->get('\Database\Dao\BalanceGateway'));
                 },
 
             ),

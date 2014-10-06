@@ -49,9 +49,6 @@ class Module
                     return new AccountFactory();
                 },
 
-                '\Finance\Balance\History\Repository' => function ($sm) {
-                    return new GenericRepository($sm->get('\Finance\Dao\BalanceGateway'));
-                },
 
                 '\Reporter\CashFlow' => function ($sm) {
                     return new \Reporter\CashFlow();

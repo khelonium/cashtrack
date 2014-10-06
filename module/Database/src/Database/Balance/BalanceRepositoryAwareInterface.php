@@ -4,7 +4,7 @@
  * @author Cosmin Dordea <cosmin.dordea@refactoring.ro>
  */
 
-namespace Finance\Balance\History;
+namespace Database\Balance;
 
 use Refactoring\Repository\GenericRepository;
 

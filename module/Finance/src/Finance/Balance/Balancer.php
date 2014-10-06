@@ -5,9 +5,9 @@ namespace Finance\Balance;
 
 use Finance\AccountValue\AccountValueFactoryAwareInterface;
 use Finance\AccountValue\AccountValueFactoryAwareTrait;
-use Finance\Balance\History\BalanceRepositoryAwareInterface;
-use Finance\Balance\History\BalanceRepositoryAwareTrait;
-use Finance\Balance\History\History;
+use Database\Balance\BalanceRepositoryAwareInterface;
+use Database\Balance\BalanceRepositoryAwareTrait;
+use Database\Balance\Balance;
 use Finance\Balance\Specification\BalanceCanBeClosed;
 use Finance\Balance\Specification\ClosedMonth;
 use Finance\Transaction\Specification\MonthWithTransactionSpecification;
@@ -30,7 +30,7 @@ class Balancer implements
 
     use AccountValueFactoryAwareTrait;
     use TransactionRepositoryAwareTrait;
-    use BalanceRepositoryAwareTrait;
+    use \Database\Balance\BalanceRepositoryAwareTrait;
 
     /**
      *
@@ -65,8 +65,6 @@ class Balancer implements
             throw new \DomainException("Month ".$month->getStart()->format('Y-m-d')." already closed");
         }
 
-
-
         $buffers = new SubsetBalance($balance, 'buffer');
         $next    = clone $month->getEnd();
 
@@ -85,7 +83,7 @@ class Balancer implements
         }
 
 
-        $history = new History();
+        $history = new Balance();
         $history['month'] = $month->getStart()->format('Y-m-d');
         $history['balance'] = $balance->getBalance();
         $history['debit']   = $balance->getDebit();
