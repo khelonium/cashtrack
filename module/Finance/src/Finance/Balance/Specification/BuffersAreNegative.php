@@ -10,7 +10,7 @@ use Finance\Balance\AbstractBalance;
 use Finance\Balance\OpenBalance;
 use Refactoring\Specification\AbstractSpecification;
 
-class BalanceCanBeClosed extends AbstractSpecification
+class BuffersAreNegative extends AbstractSpecification
 {
     /**
      *
