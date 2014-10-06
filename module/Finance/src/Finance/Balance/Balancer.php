@@ -42,6 +42,7 @@ class Balancer implements
     public function closeMonth(SpecificMonth $month)
     {
 
+        $canBeClosed = new BuffersAreNegative();
         $monthHasTransaction = new MonthWithTransactionSpecification();
         $monthHasTransaction->setTransactionRepository($this->getTransactionRepository());
 
@@ -49,25 +50,22 @@ class Balancer implements
             throw new \DomainException("There are no transactions in this month ".$month->getStart()->format('Y-m-d'));
         }
 
-        $canBeClosed = new BuffersAreNegative();
-
         $balance = $this->getBalance($month);
 
         if (!$canBeClosed->isSatisfiedBy($balance)) {
             throw new \DomainException("This month can not be closed");
         }
 
-        $closedMonth = new ClosedMonth($this->getBalanceRepository());
-
-        if ($closedMonth->isSatisfiedBy($month)) {
+        if ($balance instanceof ClosedBalance) {
             throw new \DomainException("Month ".$month->getStart()->format('Y-m-d')." already closed");
         }
 
-        $this->logBalanceTransactions($month, $balance);
+        //start transaction
+            $this->logBalanceTransactions($month, $balance);
+            $this->logBalanceHistory($month, $balance);
+        //end transaction
 
-        $this->logBalanceHistory($month, $balance);
-
-        return $this->getBalance($month);
+        return $balance;
 
     }
 
@@ -78,13 +76,19 @@ class Balancer implements
      */
     public function getBalance(SpecificMonth $month)
     {
-        $isClosedMonth = new ClosedMonth($this->getBalanceRepository());
 
-        if ($isClosedMonth->isSatisfiedBy($month)) {
+        if ($this->isClosedMonth($month)) {
             return new ClosedBalance($month, $this->getAccountValueFactory());
-        } else {
-            return new OpenBalance($month, $this->getAccountValueFactory());
         }
+
+        return new OpenBalance($month, $this->getAccountValueFactory());
+
+    }
+
+    private function isClosedMonth($month)
+    {
+        $isClosedMonth = new ClosedMonth($this->getBalanceRepository());
+        return $isClosedMonth->isSatisfiedBy($month);
     }
 
     /**
