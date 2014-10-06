@@ -4,24 +4,15 @@ $javascripts = array(
     'js/cashapp.js',
     'js/cashapp/models.js',
     'js/cashapp/views.js',
-    'js/model/year.js',
+    'js/module/navigation/NavigationYear.js',
 );
 
 foreach ($javascripts as $script) {
     $this->headScript()->appendFile($this->basePath($script));
 }
-
-
 ?>
 
-<div class="row">
-    <ul class="pagination">
-        <li class="prev-year"><a href="#">&laquo;</a></li>
-        <li class="current-year"> <a>2014</a</li>
-        <li class="next-year"><a href="#">&raquo;</a></li>
-
-    </ul>
-</div>
+<?php include_once 'year_navigation.phtml'; ?>
 
 
 
@@ -89,6 +80,7 @@ foreach ($javascripts as $script) {
             </div>
         </div>
     </div>
+
     <div class="col-md-1">
 
         <div>

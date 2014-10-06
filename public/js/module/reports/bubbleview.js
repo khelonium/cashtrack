@@ -92,7 +92,7 @@ var ChartView = function(chart) {
 
 var ChartContainer = function (config) {
 
-    this.body = d3.select("body .container").insert("svg",":first-child")
+    this.body = d3.select("body .chart-container").insert("svg",":first-child")
         .attr("width", config.width)
         .attr("height", config.height);
 

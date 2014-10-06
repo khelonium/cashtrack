@@ -17,10 +17,6 @@ cashCode.Collections.CategoryList = Backbone.Collection.extend({
 });
 
 
-cashCode.Collections.NavigationYear = Backbone.Collection.extend();
-
-
-
 
 cashCode.Models.Transaction  = Backbone.Model.extend({
     urlRoot:"/api/transaction"
