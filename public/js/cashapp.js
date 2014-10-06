@@ -21,15 +21,14 @@ cashCode.CashRouter  =  Backbone.Router.extend({
         "": "index",
         "cashflow/:id"         : "cashflow" ,
         'addTransaction'       : 'showAddTransaction' ,
-        'transaction/:id/edit' : 'editTransaction',
-
+        'transaction/:id/edit' : 'editTransaction'
     },
     initialize: function(){
 
         this.categoryList     = new cashCode.Collections.CategoryList();
         this.transactions     = new cashCode.Collections.Transaction();
 
-        this.cashNavigation     = new cashCode.Views.NavigationYearView({el:$('.pagination')});
+        this.cashNavigation     = new Cash.Views.NavigationYearView({el:$('.pagination')});
         this.addTransactionForm = new cashCode.Forms.AddTransaction({model: this.emptyTransaction(), el:$('#addTransactionForm')});
 
         this.cashNavigation.render();

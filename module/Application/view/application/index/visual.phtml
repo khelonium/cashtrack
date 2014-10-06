@@ -3,7 +3,9 @@
 $javascripts = array(
     'js/vendor/d3.v3.min.js',
     'js/module/reports/leads.js',
-    'js/module/reports/bubbleview.js'
+    'js/module/reports/bubbleview.js',
+    'js/module/navigation/NavigationYear.js',
+
 );
 
 foreach ($javascripts as $script) {
@@ -51,192 +53,164 @@ foreach ($javascripts as $script) {
     }
 </style>
 
-    <div class="col-md-12">
-        <script>
+<div class="row">
+    <?php include_once 'year_navigation.phtml'; ?>
+</div>
 
-            var config = {
-                width:1200,
-                height:600,
-                padding:40,
-                clusterPadding:40,
-                maxRadius:75,
-                topMargin:60
-            };
-
-            var month = null;
-            load('2014-9');
+<div class="row">
+        <div class="col-md-12 chart-container">
+            <script>
 
 
-            var chart       = new ChartContainer(config);
-            var chartEngine = new ChartView(chart);
 
 
-            function update(nodes)
-            {
+                var loader = function(date){ var parts=date.split('-');load(parts[0] + '-' + parts[1])};
 
-                chartEngine.add(nodes);
+                var config = {
+                    width:(0.80 * $(window).width()),
+                    height:(0.75 * $(window).height()),
+                    padding:40,
+                    clusterPadding:40,
+                    maxRadius:75,
+                    topMargin:0
+                };
 
-                chart.force.nodes(nodes)
-                    .on("tick", tick)
-                    .start();
+                var month = null;
+                loader('2014-9');
 
-                function tick(e) {
 
-                    if(chartEngine.isUpdating) {
-                        return;
+                var chart       = new ChartContainer(config);
+                var chartEngine = new ChartView(chart);
+
+                (new Cash.Views.NavigationYearView({el:$('.pagination'), doOnClick:loader})).render();
+
+
+
+                function update(nodes)
+                {
+
+                    chartEngine.add(nodes);
+
+                    chart.force.nodes(nodes)
+                        .on("tick", tick)
+                        .start();
+
+                    function tick(e) {
+
+                        if(chartEngine.isUpdating) {
+                            return;
+                        }
+
+                        chartEngine.circle
+                            .each(cluster(.1 * e.alpha))
+                            .each(collide(.02))
+                            .each(margin(e.alpha))
+                            .attr("cx", function(d) { return d.x; })
+                            .attr("cy", function(d) { return d.y; });
+
+                        chartEngine.text.each(function(){})
+                            .attr("dx", function(d) { return d.x -10 ; })
+                            .attr("dy", function(d) { return d.y; });
                     }
 
-                    chartEngine.circle
-                        .each(cluster(.1 * e.alpha))
-                        .each(collide(.02))
-                        .each(margin(e.alpha))
-                        .attr("cx", function(d) { return d.x; })
-                        .attr("cy", function(d) { return d.y; });
 
-                    chartEngine.text.each(function(){})
-                        .attr("dx", function(d) { return d.x -10 ; })
-                        .attr("dy", function(d) { return d.y; });
-                }
+                    // Move d to be adjacent to the cluster node.
+                    function cluster(alpha) {
+                        var foci         = chartEngine.leads.getFoci();
 
-
-                // Move d to be adjacent to the cluster node.
-                function cluster(alpha) {
-                    var foci         = chartEngine.leads.getFoci();
-
-                    return function(o, i) {
-                        if(foci[o.cluster].multiple) {
-                            o.y += (foci[o.cluster].y - o.y) * alpha;
-                            o.x += (foci[o.cluster].x - o.x) * alpha;
-                        }
-                    };
-                }
-
-                function margin(alpha){
-                    return function (d,i) {
-                        if ((d.x - d.radius) <0) {
-                            var increment = (d.x - d.radius)/ d.radius ;
-
-                            d.x -= increment;
-
-                        }
-
-                        if ((d.y - d.radius  -60) < 0) {
-                            var increment = ((d.y - d.radius - 60)/ (d.radius +60))  ;
-
-                            d.y -= increment;
-
-                        }
-                    }
-                }
-                // Resolves collisions between d and all other circles.
-                function collide(alpha) {
-
-                    var quadtree = d3.geom.quadtree(nodes);
-
-                    return function(d) {
-
-                        var r = d.radius + config.maxRadius + Math.max(config.padding, config.clusterPadding),
-                            nx1 = d.x - r,
-                            nx2 = d.x + r,
-                            ny1 = d.y - r,
-                            ny2 = d.y + r;
-                        quadtree.visit(function(quad, x1, y1, x2, y2) {
-
-                            if (quad.point && (quad.point !== d)) {
-                                var x = d.x - quad.point.x,
-                                    y = d.y - quad.point.y,
-                                    l = Math.sqrt(x * x + y * y);
-                                    r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? config.padding : config.clusterPadding);
-                                if (l < r) {
-                                    l = (l - r) / l * alpha;
-                                    d.x -= x *= l;
-                                    d.y -= y *= l;
-                                    quad.point.x += x;
-                                    quad.point.y += y;
-                                }
+                        return function(o, i) {
+                            if(foci[o.cluster].multiple) {
+                                o.y += (foci[o.cluster].y - o.y) * alpha;
+                                o.x += (foci[o.cluster].x - o.x) * alpha;
                             }
-                            return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-                        });
-                    };
-                }
-
-            }
-
-
-            function load(date,category) {
-
-                var url = "/api/overview/" + date;
-
-                if (category) {
-                    url = url + '?expand=' + category;
-                }
-
-                d3.json(url , function(error,data){
-
-                    var nodes = data.nodes;
-
-
-                    console.log("loaded " +date);
-
-
-                    chart.header.selectAll(".month" ).style("fill", "darkgreen");
-                    chart.header.selectAll(".month-" + date).style("fill", "darkred");
-
-                    month = date;
-
-
-                    update(nodes);
-
-
-                });
-
-            }
-
-
-
-            d3.json("/api/month/2014" , function(error,data){
-
-                var boxWidth =80;
-                var boxHeight = 30;
-
-                function spacing(i){
-
-                    if (i <0) {
-                        return 0;
+                        };
                     }
 
-                    return boxWidth + 10 + spacing(i-1);
+                    function margin(alpha){
+                        return function (d,i) {
+                            if ((d.x - d.radius) <0) {
+                                var increment = ( d.radius - d.x)/ d.radius ;
+                                d.x += increment;
+                            }
+
+                            if ((d.x + d.radius + (1.2*config.padding)) > config.width) {
+                                d.x -= 0.5;
+                            }
+
+                            if ((d.y - d.radius ) < 0) {
+                                var increment = ((d.y - d.radius - config.padding)/ (d.radius +config.padding))  ;
+
+                                d.y -= increment;
+
+                            }
+                        }
+                    }
+                    // Resolves collisions between d and all other circles.
+                    function collide(alpha) {
+
+                        var quadtree = d3.geom.quadtree(nodes);
+
+                        return function(d) {
+
+                            var r = d.radius + config.maxRadius + Math.max(config.padding, config.clusterPadding),
+                                nx1 = d.x - r,
+                                nx2 = d.x + r,
+                                ny1 = d.y - r,
+                                ny2 = d.y + r;
+                            quadtree.visit(function(quad, x1, y1, x2, y2) {
+
+                                if (quad.point && (quad.point !== d)) {
+                                    var x = d.x - quad.point.x,
+                                        y = d.y - quad.point.y,
+                                        l = Math.sqrt(x * x + y * y);
+                                        r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? config.padding : config.clusterPadding);
+                                    if (l < r) {
+                                        l = (l - r) / l * alpha;
+                                        d.x -= x *= l;
+                                        d.y -= y *= l;
+                                        quad.point.x += x;
+                                        quad.point.y += y;
+                                    }
+                                }
+                                return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                            });
+                        };
+                    }
+
                 }
 
-                var x = function(d,i){  return spacing(i-1) + boxWidth;};
-                var tx = function(d,i) { return x(d,i) +15};
 
-                chart.header.selectAll('rect')
-                    .data(data).enter()
-                    .append('rect')
-                    .attr('width',boxWidth)
-                    .attr('height',boxHeight)
-                    .attr('fill','darkgreen')
-                    .attr('y',10)
-                    .attr("class", function(d) { return "month month-" + d.month; })
-                    .attr('x', x)
-                    .on("click", function(d) {
-                        load(d.month);
+                function load(date,category) {
+
+                    var url = "/api/overview/" + date;
+
+                    if (category) {
+                        url = url + '?expand=' + category;
+                    }
+
+                    d3.json(url , function(error,data){
+
+                        var nodes = data.nodes;
+
+
+                        console.log("loaded " +date);
+
+
+                        chart.header.selectAll(".month" ).style("fill", "darkgreen");
+                        chart.header.selectAll(".month-" + date).style("fill", "darkred");
+
+                        month = date;
+
+
+                        update(nodes);
+
 
                     });
 
-                chart.header.selectAll('text')
-                    .data(data).enter()
-                    .append('text')
-                    .attr("x", tx )
-                    .attr("y", boxHeight  )
-                    .text(function (d){return d.month})
-                    .on("click", function(d){
-                        load(d.month);
-                    });
-            });
+                }
 
 
-        </script>
+            </script>
 
+    </div>
 </div>

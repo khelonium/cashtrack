@@ -27,12 +27,12 @@ class Overview extends AbstractController
         $this->reporter = $reporter;
     }
 
-    public function get($id)
+    public function get($month)
     {
         $expand   = $this->params()->fromQuery('expand');
 
         return new JsonOverview(
-            $this->reporter->getOverview($id, $expand?explode(',', $expand):[])
+            $this->reporter->getOverview($month, $expand?explode(',', $expand):[])
         );
     }
 
