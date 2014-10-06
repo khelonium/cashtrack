@@ -74,7 +74,8 @@ class BalancerTest extends \Codeception\TestCase\Test
             )
         );
 
-        $service = new Balancer();
+
+        $service = new Balancer(Stub::make('\Database\Balance\Repository'));
         $service->setTransactionRepository($this->getTransactionRepository());
         $service->setAccountValueFactory($this->getAccountValueFactory());
 

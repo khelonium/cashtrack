@@ -3,6 +3,7 @@
 namespace Database;
 
 use Database\AccountValue\AccountValueFactory;
+use Database\Balance\Repository as BalanceRepository;
 use Database\Merchant\Repository as MerchantRepository;
 use Finance\Account\Account;
 use Finance\Account\AccountFactoryAwareInterface;
@@ -128,7 +129,7 @@ class Module
                 },
 
                 '\Database\Balance\Repository' => function ($sm) {
-                    return new GenericRepository($sm->get('\Database\Dao\BalanceGateway'));
+                    return new BalanceRepository($sm->get('\Database\Dao\BalanceGateway'));
                 },
 
             ),

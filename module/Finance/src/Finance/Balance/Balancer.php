@@ -6,8 +6,6 @@ namespace Finance\Balance;
 use Finance\AccountValue\AccountValueFactoryAwareInterface;
 use Finance\AccountValue\AccountValueFactoryAwareTrait;
 use Database\Balance\BalanceRepositoryAwareInterface;
-use Database\Balance\BalanceRepositoryAwareTrait;
-use Database\Balance\Balance;
 use Finance\Balance\Specification\BuffersAreNegative;
 use Finance\Balance\Specification\ClosedMonth;
 use Finance\Transaction\Specification\MonthWithTransactionSpecification;
@@ -24,13 +22,21 @@ use Refactoring\Interval\SpecificMonth;
  */
 class Balancer implements
     AccountValueFactoryAwareInterface,
-    TransactionRepositoryAwareInterface,
-    BalanceRepositoryAwareInterface
+    TransactionRepositoryAwareInterface
 {
 
     use AccountValueFactoryAwareTrait;
     use TransactionRepositoryAwareTrait;
-    use \Database\Balance\BalanceRepositoryAwareTrait;
+
+    /**
+     * @var BalancePersistenceInterface|null
+     */
+    private $balancePersistence = null;
+
+    public function __construct(BalancePersistenceInterface $balancePersistence)
+    {
+        $this->balancePersistence = $balancePersistence;
+    }
 
     /**
      *
@@ -61,8 +67,8 @@ class Balancer implements
         }
 
         //start transaction
-            $this->logBalanceTransactions($month, $balance);
-            $this->logBalanceHistory($month, $balance);
+        $this->logBalanceTransactions($balance);
+        $this->balancePersistence->recordBalanceResult($balance);
         //end transaction
 
         return $balance;
@@ -85,33 +91,21 @@ class Balancer implements
 
     }
 
+    /**
+     * @return bool
+     */
     private function isClosedMonth($month)
     {
-        $isClosedMonth = new ClosedMonth($this->getBalanceRepository());
-        return $isClosedMonth->isSatisfiedBy($month);
+        return $this->balancePersistence->monthIsRecorded($month->getStart());
     }
 
-    /**
-     * @param SpecificMonth $month
-     * @param $balance
-     */
-    private function logBalanceHistory(SpecificMonth $month, $balance)
-    {
-        $history = new Balance();
-        $history['month'] = $month->getStart()->format('Y-m-d');
-        $history['balance'] = $balance->getBalance();
-        $history['debit'] = $balance->getDebit();
-        $history['credit'] = $balance->getCredit();
-
-        $this->getBalanceRepository()->add($history);
-    }
 
     /**
-     * @param SpecificMonth $month
      * @param $balance
      */
-    private function logBalanceTransactions(SpecificMonth $month, $balance)
+    private function logBalanceTransactions($balance)
     {
+        $month = $balance->getMonth();
         $buffers = new SubsetBalance($balance, 'buffer');
         $next = clone $month->getEnd();
 
