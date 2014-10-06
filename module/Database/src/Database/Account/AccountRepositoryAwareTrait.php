@@ -5,7 +5,7 @@
  * Date: 12/1/13
  */
 
-namespace Finance\Account;
+namespace Database\Account;
 
 
 use Database\Account\AccountRepository;

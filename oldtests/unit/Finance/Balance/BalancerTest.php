@@ -39,9 +39,6 @@ class BalancerTest extends \Codeception\TestCase\Test
     public function testBalanceReturnedByCloseMonth()
     {
         $balance = \ApplicationTest\Bootstrap::getServiceManager()->get('\Finance\Balance\BalanceService');
-
-
-
         $closed = $balance->closeMonth(new SpecificMonth(new \DateTime('2013-06-01')));
 
         $this->codeGuy->cantSeeInDatabase(

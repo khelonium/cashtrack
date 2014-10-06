@@ -4,7 +4,9 @@
  * @author Cosmin Dordea <cosmin.dordea@refactoring.ro>
  */
 
-namespace Finance\Account;
+namespace Database\Account;
+
+use Finance\Account\Account;
 
 /**
  * Class Factory

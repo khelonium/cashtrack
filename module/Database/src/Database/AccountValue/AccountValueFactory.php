@@ -8,9 +8,9 @@
 namespace Database\AccountValue;
 
 
-use Finance\Account\AccountFactory;
-use Finance\Account\AccountRepositoryAwareInterface;
-use Finance\Account\AccountRepositoryAwareTrait;
+use Database\Account\AccountFactory;
+use Database\Account\AccountRepositoryAwareInterface;
+use Database\Account\AccountRepositoryAwareTrait;
 use Finance\AccountValue\AccountValue;
 use Finance\AccountValue\AccountValueFactoryInterface;
 use Refactoring\Interval\IntervalInterface;
@@ -27,7 +27,7 @@ class AccountValueFactory implements
     AccountRepositoryAwareInterface, AccountValueFactoryInterface
 {
     use AdapterAwareTrait;
-    use AccountRepositoryAwareTrait;
+    use \Database\Account\AccountRepositoryAwareTrait;
 
     /**
      * @var AccountFactory

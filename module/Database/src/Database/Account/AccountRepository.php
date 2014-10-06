@@ -12,7 +12,7 @@ use Finance\Account\Account;
 use Refactoring\Repository\AbstractRepository;
 
 
-class AccountRepository extends AbstractRepository
+class AccountRepository extends AbstractRepository implements AccountRepositoryInterface
 {
 
     public function addFromName($name)

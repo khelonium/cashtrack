@@ -6,7 +6,7 @@ use Database\AccountValue\AccountValueFactory;
 use Database\Merchant\Repository as MerchantRepository;
 use Finance\Account\Account;
 use Finance\Account\AccountFactoryAwareInterface;
-use Finance\Account\AccountRepositoryAwareInterface;
+use Database\Account\AccountRepositoryAwareInterface;
 use Finance\AccountValue\AccountValueFactoryAwareInterface;
 use Finance\Balance\History\BalanceRepositoryAwareInterface;
 use Finance\Balance\History\History;
