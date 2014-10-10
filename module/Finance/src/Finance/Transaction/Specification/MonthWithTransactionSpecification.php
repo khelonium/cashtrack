@@ -6,8 +6,8 @@
 
 namespace Finance\Transaction\Specification;
 
-use Finance\Transaction\TransactionRepositoryAwareInterface;
-use Finance\Transaction\TransactionRepositoryAwareTrait;
+use Finance\Traits\TransactionRepositoryAwareInterface;
+use Finance\Traits\TransactionRepositoryAwareTrait;
 use Refactoring\Interval\SpecificMonth;
 use Refactoring\Specification\AbstractSpecification;
 
@@ -19,7 +19,7 @@ use Refactoring\Specification\AbstractSpecification;
 class MonthWithTransactionSpecification extends AbstractSpecification implements TransactionRepositoryAwareInterface
 {
 
-    use TransactionRepositoryAwareTrait;
+    use \Finance\Traits\TransactionRepositoryAwareTrait;
 
     /**
      *

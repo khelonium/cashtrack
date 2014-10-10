@@ -12,10 +12,11 @@ namespace Database\Transaction;
 
 
 
+use Finance\Transaction\TransactionRepositoryInterface;
 use Refactoring\Interval\IntervalInterface;
 use Refactoring\Repository\AbstractRepository;
 
-class Repository extends AbstractRepository
+class Repository extends AbstractRepository implements TransactionRepositoryInterface
 {
 
 

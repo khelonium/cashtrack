@@ -4,9 +4,10 @@
  * @author Cosmin Dordea <cosmin.dordea@refactoring.ro>
  */
 
-namespace Finance\Transaction;
+namespace Finance\Traits;
 
-use Database\Transaction\Repository;
+use Finance\Transaction\Repository;
+use Finance\Transaction\TransactionRepositoryInterface;
 
 
 /**
@@ -18,11 +19,11 @@ trait TransactionRepositoryAwareTrait
 
 
     /**
-     * @var Repository
+     * @var TransactionRepositoryInterface
      */
     private $transactionRepository = null;
 
-    public function setTransactionRepository(Repository $repository)
+    public function setTransactionRepository(TransactionRepositoryInterface $repository)
     {
         $this->transactionRepository = $repository;
     }

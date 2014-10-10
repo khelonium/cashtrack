@@ -8,14 +8,14 @@ use Database\Merchant\Repository as MerchantRepository;
 use Finance\Account\Account;
 use Finance\Account\AccountFactoryAwareInterface;
 use Database\Account\AccountRepositoryAwareInterface;
-use Finance\AccountValue\AccountValueFactoryAwareInterface;
+use Finance\Traits\AccountValueFactoryAwareInterface;
 use Database\Balance\BalanceRepositoryAwareInterface;
 use Database\Balance\Balance;
 use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Transaction\Transaction as TransactionEntity;
 
 
-use Finance\Transaction\TransactionRepositoryAwareInterface;
+use Finance\Traits\TransactionRepositoryAwareInterface;
 use Refactoring\Repository\GenericRepository;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;

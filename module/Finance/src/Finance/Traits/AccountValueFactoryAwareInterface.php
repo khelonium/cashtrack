@@ -4,7 +4,9 @@
  * @author Cosmin Dordea <cosmin.dordea@refactoring.ro>
  */
 
-namespace Finance\AccountValue;
+namespace Finance\Traits;
+
+use Finance\AccountValue\AccountValueFactoryInterface;
 
 
 /**

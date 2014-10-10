@@ -5,9 +5,11 @@
  * Date: 12/1/13
  */
 
-namespace Finance\AccountValue;
+namespace Finance\Traits;
 
 
+
+use Finance\AccountValue\AccountValueFactoryInterface;
 
 trait AccountValueFactoryAwareTrait
 {

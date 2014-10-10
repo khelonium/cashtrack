@@ -3,15 +3,15 @@
 
 namespace Finance\Balance;
 
-use Finance\AccountValue\AccountValueFactoryAwareInterface;
-use Finance\AccountValue\AccountValueFactoryAwareTrait;
+use Finance\Traits\AccountValueFactoryAwareInterface;
+use Finance\Traits\AccountValueFactoryAwareTrait;
 use Database\Balance\BalanceRepositoryAwareInterface;
 use Finance\Balance\Specification\BuffersAreNegative;
 use Finance\Balance\Specification\ClosedMonth;
 use Finance\Transaction\Specification\MonthWithTransactionSpecification;
 use Finance\Transaction\Transaction;
-use Finance\Transaction\TransactionRepositoryAwareInterface;
-use Finance\Transaction\TransactionRepositoryAwareTrait;
+use Finance\Traits\TransactionRepositoryAwareInterface;
+use Finance\Traits\TransactionRepositoryAwareTrait;
 use Refactoring\Interval\SpecificMonth;
 
 /**
@@ -25,8 +25,8 @@ class Balancer implements
     TransactionRepositoryAwareInterface
 {
 
-    use AccountValueFactoryAwareTrait;
-    use TransactionRepositoryAwareTrait;
+    use \Finance\Traits\AccountValueFactoryAwareTrait;
+    use \Finance\Traits\TransactionRepositoryAwareTrait;
 
     /**
      * @var BalancePersistenceInterface|null
