@@ -26,15 +26,14 @@ class CashFlow extends AbstractRestfulController
     public function getList()
     {
         $month =  $this->params()->fromQuery('month' , null );
-        $list = $this->getJson($month);
+        $list = $this->generateCashflow($month);
 
         return new JsonModel($list);
     }
 
 
-    private function getJson($month)
+    private function generateCashflow($month)
     {
-
 
 
         if ($month == null) {
@@ -43,6 +42,7 @@ class CashFlow extends AbstractRestfulController
             $interval = new SpecificMonth(new \DateTime($month));
         }
 
+        /** @var \Reporter\CashFlow $cashflow */
         $cashflow = $this->getServiceLocator()->get('Reporter\CashFlow');
 
         return $cashflow->forInterval($interval);
