@@ -134,5 +134,13 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         }
     }
 
+    /**
+     * @Then /^I show last response$/
+     */
+    public function iShowLastResponse()
+    {
+        $this->printLastResponse();
+    }
+
 
 }
