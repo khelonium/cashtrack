@@ -33,6 +33,7 @@ Feature: cashtrack has rest api
     And I should see a json response
 
 
+    @cashflow
     Scenario: CashFlow returns correct test data
       When I am on "/api/cashflow?month=2013-10-01"
       Then I should also see these cash entries:

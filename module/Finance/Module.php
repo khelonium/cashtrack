@@ -5,6 +5,7 @@ namespace Finance;
 use Database\Account\AccountFactory;
 
 
+use Finance\CashFlow\CashFlow;
 use Refactoring\Repository\GenericRepository;
 
 class Module
@@ -51,7 +52,7 @@ class Module
 
 
                 '\Reporter\CashFlow' => function ($sm) {
-                    return new \Reporter\CashFlow();
+                    return new CashFlow();
                 },
 
                 '\Reporter\Overview' => function () {

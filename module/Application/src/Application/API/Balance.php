@@ -32,6 +32,7 @@ class Balance extends AbstractRestfulController
      */
     public function get($id)
     {
+
         return new JsonBalance($this->getBalanceService()->getBalance(new SpecificMonth(new \DateTime($id))));
     }
 
