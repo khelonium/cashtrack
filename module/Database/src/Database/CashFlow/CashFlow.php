@@ -9,8 +9,8 @@
 
 namespace Database\CashFlow;
 
-use Finance\CashFlow\CashEntry;
-use Finance\CashFlow\CashFlowInterface;
+use Finance\Cashflow\CashEntry;
+use Finance\Cashflow\CashFlowInterface;
 use Refactoring\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
