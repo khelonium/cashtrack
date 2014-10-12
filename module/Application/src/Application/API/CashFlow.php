@@ -42,7 +42,7 @@ class CashFlow extends AbstractRestfulController
             $interval = new SpecificMonth(new \DateTime($month));
         }
 
-        /** @var \Reporter\CashFlow $cashflow */
+        /** @var \Finance\CashFlow\CashFlow $cashflow */
         $cashflow = $this->getServiceLocator()->get('Reporter\CashFlow');
 
         return $cashflow->forInterval($interval);

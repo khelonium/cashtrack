@@ -7,12 +7,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace  Reporter;
+namespace Finance\CashFlow;
 
 use Refactoring\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 class CashFlow  implements  AdapterAwareInterface
 {
@@ -22,32 +21,10 @@ class CashFlow  implements  AdapterAwareInterface
     public function forInterval(IntervalInterface $interval)
     {
 
-
-        $start_day = $interval->getStart()->format('Y-m-d');
-        $end_day   = $interval->getEnd()->format('Y-m-d');
-
-        $sql = "SELECT account.name,account.id as accountId, round(SUM( amount ),2) as amount, account.type,
-            '$start_day' as 'month'
-            FROM  `transaction` t
-            LEFT JOIN account ON account.id = t.to_account
-            WHERE t.transaction_date >=  '$start_day'
-            AND t.transaction_date <=  '$end_day'
-            GROUP BY account.name";
-
-
-        $income_sql = "
-            SELECT
-              account.name,account.id as accountId, round(SUM( amount ),2) as amount, account.type,
-              '$start_day' as 'month'
-            FROM  `transaction` t
-            LEFT JOIN account ON account.id = t.from_account
-            WHERE t.transaction_date >=  '$start_day'
-            AND t.transaction_date <=  '$end_day'
-            AND account.type='income'
-            GROUP BY account.name";
-        return array_merge($this->fetchSql($sql), $this->fetchSql($income_sql));
-
-        return $this->fetchSql($sql);
+        return array_merge(
+            $this->getExpenses($interval),
+            $this->getIncomes($interval)
+        );
 
     }
 
@@ -60,10 +37,67 @@ class CashFlow  implements  AdapterAwareInterface
 
         $out = array();
 
+        $proto = new CashEntry();
+
         foreach($results as $result) {
-            $out[] = $result;
+            $entry = clone $proto;
+
+            $entry->name = $result['name'];
+            $entry->accountId = $result['accountId'];
+            $entry->amount    = $result['amount'];
+            $entry->type      = $result['type'];
+            $entry->month     = $result['month'];
+
+            $out[] = $entry;
         }
         return $out;
 
+    }
+
+    /**
+     * @param $start_day
+     * @param $end_day
+     * @return string
+     */
+    private function getExpenses(IntervalInterface $interval)
+    {
+
+        $start_day = $interval->getStart()->format('Y-m-d');
+        $end_day   = $interval->getEnd()->format('Y-m-d');
+
+        $sql = "SELECT account.name,account.id as accountId, round(SUM( amount ),2) as amount, account.type,
+            '$start_day' as 'month'
+            FROM  `transaction` t
+            LEFT JOIN account ON account.id = t.to_account
+            WHERE t.transaction_date >=  '$start_day'
+            AND t.transaction_date <=  '$end_day'
+            GROUP BY account.name";
+
+        return $this->fetchSql($sql);
+    }
+
+    /**
+     * @param $start_day
+     * @param $end_day
+     * @return string
+     */
+    private function getIncomes(IntervalInterface $interval)
+    {
+
+        $start_day = $interval->getStart()->format('Y-m-d');
+        $end_day   = $interval->getEnd()->format('Y-m-d');
+
+        $income_sql = "
+            SELECT
+              account.name,account.id as accountId, round(SUM( amount ),2) as amount, account.type,
+              '$start_day' as 'month'
+            FROM  `transaction` t
+            LEFT JOIN account ON account.id = t.from_account
+            WHERE t.transaction_date >=  '$start_day'
+            AND t.transaction_date <=  '$end_day'
+            AND account.type='income'
+            GROUP BY account.name";
+
+        return $this->fetchSql($income_sql);
     }
 }
