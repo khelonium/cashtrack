@@ -20,16 +20,9 @@ before_script:
   - mysql -e 'create database yourcashflowtest;'
   - mysql -u root -e  'show databases;'
   - mysql -u root yourcashflowtest < ./oldtests/_data/dump.sql
-  - cp -f build/codeception.yml .
-  - cp -f build/acceptance.suite.yml ./oldtests/
-  - cp -f build/api.suite.yml ./oldtests/
   - cp -f build/global.php ./config/autoload/global.php
   - cp -f build/test.php ./config/autoload/test.php
   - cp -f build/local.php ./config/autoload/local.php
-  - cat build/codeception.yml
   - composer install
-#  - mkdir ./oldtests/_log
-  - sudo chmod a+w ./oldtests/_log
-  - ./vendor/bin/codecept build
 
-script: ./vendor/bin/codecept run
+script: ./tests.sh

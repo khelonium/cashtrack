@@ -1,9 +1,0 @@
-class_name: ApiGuy
-
-modules:
-    enabled: [PhpBrowser, REST, ApiHelper]
-    config:
-      PhpBrowser:
-          url: http://cashtrack.dev/
-      REST:
-          url: http://cashtrack.dev/api/
