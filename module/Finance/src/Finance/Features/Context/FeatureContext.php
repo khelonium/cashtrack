@@ -10,7 +10,7 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
-use Finance\CashFlow\CashFlow;
+use Database\CashFlow\CashFlow;
 use Finance\Features\Double\TransactionRepository;
 use Finance\Transaction\Transaction;
 use Finance\Transaction\TransactionRepositoryInterface;

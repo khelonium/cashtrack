@@ -7,13 +7,15 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace Finance\CashFlow;
+namespace Database\CashFlow;
 
+use Finance\CashFlow\CashEntry;
+use Finance\CashFlow\CashFlowInterface;
 use Refactoring\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
 
-class CashFlow  implements  AdapterAwareInterface
+class CashFlow  implements  AdapterAwareInterface, CashFlowInterface
 {
 
     use AdapterAwareTrait;
@@ -39,7 +41,7 @@ class CashFlow  implements  AdapterAwareInterface
 
         $proto = new CashEntry();
 
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $entry = clone $proto;
 
             $entry->name = $result['name'];

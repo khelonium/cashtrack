@@ -11,6 +11,7 @@ Feature: cashtrack has rest api
 
   Scenario: Cashflow API Does not have errors
     When I am on "/api/cashflow"
+    Then I show last response
     Then the response status code should be 200
     And I should see a json response
 
