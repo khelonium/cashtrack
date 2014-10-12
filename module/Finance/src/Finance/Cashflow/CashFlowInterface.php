@@ -5,7 +5,7 @@
  * Date: 12/10/14
  * Time: 20:30
  */
-namespace Finance\CashFlow;
+namespace Finance\Cashflow;
 
 use Refactoring\Interval\IntervalInterface;
 

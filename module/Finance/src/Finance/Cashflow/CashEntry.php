@@ -6,7 +6,7 @@
  * Time: 02:10
  */
 
-namespace Finance\CashFlow;
+namespace Finance\Cashflow;
 
 
 class CashEntry
