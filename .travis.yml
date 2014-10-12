@@ -19,7 +19,7 @@ before_script:
   - sudo service apache2 restart
   - mysql -e 'create database yourcashflowtest;'
   - mysql -u root -e  'show databases;'
-  - mysql -u root yourcashflowtest < ./oldtests/_data/dump.sql
+  - mysql -u root yourcashflowtest < ./data/sql/dump.sql
   - cp -f build/global.php ./config/autoload/global.php
   - cp -f build/test.php ./config/autoload/test.php
   - cp -f build/local.php ./config/autoload/local.php
