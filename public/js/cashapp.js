@@ -49,6 +49,9 @@ cashCode.CashRouter  =  Backbone.Router.extend({
         $('#accountView').bind('click', $.proxy(function(e) {e.preventDefault(); $('.panel-title').html('Category View'); this.raise('view_mode','category');}, this));
         $('#transactionView').bind('click', $.proxy(function(e) {e.preventDefault();$('.panel-title').html('Transaction View'); this.raise('view_mode','transaction');}, this));
 
+        $('#addTransactionLink').bind('click', $.proxy(function(e) {
+            e.preventDefault(); this.showAddTransaction()}, this));
+
 
         this.cashView.render();
 
@@ -84,7 +87,9 @@ cashCode.CashRouter  =  Backbone.Router.extend({
 
     showAddTransaction : function() {
 
+        console.log("Adding transaction ");
         if (this.addTransactionForm.model.get('id')) {
+            console.log(" Empty transaction ");
             this.addTransactionForm.switchModel(this.emptyTransaction());
         }
 
