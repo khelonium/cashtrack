@@ -25,6 +25,16 @@ foreach ($javascripts as $script) {
         fill: brown;
     }
 
+    .excessive {
+        fill:darkred;
+    }
+
+    .excelent  {
+        fill:darkgreen;
+    }
+    .over {
+        fill:rgb(255, 187, 120);
+    }
     .axis {
         font: 10px sans-serif;
     }
@@ -82,10 +92,6 @@ foreach ($javascripts as $script) {
 
                    d3.json(url , function(error,data){
 
-                       console.log(data);
-console.log(d3.max(data, function(d) { return d.amount; }));
-
-
                        x.domain(data.map(function(d) { return d.unit_nr; }));
                        y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
 
@@ -107,7 +113,7 @@ console.log(d3.max(data, function(d) { return d.amount; }));
                     svg.selectAll(".bar")
                         .data(data)
                         .enter().append("rect")
-                        .attr("class", "bar")
+                        .attr("class", function (d) {  if (d.amount<10000) return 'bar excelent';if (d.amount > 20000) return "bar excessive"; if (d.amount > 14000) return "bar over";return "bar";})
                         .attr("x", function(d) { return x(d.unit_nr); })
                         .attr("width", x.rangeBand())
                         .attr("y", function(d) { return y(d.amount); })
