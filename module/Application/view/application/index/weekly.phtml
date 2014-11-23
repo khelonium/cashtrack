@@ -58,7 +58,6 @@ foreach ($javascripts as $script) {
                 var x = d3.scale.ordinal()
                     .rangeRoundBands([0, width], .1);
 
-                x.domain([1,2]);
 
                 var y = d3.scale.linear()
                     .range([height, 0]);
@@ -84,10 +83,11 @@ foreach ($javascripts as $script) {
                    d3.json(url , function(error,data){
 
                        console.log(data);
+console.log(d3.max(data, function(d) { return d.amount; }));
 
-                       console.log(x);
+
                        x.domain(data.map(function(d) { return d.unit_nr; }));
-                       y.domain([0, d3.max(data, function(d) { return d.amount; })]);
+                       y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
 
                     svg.append("g")
                         .attr("class", "x axis")
@@ -116,10 +116,6 @@ foreach ($javascripts as $script) {
                 });
 
 
-                function type(d) {
-                    d.frequency = +d.frequency;
-                    return d;
-                };
 
                 (new Cash.Views.NavigationYearView({el:$('.pagination'), doOnClick:loader})).render();
 

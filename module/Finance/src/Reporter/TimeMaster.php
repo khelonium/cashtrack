@@ -22,7 +22,9 @@ class TimeMaster implements TimeReporterInterface, AdapterAwareInterface
         $results = $adapter->query(
             "
             SELECT week(transaction_date,1) as unit_nr,sum(amount) as amount from transaction
+            left join account on account.id = transaction.to_account
             where transaction_date like '%$year%'
+            and account.type = 'expense'
             group by unit_nr
             ;
         ",
@@ -41,7 +43,9 @@ class TimeMaster implements TimeReporterInterface, AdapterAwareInterface
         $results = $adapter->query(
             "
             SELECT month(transaction_date) as unit_nr,sum(amount) as amount from transaction
+            left join account on account.id = transaction.to_account
             where transaction_date like '%$year%'
+            and account.type = 'expense'
             group by unit_nr
             ;
         ",
