@@ -41,18 +41,6 @@ class Module
 
     public function getControllerConfig()
     {
-        return array(
-            'factories' => array(
-                'Application\API\Overview' => function ($sm) {
-                    $locator    = $sm->getServiceLocator();
-                    return new Overview($locator->get('Reporter\Overview'));
-                },
-
-                'Application\API\Merchant' => function ($sm) {
-                    $locator    = $sm->getServiceLocator();
-                    return new Merchant($locator->get('\Database\Merchant\Repository'));
-                },
-            ),
-        );
+        return include __DIR__ . '/config/controller.factories.php';
     }
 }

@@ -6,7 +6,7 @@ return array(
         'Application',
         'Database',
         'Import',
-        'Finance',
+        'Finance'
 
     ),
 

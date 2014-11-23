@@ -53,6 +53,10 @@ class Module
                     return new \Reporter\Overview();
                 },
 
+
+                '\Reporter\TimeMaster' => function () {
+                    return new \Reporter\TimeMaster();
+                },
             ),
         );
     }

@@ -34,4 +34,14 @@ class IndexController extends AbstractActionController
     {
 
     }
+
+    public function weeklyAction()
+    {
+
+    }
+
+    public function monthlyAction()
+    {
+
+    }
 }

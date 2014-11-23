@@ -8,152 +8,7 @@
  */
 
 return array(
-    'router' => array(
-        'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-
-            'visual' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/visual',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'visual',
-                    ),
-                ),
-            ),
-            'merchants' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/merchants',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'merchant',
-                    ),
-                ),
-            ),
-
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
-            'application' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/application',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-
-            'account-rest' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/api/account[/:id]',
-                    'constraints' => array(
-                        'id'     => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Application\API\Account',
-                    ),
-                ),
-            ),
-
-            'overview-rest' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/api/overview[/:id]',
-                    'constraints' => array(
-                        'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
-                    ),
-
-                    'defaults' => array(
-                        'controller' => 'Application\API\Overview',
-                    ),
-                ),
-            ),
-
-
-            'merchant-rest' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/api/merchant[/:id]',
-                    'constraints' => array(
-                        'id'     => '[0-9]+?',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Application\API\Merchant',
-                    ),
-                ),
-            ),
-
-
-
-            'transaction-rest' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/api/transaction[/:id]',
-                    'constraints' => array(
-                        'id'     => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Application\API\Transaction',
-                    ),
-                ),
-            ),
-            'balance-rest' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/api/balance[/:id]',
-                    'constraints' => array(
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Application\API\Balance',
-                    ),
-                ),
-            ),
-
-            'cashflow-rest' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/api/cashflow[/:id]',
-                    'constraints' => array(
-                        'id'     => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Application\API\CashFlow',
-                    ),
-                ),
-            ),
-        ),
-    ),
+    'router' => include 'routes.config.php',
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -225,6 +80,15 @@ return array(
          array(
              'label' => 'Reports',
              'route' => 'visual',
+         ),
+         array(
+             'label' => 'Weekly',
+             'route' => 'weekly',
+         ),
+
+         array(
+             'label' => 'Monthly',
+             'route' => 'monthly',
          ),
 
      ),
