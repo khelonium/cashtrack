@@ -27,6 +27,7 @@ vagrantfile-local:
                     - '--parser future'
         synced_folder:
             ZhxsI7a2wqct:
+                id: vagrant_root
                 source: ./
                 target: /var/www
                 nfs: 'false'

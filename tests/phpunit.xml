@@ -2,8 +2,11 @@
 
 <phpunit bootstrap="bootstrap.php">
 <testsuites>
-<testsuite name="cashtrack">
-<directory>./</directory>
-</testsuite>
+    <testsuite name="Application">
+        <directory>./../module/Application/tests/</directory>
+    </testsuite>
+    <testsuite name="Finance">
+        <directory>./../module/Finance/tests/</directory>
+    </testsuite>
 </testsuites>
 </phpunit>

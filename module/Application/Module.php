@@ -9,8 +9,6 @@
 
 namespace Application;
 
-use Application\API\Merchant;
-use Application\API\Overview;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 

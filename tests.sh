@@ -1,3 +1,6 @@
 #!/bin/bash
-cd tests/system
+./build/setup/setup_test_db.sh
+cd tests
+../vendor/bin/phpunit
+cd system
 ./run.sh

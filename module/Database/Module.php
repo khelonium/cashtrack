@@ -94,6 +94,7 @@ class Module
                     return new \Database\Transaction\Repository();
                 },
 
+
                 '\Database\Merchant\Repository' => function ($sm) {
                     return new MerchantRepository();
                 },

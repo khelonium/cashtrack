@@ -5,7 +5,7 @@
  * Date: 12/10/14
  * Time: 20:30
  */
-namespace Finance\Cashflow;
+namespace Finance\Reporter;
 
 use Refactoring\Interval\IntervalInterface;
 
@@ -16,4 +16,16 @@ interface CashFlowInterface
      * @return array of CashEntry
      */
     public function forInterval(IntervalInterface $interval);
+
+    /**
+     * @param IntervalInterface $interval
+     * @return string
+     */
+    public function getExpenses(IntervalInterface $interval);
+
+    /**
+     * @param IntervalInterface $interval
+     * @return string
+     */
+    public function getIncomes(IntervalInterface $interval);
 }

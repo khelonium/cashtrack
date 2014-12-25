@@ -10,12 +10,12 @@
 namespace Database\CashFlow;
 
 use Finance\Cashflow\CashEntry;
-use Finance\Cashflow\CashFlowInterface;
+use Finance\Reporter\CashFlowInterface;
 use Refactoring\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
 
-class CashFlow  implements  AdapterAwareInterface, CashFlowInterface
+class CashFlow  implements  AdapterAwareInterface,CashFlowInterface
 {
 
     use AdapterAwareTrait;
@@ -61,11 +61,11 @@ class CashFlow  implements  AdapterAwareInterface, CashFlowInterface
      * @param $end_day
      * @return string
      */
-    private function getExpenses(IntervalInterface $interval)
+    public function getExpenses(IntervalInterface $interval)
     {
 
         $start_day = $interval->getStart()->format('Y-m-d');
-        $end_day   = $interval->getEnd()->format('Y-m-d');
+        $end_day = $interval->getEnd()->format('Y-m-d');
 
         $sql = "SELECT account.name,account.id as accountId, round(SUM( amount ),2) as amount, account.type,
             '$start_day' as 'month'
@@ -73,6 +73,8 @@ class CashFlow  implements  AdapterAwareInterface, CashFlowInterface
             LEFT JOIN account ON account.id = t.to_account
             WHERE t.transaction_date >=  '$start_day'
             AND t.transaction_date <=  '$end_day'
+            AND account.type='expense'
+
             GROUP BY account.name";
 
         return $this->fetchSql($sql);
@@ -83,11 +85,11 @@ class CashFlow  implements  AdapterAwareInterface, CashFlowInterface
      * @param $end_day
      * @return string
      */
-    private function getIncomes(IntervalInterface $interval)
+    public function getIncomes(IntervalInterface $interval)
     {
 
         $start_day = $interval->getStart()->format('Y-m-d');
-        $end_day   = $interval->getEnd()->format('Y-m-d');
+        $end_day = $interval->getEnd()->format('Y-m-d');
 
         $income_sql = "
             SELECT
