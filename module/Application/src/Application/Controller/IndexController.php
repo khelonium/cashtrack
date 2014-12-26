@@ -35,6 +35,17 @@ class IndexController extends AbstractActionController
 
     }
 
+    public function weekAction()
+    {
+
+        return new ViewModel(['week' => $this->params('week')]);
+    }
+
+    public function monthAction()
+    {
+        return new ViewModel(['month' => $this->params('month')]);
+    }
+
     public function weeklyAction()
     {
 

@@ -3,7 +3,7 @@
 namespace Finance;
 
 use Database\Account\AccountFactory;
-
+use Finance\Reporter\Breakdown;
 
 
 class Module
@@ -56,6 +56,10 @@ class Module
 
                 '\Reporter\TimeMaster' => function () {
                     return new \Reporter\TimeMaster();
+                },
+
+                '\Finance\Reporter\Breakdown' => function ($sm) {
+                    return new Breakdown($sm->get('\Reporter\Cashflow'));
                 },
             ),
         );

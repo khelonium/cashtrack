@@ -26,10 +26,38 @@ return  [
         'weekly' => [
             'type' => 'Zend\Mvc\Router\Http\Literal',
             'options' => [
-                'route'    => '/weekly',
+                'route'    => '/report/weekly',
                 'defaults' => [
                     'controller' => 'Application\Controller\Index',
                     'action'     => 'weekly',
+                ],
+            ],
+        ],
+
+        'week-report' => [
+            'type'    => 'segment',
+            'options' => [
+                'route'    => '/report/week[/:week]',
+                'constraints' => [
+                    'week'     => '[0-9]+',
+                ],
+                'defaults' => [
+                    'controller' => 'Application\Controller\Index',
+                    'action'    => 'week'
+                ],
+            ],
+        ],
+
+        'month-report' => [
+            'type'    => 'segment',
+            'options' => [
+                'route'    => '/report/month[/:month]',
+                'constraints' => [
+                    'month'     => '[0-9]+',
+                ],
+                'defaults' => [
+                    'controller' => 'Application\Controller\Index',
+                    'action'    => 'month'
                 ],
             ],
         ],
@@ -123,6 +151,20 @@ return  [
             ],
         ],
 
+        'breakdown-rest' => [
+            'type'    => 'segment',
+            'options' => [
+                'route'    => '/api/breakdown/:type/:year/:id',
+                'constraints' => [
+                    'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
+                    'type'   => 'month|week'
+                ],
+
+                'defaults' => [
+                    'controller' => 'Application\API\Breakdown',
+                ],
+            ],
+        ],
 
         'merchant-rest' => [
             'type'    => 'segment',

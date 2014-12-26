@@ -12,6 +12,7 @@ namespace Database\Transaction;
 
 
 
+use Finance\Transaction\Transaction;
 use Finance\Transaction\TransactionRepositoryInterface;
 use Refactoring\Interval\IntervalInterface;
 use Refactoring\Repository\AbstractRepository;
@@ -67,5 +68,18 @@ class Repository extends AbstractRepository implements TransactionRepositoryInte
     private function getSelect()
     {
         return $this->gateway()->getSql()->select();
+    }
+
+    /**
+     * Convenience for tests
+     * @param $data
+     * @return Transaction
+     */
+    public function fastAdd($data)
+    {
+        $transaction = new Transaction();
+        $transaction->exchangeArray($data);
+        $this->add($transaction);
+        return $transaction;
     }
 }

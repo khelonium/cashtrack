@@ -15,5 +15,12 @@ return [
             $locator    = $sm->getServiceLocator();
             return new \Application\API\TimeView($locator->get('\Reporter\TimeMaster'));
         },
+
+        'Application\API\Breakdown' => function ($sm) {
+            $locator    = $sm->getServiceLocator();
+
+            $breakdown = new \Application\API\Breakdown($locator->get('\Finance\Reporter\Breakdown'));
+            return $breakdown;
+        },
     ),
 ];

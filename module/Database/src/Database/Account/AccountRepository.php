@@ -94,4 +94,16 @@ class AccountRepository extends AbstractRepository implements AccountRepositoryI
         return $this->accountTable;
     }
 
+    /**
+     * Can add directly an array
+     * @param $input
+     * @return Account
+     */
+    public function quickAdd($input)
+    {
+        $account = new Account($input);
+        $this->add($account);
+        return $account;
+    }
+
 }
