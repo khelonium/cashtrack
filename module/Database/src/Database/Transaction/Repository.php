@@ -39,10 +39,15 @@ class Repository extends AbstractRepository implements TransactionRepositoryInte
     }
 
 
+    public function delete(Transaction $transaction)
+    {
+        $this->gateway()->delete(['id' => $transaction->id]);
+    }
+
     /**
      * @param IntervalInterface $interval
-     * @param null $account
      * @return array
+     * @internal param null $account
      * @todo REFACTOR WITH specification
      */
     public function forInterval(IntervalInterface $interval)
@@ -61,6 +66,7 @@ class Repository extends AbstractRepository implements TransactionRepositoryInte
         }
         return $out;
     }
+
 
     /**
      * @return \Zend\Db\Sql\Select

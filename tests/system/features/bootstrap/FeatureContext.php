@@ -13,10 +13,13 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
     /**
      * @beforeScenario
      */
-    public static function beforeSuite()
+    public  function beforeScenario()
     {
-         `/vagrant/build/setup/setup_test_db.sh`;
+        foreach($this->getTransactionRepo()->all() as $transaction) {
+            $this->getTransactionRepo()->delete($transaction);
+        }
     }
+
     /**
      * @Given /^I should see a json response$/
      */
@@ -47,9 +50,8 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
      */
     public function thereAreSomeTransactionsInAWeek()
     {
+        $transaction = $this->getTransactionRepo();
 
-        /** @var \Database\Transaction\Repository $transaction */
-        $transaction = TestBootstrap::get('\Database\Transaction\Repository');
         $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-01-01']);
         $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 50,  'to_account'  => 87, 'date' => '2014-01-01']);
         $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-01-01']);
@@ -117,6 +119,16 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
                 throw new \Exception("{$unit->name} not as expected:{$expected[$unit->name]}: {$unit->amount}");
             }
         }    }
+
+    /**
+     * @return \Database\Transaction\Repository
+     */
+    protected function getTransactionRepo()
+    {
+        /** @var \Database\Transaction\Repository $transaction */
+        $transaction = TestBootstrap::get('\Database\Transaction\Repository');
+        return $transaction;
+    }
 
 
 }
