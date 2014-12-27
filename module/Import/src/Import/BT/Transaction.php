@@ -80,7 +80,7 @@ class Transaction
     public function getErrorMessage()
     {
         if ($this->isValid()) {
-            throw new Exception("You should not call this message if object is valid");
+            throw new \Exception("You should not call this message if object is valid");
         }
 
         return $this->errorMessage;

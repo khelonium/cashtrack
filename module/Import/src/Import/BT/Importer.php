@@ -9,14 +9,14 @@
 
 namespace Import\BT;
 
-use Finance\Transaction\Repository as TransactionService;
+use Database\Transaction\Repository as TransactionService;
 
 class Importer
 {
     private $parser;
 
     /**
-     * @var Finance\Transaction\Service|null
+     * @var TransactionService
      */
     private $service   = null;
 
