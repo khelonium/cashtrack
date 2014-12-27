@@ -9,7 +9,7 @@
 namespace Finance\Reporter;
 
 
-use Refactoring\Interval;
+use Refactoring\Time\Interval;
 
 class Breakdown implements BreakdownInterface
 {

@@ -10,9 +10,8 @@
 namespace Application\API;
 
 
-use Refactoring\Interval\SpecificMonth;
-use Refactoring\Interval\ThisMonth;
-use Zend\Db\Adapter\Adapter;
+use Refactoring\Time\Interval\SpecificMonth;
+use Refactoring\Time\Interval\ThisMonth;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 

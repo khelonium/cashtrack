@@ -193,17 +193,6 @@ return  [
                 ],
             ],
         ],
-        'balance-rest' => [
-            'type'    => 'segment',
-            'options' => [
-                'route'    => '/api/balance[/:id]',
-                'constraints' => [
-                ],
-                'defaults' => [
-                    'controller' => 'Application\API\Balance',
-                ],
-            ],
-        ],
 
         'cashflow-rest' => [
             'type'    => 'segment',

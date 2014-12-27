@@ -15,7 +15,7 @@ namespace Database\Transaction;
 use Finance\Transaction\Transaction;
 use Finance\Transaction\TransactionRepositoryInterface;
 use Refactoring\Interval\IntervalInterface;
-use Refactoring\Repository\AbstractRepository;
+use Database\Repository\AbstractRepository;
 
 class Repository extends AbstractRepository implements TransactionRepositoryInterface
 {

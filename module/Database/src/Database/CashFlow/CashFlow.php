@@ -11,7 +11,7 @@ namespace Database\CashFlow;
 
 use Finance\Cashflow\CashEntry;
 use Finance\Reporter\CashFlowInterface;
-use Refactoring\Interval\IntervalInterface;
+use Refactoring\Time\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
 

@@ -11,7 +11,7 @@ namespace unit\Finance\Reporter;
 
 use Finance\Reporter\Breakdown;
 use Finance\Reporter\CashFlowInterface;
-use Refactoring\Interval\IntervalInterface;
+use Refactoring\Time\Interval\IntervalInterface;
 
 class BreakdownTest extends \PHPUnit_Framework_TestCase {
     /**

@@ -3,11 +3,6 @@ Feature: cashtrack   api is up
   As a web app
   There is a need to have a REST API
 
-  Scenario: Balance API Does not have errors
-    When I am on "/api/balance"
-    Then the response status code should be 200
-    And I should see a json response
-
 
   Scenario: Cashflow API Does not have errors
     When I am on "/api/cashflow"

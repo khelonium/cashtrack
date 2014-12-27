@@ -8,7 +8,7 @@
 namespace Finance\Account;
 
 
-class Account extends \Refactoring\Db\Entity
+class Account extends \Database\Repository\Entity
 {
 
 }

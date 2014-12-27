@@ -9,10 +9,10 @@ namespace Database\Account;
 
 
 use Finance\Account\Account;
-use Refactoring\Repository\AbstractRepository;
+use Database\Repository\AbstractRepository;
 
 
-class AccountRepository extends AbstractRepository implements AccountRepositoryInterface
+class AccountRepository extends AbstractRepository
 {
 
     public function addFromName($name)

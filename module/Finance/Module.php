@@ -40,13 +40,6 @@ class Module
 
             'factories' => array(
 
-                '\Finance\Balance\BalanceService' => function ($sm) {
-                    return new \Finance\Balance\Balancer($sm->get('\Database\Balance\Repository'));
-                },
-
-                '\Finance\Account\AccountFactory' => function ($sm) {
-                    return new AccountFactory();
-                },
 
 
                 '\Reporter\Overview' => function () {

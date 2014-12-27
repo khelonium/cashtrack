@@ -7,7 +7,7 @@
  */
 namespace Finance\Transaction;
 
-use Refactoring\Db\Entity;
+use Database\Repository\Entity;
 use Refactoring\Interval\IntervalInterface;
 
 /**

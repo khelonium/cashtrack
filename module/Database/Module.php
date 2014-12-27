@@ -2,22 +2,12 @@
 
 namespace Database;
 
-use Database\AccountValue\AccountValueFactory;
-use Database\Balance\Repository as BalanceRepository;
 use Database\CashFlow\CashFlow;
 use Database\Merchant\Repository as MerchantRepository;
 use Finance\Account\Account;
-use Finance\Account\AccountFactoryAwareInterface;
-use Database\Account\AccountRepositoryAwareInterface;
-use Finance\Traits\AccountValueFactoryAwareInterface;
-use Database\Balance\BalanceRepositoryAwareInterface;
-use Database\Balance\Balance;
 use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Transaction\Transaction as TransactionEntity;
 
-
-use Finance\Traits\TransactionRepositoryAwareInterface;
-use Refactoring\Repository\GenericRepository;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -53,42 +43,9 @@ class Module
                         $service->setDbAdapter($sm->get('Zend\Db\Adapter\Adapter'));
                     }
                 },
-
-                'accountRepository' => function ($service, $sm) {
-                    if ($service instanceof AccountRepositoryAwareInterface) {
-                        $service->setAccountRepository($sm->get('Database\Account\Repository'));
-                    }
-                },
-
-                'accountValueFactory' => function ($service, $sm) {
-                    if ($service instanceof AccountValueFactoryAwareInterface) {
-                        $service->setAccountValueFactory($sm->get('Database\AccountValue\AccountValueFactory'));
-                    }
-                },
-
-                'transactionRepository' => function ($service, $sm) {
-
-                    if ($service instanceof TransactionRepositoryAwareInterface) {
-                        $service->setTransactionRepository($sm->get('Database\Transaction\Repository'));
-                    }
-                },
-
-                'balanceRepository' => function ($service, $sm) {
-
-                    if ($service instanceof BalanceRepositoryAwareInterface) {
-                            $service->setBalanceRepository($sm->get('\Database\Balance\Repository'));
-                    }
-                },
             ),
 
             'factories' => array(
-
-                '\Database\AccountValue\AccountValueFactory' => function ($sm) {
-                    $factory = new AccountValueFactory();
-                    $factory->setAccountFactory($sm->get('Finance\Account\AccountFactory'));
-                    return $factory;
-                },
-
 
                 '\Database\Transaction\Repository' => function ($sm) {
                     return new \Database\Transaction\Repository();
@@ -123,16 +80,6 @@ class Module
                     return new TableGateway('transaction', $dbAdapter, null, $resultSetPrototype);
                 },
 
-                '\Database\Dao\BalanceGateway' => function ($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Balance());
-                    return new TableGateway('balance', $dbAdapter, null, $resultSetPrototype);
-                },
-
-                '\Database\Balance\Repository' => function ($sm) {
-                    return new BalanceRepository($sm->get('\Database\Dao\BalanceGateway'));
-                },
 
                 '\Reporter\CashFlow' => function ($sm) {
                     return new CashFlow();

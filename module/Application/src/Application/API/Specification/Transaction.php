@@ -3,12 +3,11 @@
 namespace Application\API\Specification;
 
 use Database\Transaction\Repository\Specification;
-use Refactoring\Db\SqlSpecification;
-use Refactoring\Interval\SpecificMonth;
-use Refactoring\Interval\ThisMonth;
-use Refactoring\Specification\SpecificationInterface;
+use Database\Repository\SqlSpecification;
+use Refactoring\Time\Interval\SpecificMonth;
+use Refactoring\Time\Interval\ThisMonth;
 
-class Transaction extends Specification implements SpecificationInterface, SqlSpecification
+class Transaction extends Specification implements SqlSpecification
 {
 
     /**
@@ -27,17 +26,6 @@ class Transaction extends Specification implements SpecificationInterface, SqlSp
         $this->greaterOrEqual('date', $interval->getStart()->format('Y-m-d'));
         $this->lessOrEqual('date',    $interval->getEnd()->format('Y-m-d'));
 
-    }
-
-    /**
-     * Would have returned false if a top level param would been mandatory
-     * @param \Zend\Mvc\Controller\Plugin\Params
-     * $object
-     * @return bool
-     */
-    public function isSatisfiedBy($query)
-    {
-        return true;
     }
 
 

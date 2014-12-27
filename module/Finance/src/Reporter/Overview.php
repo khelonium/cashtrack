@@ -66,9 +66,10 @@ class Overview implements AdapterAwareInterface
     }
 
     /**
-     * @param $id
-     * @param $dbAdapter
+     * @param $month
      * @return mixed
+     * @internal param $id
+     * @internal param $dbAdapter
      */
     public function getRegular($month)
     {

@@ -7,7 +7,7 @@
  */
 namespace Finance\Reporter;
 
-use Refactoring\Interval\IntervalInterface;
+use Refactoring\Time\Interval\IntervalInterface;
 
 interface CashFlowInterface
 {

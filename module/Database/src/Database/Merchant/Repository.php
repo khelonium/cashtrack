@@ -1,17 +1,15 @@
 <?php
 /**
  * @author Cosmin Dordea <cosmin.dordea@yahoo.com>
- * @link      http://github.com/khelonium/zentrack
+ * @link      http://github.com/khelonium
  * @license  New BSD
  */
 
 
-
-
 namespace Database\Merchant;
 
-
-use Refactoring\Repository\AbstractRepository;
+use Database\Repository\AbstractRepository;
+use Finance\Merchant\Merchant;
 
 class Repository extends AbstractRepository
 {

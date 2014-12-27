@@ -16,16 +16,17 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": ">2.2.0rc1",
-        "ro.refactoring": "*",
-        "zf-commons/zfc-user": "dev-master",
+        "refactoring/time": "0.1.0",
+        "zf-commons/zfc-user": "dev-master"
+
+    },
+    "require-dev": {
         "behat/behat": "2.4.*@stable",
         "behat/mink": "1.4.*@stable",
         "behat/mink-extension": "*",
         "behat/mink-goutte-driver": "*",
         "behat/mink-selenium2-driver": "*",
-        "mvlabs/zf2behat-extension" : "dev-master"
-    },
-    "require-dev": {
+        "mvlabs/zf2behat-extension" : "dev-master",
         "phpunit/phpunit": "4.3.*"
     }
 }

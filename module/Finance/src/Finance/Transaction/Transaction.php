@@ -14,7 +14,7 @@ namespace Finance\Transaction;
  * @property id
  * @package Finance\Merchant
  */
-class Transaction extends \Refactoring\Db\Entity
+class Transaction extends \Database\Repository\Entity
 {
     protected $map =  array (
         'from_account'     => 'fromAccount',

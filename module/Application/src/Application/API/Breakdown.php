@@ -22,7 +22,7 @@ class Breakdown extends AbstractRestfulController
      */
     private $service;
 
-    public function __construct($service)
+    public function __construct(BreakdownInterface $service)
     {
         $this->service = $service;
     }
