@@ -28,7 +28,6 @@ class Module
 
     public function onRenderError($e)
     {
-        return;
         if (!$e->isError()) {
 
             return;
