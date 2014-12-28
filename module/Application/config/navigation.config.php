@@ -6,12 +6,12 @@ return [
             'route' => 'home',
         ],
         [
-            'label' => 'Merchants',
-            'route' => 'merchants',
+            'label' => 'Yearly',
+            'route' => 'visual',
         ],
         [
-            'label' => 'Reports',
-            'route' => 'visual',
+            'label' => 'Merchants',
+            'route' => 'merchants',
         ],
         [
             'label' => 'Weekly',
