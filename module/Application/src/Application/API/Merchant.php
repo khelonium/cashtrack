@@ -31,6 +31,7 @@ class Merchant extends AbstractRestfulController
 
     public function get($id)
     {
+        throw new \Exception("1");
         return new JsonModel([]);
     }
 
@@ -53,12 +54,7 @@ class Merchant extends AbstractRestfulController
 
     public function create($data)
     {
-        try {
-            $this->repository->add(new MerchantEntity($data));
-        } catch (\Exception $e) {
-            $this->response->setStatusCode(500);
-            return new JsonModel(['message' => 'Bad']);
-        }
+        $this->repository->add(new MerchantEntity($data));
         return new JsonModel();
     }
 }
