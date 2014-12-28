@@ -101,6 +101,7 @@ foreach ($javascripts as $script) {
                         .attr("transform", "translate(0," + height + ")")
                         .call(xAxis);
 
+
                     svg.append("g")
                         .attr("class", "y axis")
                         .call(yAxis)
@@ -126,10 +127,7 @@ foreach ($javascripts as $script) {
                 });
 
 
-
                 (new Cash.Views.NavigationYearView({el:$('.pagination'), doOnClick:loader})).render();
-
-
 
 
             </script>

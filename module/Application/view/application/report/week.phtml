@@ -53,7 +53,7 @@ $this->headScript()->appendFile($this->basePath($script));
     <div class="col-md-12 week-container">
         <script>
 
-            var margin = {top: 20, right: 20, bottom: 30, left: 40},
+            var margin = {top: 20, right: 20, bottom: 70, left: 40},
                 width = 960 - margin.left - margin.right,
                 height = 500 - margin.top - margin.bottom;
 
@@ -81,15 +81,21 @@ $this->headScript()->appendFile($this->basePath($script));
             var url ='<?php echo $url; ?>';
 
             d3.json(url , function(error, data) {
-                console.log("rendering");
-                console.log(data);
+                
                 x.domain(data.map(function(d) { return d.name; }));
                 y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
 
                 svg.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis);
+                    .call(xAxis)
+                        .selectAll("text")
+                        .style("text-anchor", "end")
+                        .attr("dx", "-.8em")
+                        .attr("dy", ".15em")
+                        .attr("transform", function(d) {
+                            return "rotate(-65)"
+                        });
 
                 svg.append("g")
                     .attr("class", "y axis")
