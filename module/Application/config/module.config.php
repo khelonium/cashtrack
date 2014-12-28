@@ -34,6 +34,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Report' => 'Application\Controller\Report',
             'Application\API\Account' => 'Application\API\Account',
             'Application\API\Transaction' => 'Application\API\Transaction',
             'Application\API\Balance' => 'Application\API\Balance',
@@ -67,30 +68,6 @@ return array(
         ),
     ),
 
-    'navigation' => array(
-     'default' => array(
-         array(
-             'label' => 'Cashflow',
-             'route' => 'home',
-         ),
-         array(
-             'label' => 'Merchants',
-             'route' => 'merchants',
-         ),
-         array(
-             'label' => 'Reports',
-             'route' => 'visual',
-         ),
-         array(
-             'label' => 'Weekly',
-             'route' => 'weekly',
-         ),
+     'navigation' => include_once 'navigation.config.php',
 
-         array(
-             'label' => 'Monthly',
-             'route' => 'monthly',
-         ),
-
-     ),
- ),
 );

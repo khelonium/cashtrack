@@ -1,0 +1,114 @@
+<?php
+
+if (!isset($url)) {
+$url = "/api/breakdown/week/".$this->year."/" . $this->week;
+}
+
+$javascripts = array(
+'js/vendor/d3.v3.min.js',
+);
+
+foreach ($javascripts as $script) {
+$this->headScript()->appendFile($this->basePath($script));
+}
+?>
+<style>
+
+    .bar {
+        fill: steelblue;
+    }
+
+    .bar:hover {
+        fill: brown;
+    }
+
+    .excessive {
+        fill:darkred;
+    }
+
+    .excelent  {
+        fill:darkgreen;
+    }
+    .over {
+        fill:rgb(255, 187, 120);
+    }
+    .axis {
+        font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .x.axis path {
+        display: none;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-md-12 week-container">
+        <script>
+
+            var margin = {top: 20, right: 20, bottom: 30, left: 40},
+                width = 960 - margin.left - margin.right,
+                height = 500 - margin.top - margin.bottom;
+
+            var x = d3.scale.ordinal()
+                .rangeRoundBands([0, width], .1);
+
+            var y = d3.scale.linear()
+                .range([height, 0]);
+
+            var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom");
+
+            var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left");
+
+
+            var svg = d3.select("body .week-container").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var url ='<?php echo $url; ?>';
+
+            d3.json(url , function(error, data) {
+                console.log("rendering");
+                console.log(data);
+                x.domain(data.map(function(d) { return d.name; }));
+                y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
+
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis);
+
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis);
+
+                svg.selectAll(".bar")
+                    .data(data)
+                    .enter().append("rect")
+                    .attr("class", "bar")
+                    .attr("x", function(d) { return x(d.name); })
+                    .attr("y", function(d) { return y(d.amount); })
+                    .attr("height", function(d) { return height - y(d.amount); })
+                    .attr("width", x.rangeBand());
+            });
+
+
+
+
+        </script>
+
+    </div>
+</div>

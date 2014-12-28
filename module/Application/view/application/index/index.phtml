@@ -22,16 +22,37 @@ foreach ($javascripts as $script) {
 
 
         <a id="addTransactionLink" href="#addTransaction">Add Expense</a>
-
         <div id="addTransactionForm" class="add-transaction" >
-         </div>
+        </div>
+
+
+        <hr/>
+        <div>
+            <a id="transactionView" href="">Operatii</a>
+        </div>
+
 
         <div>
             <a id="accountView" href="" data-backbone="true">Conturi</a>
         </div>
+
+        <hr/>
+
         <div>
-            <a id="transactionView" href="">Operatii</a>
+            <a id="accountView" href="/report/lastweek" data-backbone="true">Last Week</a>
         </div>
+
+        <div>
+            <a id="accountView" href="/report/thisweek" data-backbone="true">This Week</a>
+        </div>
+
+
+        <div>
+            <a id="accountView" href="/report/thismonth" data-backbone="true">This Month</a>
+        </div>
+
+
+
 
         <script type="text/template" id="add-transaction-template">
 
