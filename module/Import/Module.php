@@ -33,7 +33,7 @@ class Module
 
             'factories' => array(
                '\Import\BT\Matcher' => function ($sm) {
-                   return new Matcher($sm->get('\Finance\Merchant\Repository')->all());
+                   return new Matcher($sm->get('\Database\Merchant\Repository')->all());
                },
 
             '\Import\BT\Parser' => function ($sm) {

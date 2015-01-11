@@ -13,7 +13,7 @@ $adapter = $sm->get('\Zend\Db\Adapter\Adapter');
 
 
 
-$dir = getcwd().DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.'2014/bulk2';
+$dir = getcwd().DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.'2014/12';
 
 
 echo "\n";
