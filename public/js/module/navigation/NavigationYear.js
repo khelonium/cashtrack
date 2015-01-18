@@ -57,6 +57,10 @@ Cash.Views.NavigationYearView = Backbone.View.extend({
         this.doOnClick && this.doOnClick(date);
     },
 
+    yearChanged: function(year) {
+        console.log("Year has changed");
+        this.doOnYearChange && this.doOnYearChange(year);
+    },
     initialize:function(options) {
 
 
@@ -68,11 +72,14 @@ Cash.Views.NavigationYearView = Backbone.View.extend({
         this.collection.on('activatedMonth',this.activatedMonth, this);
 
         options.doOnClick && (this.doOnClick = options.doOnClick);
+        options.doOnYearChange && (this.doOnYearChange = options.doOnYearChange);
+
 
         this.$el.find('.prev-year a').bind('click', $.proxy(function(e) {
             e.preventDefault();
             this.collection.reset( this.year.prevYear().getMonths());
             $('.current-year a').html(this.year.year);
+            this.yearChanged(this.year.year);
 
         },this));
 
@@ -80,7 +87,7 @@ Cash.Views.NavigationYearView = Backbone.View.extend({
             e.preventDefault();
             this.collection.reset( this.year.nextYear().getMonths());
             $('.current-year a').html(this.year.year);
-
+            this.yearChanged(this.year.year);
         },this));
     },
     render : function() {

@@ -11,8 +11,9 @@ namespace Application\API;
 
 
 
+use Application\View\Time\Week as WeekView;
+use Application\View\Time\Month as MonthView;
 use Reporter\TimeReporterInterface;
-use Zend\View\Model\JsonModel;
 
 class TimeView extends AbstractController
 {
@@ -30,21 +31,23 @@ class TimeView extends AbstractController
 
     public function get($period)
     {
-        $out = [];
+        $method = 'get' . ucfirst($this->getType());
 
-        switch ($this->getType()) {
-            case 'week':
-                $out = $this->reporter->weekTotals($period);
-                break;
-            case 'month':
-                $out = $this->reporter->monthTotals($period);
-
-                break;
-        }
-
-        return new JsonModel($out);
+        return $this->$method($period);
 
     }
+
+    public function getMonth($period)
+    {
+        return new MonthView($this->reporter->monthTotals($period));
+    }
+
+    public function getWeek($period)
+    {
+        return new WeekView($this->reporter->weekTotals($period));
+
+    }
+
 
     private function getType()
     {

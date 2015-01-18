@@ -1,14 +1,19 @@
 <?php
 
-if (!isset($url)) {
-    $url = "/api/overview/time/week/2014";
-    $breakdown = '/report/week/';
+$chartClass  = 'Cash.Views.WeekBarChart';
+
+if (isset($chart)) {
+    $chartClass = 'Cash.Views.MonthBarChart';
 }
+
+$year = date('Y');
+
 $javascripts = array(
     'js/vendor/d3.v3.min.js',
     'js/module/reports/leads.js',
     'js/module/reports/bubbleview.js',
     'js/module/navigation/NavigationYear.js',
+    'js/module/breakdown/view.js',
 
 );
 
@@ -60,74 +65,15 @@ foreach ($javascripts as $script) {
         <div class="col-md-12 week-container">
             <script>
 
-                var loader = function(date){ console.log("WOWOWOW")};
 
-                var margin = {top: 20, right: 20, bottom: 30, left: 40},
-                    width = 960 - margin.left - margin.right,
-                    height = 500 - margin.top - margin.bottom;
+                var breakdown = new <?php echo $chartClass?>();
+                breakdown.render(<?php echo $year;?>);
 
-                var x = d3.scale.ordinal()
-                    .rangeRoundBands([0, width], .1);
+                var loader = function(year){
+                    breakdown.render(year);
+                };
 
-
-                var y = d3.scale.linear()
-                    .range([height, 0]);
-
-                var xAxis = d3.svg.axis()
-                    .scale(x)
-                    .orient("bottom");
-
-                var yAxis = d3.svg.axis()
-                    .scale(y)
-                    .orient("left")
-                    .ticks(10, "");
-
-                var svg = d3.select("body .week-container").append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-                var url ='<?php echo $url; ?>';
-
-                   d3.json(url , function(error,data){
-
-                       x.domain(data.map(function(d) { return d.unit_nr; }));
-                       y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
-
-                    svg.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + height + ")")
-                        .call(xAxis);
-
-
-                    svg.append("g")
-                        .attr("class", "y axis")
-                        .call(yAxis)
-                        .append("text")
-                        .attr("transform", "rotate(-90)")
-                        .attr("y", 6)
-                        .attr("dy", ".71em")
-                        .style("text-anchor", "end")
-                        .text("Total");
-
-                    svg.selectAll(".bar")
-                        .data(data)
-                        .enter().append("rect")
-                        .on('click', function(d){
-                            window.location.href = '<?php echo  $breakdown ?>' + d.unit_nr;
-                        })
-                        .attr("class", function (d) {  if (d.amount<10000) return 'bar excelent';if (d.amount > 20000) return "bar excessive"; if (d.amount > 14000) return "bar over";return "bar";})
-                        .attr("x", function(d) { return x(d.unit_nr); })
-                        .attr("width", x.rangeBand())
-                        .attr("y", function(d) { return y(d.amount); })
-                        .attr("height", function(d) { return height - y(d.amount); });
-
-                });
-
-
-                (new Cash.Views.NavigationYearView({el:$('.pagination'), doOnClick:loader})).render();
+                (new Cash.Views.NavigationYearView({el:$('.pagination'), doOnYearChange:loader})).render();
 
 
             </script>

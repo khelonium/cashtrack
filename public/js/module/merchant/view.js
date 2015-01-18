@@ -1,7 +1,6 @@
 Cash.Views.Merchants = Backbone.View.extend({
 
     initialize:function(options){
-        console.log(options);
         this.initTable();
 
         this.collection = new Cash.Models.Merchants();

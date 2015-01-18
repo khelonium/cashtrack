@@ -2,9 +2,10 @@
 namespace Database\Transaction\Repository;
 
 
+use Database\Repository\SqlSpecification;
 use Zend\Db\Sql\Select;
 
-class Specification
+class Specification implements SqlSpecification
 {
 
     /**
