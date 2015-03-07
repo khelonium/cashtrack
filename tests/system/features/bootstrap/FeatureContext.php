@@ -9,13 +9,12 @@ require_once __DIR__.'/../../../bootstrap.php';
 class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
 {
     
-
     /**
      * @beforeScenario
      */
-    public  function beforeScenario()
+    public function beforeScenario()
     {
-        foreach($this->getTransactionRepo()->all() as $transaction) {
+        foreach ($this->getTransactionRepo()->all() as $transaction) {
             $this->getTransactionRepo()->delete($transaction);
         }
     }
@@ -52,14 +51,31 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
     {
         $transaction = $this->getTransactionRepo();
 
-        $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-01-01']);
-        $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 50,  'to_account'  => 87, 'date' => '2014-01-01']);
-        $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-01-01']);
-        $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 500,  'to_account'  => 87, 'date' => '2014-02-01']);
-        $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-02-01']);
-        $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-02-28']);
-        $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-02-28']);
-        $transaction->fastAdd(['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2015-01-01']);
+        $transaction->fastAdd(
+            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-01-01']
+        );
+        $transaction->fastAdd(
+            ['description' => 'transaction 1', 'amount'  => 50,  'to_account'  => 87, 'date' => '2014-01-01']
+        );
+        $transaction->fastAdd(
+            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-01-01']
+        );
+
+        $transaction->fastAdd(
+            ['description' => 'transaction 1', 'amount'  => 500,  'to_account'  => 87, 'date' => '2014-02-01']
+        );
+        $transaction->fastAdd(
+            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-02-01']
+        );
+        $transaction->fastAdd(
+            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-02-28']
+        );
+        $transaction->fastAdd(
+            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-02-28']
+        );
+        $transaction->fastAdd(
+            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2015-01-01']
+        );
 
     }
 
@@ -76,18 +92,11 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
      */
     public function theExpensesAreGroupedByCategory()
     {
-        $json = $this->getJson();
-        $expected = [
+        $this->checkResponseAgainst([
             'Category 1' => 100,
             'Category 2' => 150,
 
-        ];
-
-        foreach ($json as $unit) {
-            if ($expected[$unit->name] != $unit->amount ) {
-                throw new \Exception("{$unit->name} not sa expected");
-            }
-        }
+        ]);
     }
 
     /**
@@ -103,22 +112,15 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
      */
     public function theExpensesAreGroupedByCategoryAndMonth()
     {
-        $json = $this->getJson();
         $expected = [
             'Category 1' => 200,
             'Category 2' => 600,
 
         ];
 
-        if (count($json) ==0) {
-            throw new \Exception("There are no entries");
-        }
+        $this->checkResponseAgainst($expected);
 
-        foreach ($json as $unit) {
-            if ($expected[$unit->name] != $unit->amount ) {
-                throw new \Exception("{$unit->name} not as expected:{$expected[$unit->name]}: {$unit->amount}");
-            }
-        }    }
+    }
 
     /**
      * @return \Database\Transaction\Repository
@@ -130,5 +132,46 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         return $transaction;
     }
 
+    /**
+     * @When /^I check the month breakdown api for that given year$/
+     */
+    public function iCheckTheMonthBreakdownApiForThatGivenYear()
+    {
+        $this->visit('/api/breakdown/year/2014');
+    }
+
+    /**
+     * @Then /^the expenses are grouped by category and year$/
+     */
+    public function theExpensesAreGroupedByCategoryAndYear()
+    {
+        $this->checkResponseAgainst([
+            'Category 1' => 300,
+            'Category 2' => 750,
+
+        ]);
+    }
+
+    /**
+     * @param $expected
+     * @throws Exception
+     */
+    protected function checkResponseAgainst($expected)
+    {
+
+        $json = $this->getJson();
+
+        if (count($json) ==0) {
+            throw new \Exception("There are no entries");
+        }
+
+        foreach ($json as $unit) {
+            if ($expected[$unit->name] != $unit->amount) {
+                throw new \Exception("{$unit->name} not sa expected");
+            }
+        }
+    }
+
 
 }
+

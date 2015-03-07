@@ -9,8 +9,8 @@
 namespace unit\Application\API;
 
 
-use Application\API\Breakdown;
-use Application\Double\API\BreakdownSpy;
+use Application\Double\API\BreakdownDummy;
+use Application\Double\API\MonthSpy;
 use Application\Double\API\WeekService;
 use Application\View\Error;
 
@@ -22,57 +22,27 @@ class BreakdownTest extends \PHPUnit_Framework_TestCase
     private $reporter;
 
     /**
-     * @var BreakdownSpy
+     * @var BreakdownDummy
      */
     private $controller;
 
     /**
      * @before
      */
-    function itCanConstruct()
+    public function itCanConstruct()
     {
         $this->reporter = new WeekService();
-        $this->controller = new BreakdownSpy($this->reporter);
+        $this->controller = new BreakdownDummy($this->reporter);
     }
+
+
 
     /**
      * @test
      */
-    function anInvalidTypeWillShowBadRequest()
-    {
-        $double =  $this->controller;
-
-        $double->typeToReturn("Invalid");
-
-        $response = $double->get(1);
-
-        $this->assertBadRequest($double);
-        $this->assertTrue($response instanceof Error);
-
-
-    }
-
-    /**
-     * @test
-     */
-    function validTypeWillShowOk()
+    public function ifYearIsNotPresentWeHaveABadRequest()
     {
         $double = $this->controller;
-
-        $this->requestWith($double, "week");
-        $this->assertResponseIsOk($double);
-
-        $this->requestWith($double, "month");
-        $this->assertResponseIsOk($double);
-    }
-
-    /**
-     * @test
-     */
-    function  ifYearIsNotPresentWeHaveABadRequest()
-    {
-        $double = $this->controller;
-        $double->typeToReturn("month");
         $double->yearWillReturn(null);
 
         $response = $double->get(1);
@@ -81,49 +51,31 @@ class BreakdownTest extends \PHPUnit_Framework_TestCase
         $this->assertBadRequest($double);
     }
 
-    /**
-     * @test
-     */
-    function givenTypeWeek_controllerWillGetTheWeekList()
-    {
-        $service = new WeekService();
-        $controller = new BreakdownSpy($service);
-        $controller->typeToReturn('week');
-        $controller->get(1);
-        $this->assertTrue($service->weekWasCalledWith(2014,1));
-    }
-
 
     /**
      * @test
      */
-    function givenTypeMonth_controllerWillRetrieveTheMonthList()
+    public function validRequestWillCallForTheBreakdown()
     {
 
-        $service = new WeekService();
-        $controller = new BreakdownSpy($service);
-        $controller->typeToReturn('month');
-        $controller->get(2);
-        $this->assertTrue($service->monthWasCalledWith(2014,2));
+        $this->controller->yearWillReturn(2014);
+        $this->controller->get(1);
+
+        $this->assertFalse($this->controller->hasBadRequest());
+        $this->assertTrue($this->controller->breakDownIsCalled());
     }
+
+
 
     /**
      * @param $double
      */
-    protected function assertBadRequest(BreakdownSpy $double)
+    protected function assertBadRequest(BreakdownDummy $double)
     {
-        $this->assertTrue($double->setBadRequestWasSet());
+        $this->assertTrue($double->hasBadRequest());
     }
 
-    /**
-     * @param $double
-     * @param $typeToReturn
-     */
-    protected function requestWith($double, $typeToReturn)
-    {
-        $double->typeToReturn($typeToReturn);
-        return $double->get(1);
-    }
+
 
     /**
      * @param $double

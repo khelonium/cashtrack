@@ -16,11 +16,23 @@ return [
             return new \Application\API\TimeView($locator->get('\Reporter\TimeMaster'));
         },
 
-        'Application\API\Breakdown' => function ($sm) {
+        'Application\API\Breakdown\Month' => function ($sm) {
             $locator    = $sm->getServiceLocator();
 
-            $breakdown = new \Application\API\Breakdown($locator->get('\Finance\Reporter\Breakdown'));
+            $breakdown = new \Application\API\BreakDown\Month($locator->get('\Finance\Reporter\Breakdown'));
             return $breakdown;
+        },
+
+        'Application\API\Breakdown\Week' => function ($sm) {
+            $locator    = $sm->getServiceLocator();
+
+            return new \Application\API\BreakDown\Week($locator->get('\Finance\Reporter\Breakdown'));
+        },
+
+        'Application\API\Breakdown\Year' => function ($sm) {
+            $locator    = $sm->getServiceLocator();
+
+            return new \Application\API\BreakDown\Year($locator->get('\Finance\Reporter\Breakdown'));
         },
     ),
 ];

@@ -13,7 +13,8 @@ use Finance\Reporter\Breakdown;
 use Finance\Reporter\CashFlowInterface;
 use Refactoring\Time\Interval\IntervalInterface;
 
-class BreakdownTest extends \PHPUnit_Framework_TestCase {
+class BreakdownTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @var CashflowDouble
      */
@@ -27,7 +28,7 @@ class BreakdownTest extends \PHPUnit_Framework_TestCase {
     /**
      * @before
      */
-    function before()
+    public function before()
     {
         $this->cashflow = new CashFlowDouble();
         $this->reporter = new Breakdown($this->cashflow);
@@ -36,7 +37,7 @@ class BreakdownTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    function weekWillSendAWeekIntervalToCashflow()
+    public function weekWillSendAWeekIntervalToCashflow()
     {
 
         $this->reporter->week(2014,1);
@@ -48,9 +49,9 @@ class BreakdownTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    function itFormsCorrectMonthInterval()
+    public function itFormsCorrectMonthInterval()
     {
-        $this->reporter->month(2014,2);
+        $this->reporter->month(2014, 2);
         $this->assertTrue($this->cashflow->getExpensesWasCalled());
         $this->assertEquals('2014-02-01', $this->cashflow->getStart());
         $this->assertEquals('2014-02-28', $this->cashflow->getEnd());
@@ -60,7 +61,7 @@ class BreakdownTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    function breakDownWillReturnSameAnswerAsCashflow()
+    public function breakDownWillReturnSameAnswerAsCashflow()
     {
 
         $toReturn = new \stdClass();
@@ -69,7 +70,7 @@ class BreakdownTest extends \PHPUnit_Framework_TestCase {
 
         $reporter = new Breakdown($this->cashflow);
 
-        $response = $reporter->week(2014,1);;
+        $response = $reporter->week(2014, 1);;
 
         $this->assertTrue($response === $toReturn);
 

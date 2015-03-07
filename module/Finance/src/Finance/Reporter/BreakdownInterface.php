@@ -12,4 +12,6 @@ interface BreakdownInterface
     public function week($year, $week);
 
     public function month($year, $month);
+
+    public function year($id);
 }

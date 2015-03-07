@@ -1,5 +1,5 @@
 <?php
-return  [
+return [
     'routes' => [
         'home' => [
             'type' => 'Zend\Mvc\Router\Http\Literal',
@@ -130,20 +130,48 @@ return  [
             ],
         ],
 
-        'breakdown-rest' => [
+        'breakdown-rest-month' => [
             'type'    => 'segment',
             'options' => [
-                'route'    => '/api/breakdown/:type/:year/:id',
+                'route'    => '/api/breakdown/month/:year/:id',
                 'constraints' => [
                     'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
-                    'type'   => 'month|week'
                 ],
 
                 'defaults' => [
-                    'controller' => 'Application\API\Breakdown',
+                    'controller' => 'Application\API\Breakdown\Month',
                 ],
             ],
         ],
+
+        'breakdown-rest-week' => [
+            'type'    => 'segment',
+            'options' => [
+                'route'    => '/api/breakdown/week/:year/:id',
+                'constraints' => [
+                    'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
+                ],
+
+                'defaults' => [
+                    'controller' => 'Application\API\Breakdown\Week',
+                ],
+            ],
+        ],
+
+        'breakdown-rest-year' => [
+            'type'    => 'segment',
+            'options' => [
+                'route'    => '/api/breakdown/year/:id',
+                'constraints' => [
+                    'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
+                ],
+
+                'defaults' => [
+                    'controller' => 'Application\API\Breakdown\Year',
+                ],
+            ],
+        ],
+
 
         'merchant-rest' => [
             'type'    => 'segment',

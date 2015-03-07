@@ -34,6 +34,11 @@ class Breakdown implements BreakdownInterface
         return $this->cashflow->getExpenses(new Interval\SpecificMonth(new \DateTime("$year-$month-01")));
     }
 
+    public function year($year)
+    {
+        return $this->cashflow->getExpenses(new Interval(new \DateTime("$year-01-01"), new \DateTime("$year-12-31")));
+    }
+
     /**
      * @param $year
      * @param $week
