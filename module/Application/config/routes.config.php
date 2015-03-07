@@ -12,16 +12,7 @@ return [
             ],
         ],
 
-        'visual' => [
-            'type' => 'Zend\Mvc\Router\Http\Literal',
-            'options' => [
-                'route'    => '/visual',
-                'defaults' => [
-                    'controller' => 'Application\Controller\Index',
-                    'action'     => 'visual',
-                ],
-            ],
-        ],
+
 
         'weekly' => [
             'type' => 'Zend\Mvc\Router\Http\Literal',

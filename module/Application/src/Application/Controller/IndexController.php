@@ -24,10 +24,6 @@ class IndexController extends AbstractActionController
     }
 
 
-    public function visualAction()
-    {
-
-    }
 
 
     public function merchantAction()

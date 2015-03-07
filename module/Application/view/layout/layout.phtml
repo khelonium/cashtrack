@@ -18,7 +18,8 @@
             ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
             ->prependStylesheet($this->basePath() . '/css/ui-lightness/jquery-ui-1.10.3.custom.css')
             ->prependStylesheet($this->basePath() . '/css/normalize.css')
-                        ->prependStylesheet($this->basePath() . '/css/main.css')
+            ->prependStylesheet($this->basePath() . '/css/main.css')
+            ->prependStylesheet($this->basePath() . '/css/bar.css')
                         ?>
 
         <!-- Scripts -->
@@ -31,7 +32,7 @@
            'js/vendor/underscore-min.js',
            'js/vendor/backbone-min.js',
            'js/vendor/bootstrap.min.js',
-           'js/plugins.js',
+           'js/plugins.js', 'js/vendor/d3.v3.min.js'
         );
 
         foreach (array_reverse($javascripts) as $script) {

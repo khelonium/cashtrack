@@ -23,8 +23,6 @@ $year = date('Y');
 
 $javascripts = array(
     'js/vendor/d3.v3.min.js',
-    'js/module/reports/leads.js',
-    'js/module/reports/bubbleview.js',
     'js/module/navigation/NavigationYear.js',
     'js/module/breakdown/view.js',
 
@@ -34,48 +32,13 @@ foreach ($javascripts as $script) {
     $this->headScript()->appendFile($this->basePath($script));
 }
 ?>
-<style>
 
-    .bar {
-        fill: steelblue;
-    }
-
-    .bar:hover {
-        fill: brown;
-    }
-
-    .excessive {
-        fill:darkred;
-    }
-
-    .excelent  {
-        fill:darkgreen;
-    }
-    .over {
-        fill:rgb(255, 187, 120);
-    }
-    .axis {
-        font: 10px sans-serif;
-    }
-
-    .axis path,
-    .axis line {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-    }
-
-    .x.axis path {
-        display: none;
-    }
-
-</style>
 <div class="row">
     <?php include_once 'year_navigation.phtml'; ?>
 </div>
 
 <div class="row">
-        <div class="col-md-12 week-container">
+        <div class="col-md-12 bar-chart-container">
             <script>
 
 

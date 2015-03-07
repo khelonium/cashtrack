@@ -1,12 +1,6 @@
-/**
- * Created by cdordea on 1/18/15.
- */
-Cash.Views.MonthBarChart = Backbone.View.extend({
 
-    margin : {top: 20, right: 20, bottom: 30, left: 40},
-
-    breakdownAPI : '/report/month/',
-    overviewAPI : "/api/overview/time/month/",
+Cash.Views.BarChart = Backbone.View.extend({
+    margin : {top: 20, right: 20, bottom: 70, left: 40},
 
     initialize:function() {
         this.width  = 960 - this.margin.left - this.margin.right;
@@ -29,7 +23,7 @@ Cash.Views.MonthBarChart = Backbone.View.extend({
             .ticks(10, "");
 
 
-        this.svg = d3.select("body .week-container").append("svg")
+        this.svg = d3.select("body .bar-chart-container").append("svg")
             .attr("width", this.width + this.margin.left + this.margin.right)
             .attr("height", this.height + this.margin.top + this.margin.bottom)
             .append("g")
@@ -51,8 +45,19 @@ Cash.Views.MonthBarChart = Backbone.View.extend({
             .style("text-anchor", "end")
             .text("Total");
 
+    }
 
-    },
+});
+
+
+Cash.Views.MonthBarChart = Cash.Views.BarChart.extend({
+
+
+
+    breakdownAPI : '/report/month/',
+    overviewAPI : "/api/overview/time/month/",
+
+
 
     render : function(year) {
         var url = this.overviewAPI + '' + year;
@@ -116,3 +121,57 @@ Cash.Views.YearBarChart = Cash.Views.MonthBarChart.extend({
     overviewAPI : "/api/overview/time/year/"
 
 });
+
+
+Cash.Views.WeekCategoriesBarChart =  Cash.Views.BarChart.extend (({
+
+    render : function(url){
+
+        var that = this;
+        d3.json(url , function(error, data) {
+            that.x.domain(data.map(function(d) { return d.name; }));
+            that.y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
+
+
+
+            var barChart =that.svg.selectAll(".bar")
+                .data(data);
+
+
+            barChart.enter().append("rect");
+
+
+            barChart.transition()
+                .delay(function(d, i) {
+                    return i / data.length * 1000;
+                })
+                .duration(500)
+                .attr("class", function (d) {  if (d.amount<10000) return 'bar excelent';if (d.amount > 20000) return "bar excessive"; if (d.amount > 14000) return "bar over";return "bar";})
+                .attr("x", function(d) { return that.x(d.name); })
+                .attr("width", that.x.rangeBand())
+                .attr("y", function(d) { return that.y(d.amount); })
+                .attr("height", function(d) { return that.height - that.y(d.amount); });
+
+
+            that.svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + that.height + ")")
+                .call(that.xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", function(d) {
+                    return "rotate(-55)"
+                });
+
+            //Update Y axis
+            that.svg.select(".y.axis")
+                .transition()
+                .duration(1000)
+                .call(that.yAxis);
+
+        });
+
+    }
+}));

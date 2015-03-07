@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aab6e46688756e6ad703c7eed7553cce",
+    "hash": "fb57fe6dcd19bec15ce888cc7cd60c30",
     "packages": [
         {
             "name": "refactoring/time",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/khelonium/refactoring-time.git",
-                "reference": "e01f3246fb3ca65b77255d92277ba2502250625b"
+                "reference": "6fad6a2ea329167789b09898dcf8e0b11db33109"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/khelonium/refactoring-time/zipball/e01f3246fb3ca65b77255d92277ba2502250625b",
-                "reference": "e01f3246fb3ca65b77255d92277ba2502250625b",
+                "url": "https://api.github.com/repos/khelonium/refactoring-time/zipball/6fad6a2ea329167789b09898dcf8e0b11db33109",
+                "reference": "6fad6a2ea329167789b09898dcf8e0b11db33109",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "date",
                 "interval"
             ],
-            "time": "2014-10-31 06:33:33"
+            "time": "2015-03-07 12:19:16"
         },
         {
             "name": "zendframework/zendframework",
