@@ -10,6 +10,7 @@ namespace unit\Application\API;
 
 
 use Application\Double\API\BreakdownDummy;
+use Application\Double\API\CashtrackDummy;
 use Application\Double\API\MonthSpy;
 use Application\Double\API\WeekService;
 use Application\View\Error;
@@ -31,7 +32,7 @@ class BreakdownTest extends \PHPUnit_Framework_TestCase
      */
     public function itCanConstruct()
     {
-        $this->reporter = new WeekService();
+        $this->reporter = new CashtrackDummy();
         $this->controller = new BreakdownDummy($this->reporter);
     }
 

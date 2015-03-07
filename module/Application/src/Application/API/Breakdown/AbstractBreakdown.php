@@ -10,20 +10,22 @@ namespace Application\API\Breakdown;
 
 use Application\View\Error;
 use Finance\Reporter\BreakdownInterface;
+use Finance\Reporter\CashFlowInterface;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
 abstract class AbstractBreakdown extends AbstractRestfulController
 {
 
-    /**
-     * @var \Finance\Reporter\BreakdownInterface
-     */
-    protected $service;
 
-    public function __construct(BreakdownInterface $service)
+    /**
+     * @var CashFlowInterface
+     */
+    protected $cashflow;
+
+    public function __construct(CashFlowInterface $service)
     {
-        $this->service = $service;
+        $this->cashflow = $service;
     }
 
     /**

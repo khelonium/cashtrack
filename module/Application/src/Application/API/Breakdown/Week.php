@@ -8,11 +8,13 @@
 
 namespace Application\API\Breakdown;
 
+use Refactoring\Time\Interval\IsoWeek;
+
 class Week extends Month
 {
 
     protected function getBreakdown($id)
     {
-        return $this->service->week($this->getYear(), $id);
+        return $this->cashflow->expensesFor(new IsoWeek($this->getYear(), $id));
     }
 }

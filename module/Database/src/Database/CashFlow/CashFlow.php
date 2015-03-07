@@ -24,8 +24,8 @@ class CashFlow  implements  AdapterAwareInterface,CashFlowInterface
     {
 
         return array_merge(
-            $this->getExpenses($interval),
-            $this->getIncomes($interval)
+            $this->expensesFor($interval),
+            $this->incomeFor($interval)
         );
 
     }
@@ -61,7 +61,7 @@ class CashFlow  implements  AdapterAwareInterface,CashFlowInterface
      * @param $end_day
      * @return string
      */
-    public function getExpenses(IntervalInterface $interval)
+    public function expensesFor(IntervalInterface $interval)
     {
 
         $start_day = $interval->getStart()->format('Y-m-d');
@@ -85,7 +85,7 @@ class CashFlow  implements  AdapterAwareInterface,CashFlowInterface
      * @param $end_day
      * @return string
      */
-    public function getIncomes(IntervalInterface $interval)
+    public function incomeFor(IntervalInterface $interval)
     {
 
         $start_day = $interval->getStart()->format('Y-m-d');

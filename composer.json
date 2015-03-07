@@ -26,7 +26,6 @@
         "behat/mink-extension": "*",
         "behat/mink-goutte-driver": "*",
         "behat/mink-selenium2-driver": "*",
-        "mvlabs/zf2behat-extension" : "dev-master",
         "phpunit/phpunit": "4.3.*"
     }
 }

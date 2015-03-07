@@ -106,7 +106,7 @@ Cash.Views.MonthBarChart = Backbone.View.extend({
 });
 
 Cash.Views.WeekBarChart = Cash.Views.MonthBarChart.extend({
-    breakdownUrl : '/report/week/',
+    breakdownAPI : '/report/week/',
     overviewAPI : "/api/overview/time/week/"
 
 });

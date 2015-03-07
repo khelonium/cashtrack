@@ -21,11 +21,11 @@ interface CashFlowInterface
      * @param IntervalInterface $interval
      * @return string
      */
-    public function getExpenses(IntervalInterface $interval);
+    public function expensesFor(IntervalInterface $interval);
 
     /**
      * @param IntervalInterface $interval
      * @return string
      */
-    public function getIncomes(IntervalInterface $interval);
+    public function incomeFor(IntervalInterface $interval);
 }
