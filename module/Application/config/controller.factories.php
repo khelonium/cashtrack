@@ -19,20 +19,20 @@ return [
         'Application\API\Breakdown\Month' => function ($sm) {
             $locator    = $sm->getServiceLocator();
 
-            $breakdown = new \Application\API\BreakDown\Month($locator->get('\Finance\Reporter\Breakdown'));
+            $breakdown = new \Application\API\Breakdown\Month($locator->get('\Finance\Reporter\Breakdown'));
             return $breakdown;
         },
 
         'Application\API\Breakdown\Week' => function ($sm) {
             $locator    = $sm->getServiceLocator();
 
-            return new \Application\API\BreakDown\Week($locator->get('\Finance\Reporter\Breakdown'));
+            return new \Application\API\Breakdown\Week($locator->get('\Finance\Reporter\Breakdown'));
         },
 
         'Application\API\Breakdown\Year' => function ($sm) {
             $locator    = $sm->getServiceLocator();
 
-            return new \Application\API\BreakDown\Year($locator->get('\Finance\Reporter\Breakdown'));
+            return new \Application\API\Breakdown\Year($locator->get('\Finance\Reporter\Breakdown'));
         },
     ),
 ];
