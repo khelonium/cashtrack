@@ -2,6 +2,9 @@
 
 $chartClass = null;
 
+if (!isset($chart)) {
+    $chart = null;
+}
 switch ($chart) {
     case 'month':
         $chartClass = 'Cash.Views.MonthBarChart';

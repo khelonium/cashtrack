@@ -1,10 +1,6 @@
 <?php
 return [
     'factories' => array(
-        'Application\API\Overview' => function ($sm) {
-            $locator    = $sm->getServiceLocator();
-            return new \Application\API\Overview($locator->get('Reporter\Overview'));
-        },
 
         'Application\API\Merchant' => function ($sm) {
             $locator    = $sm->getServiceLocator();

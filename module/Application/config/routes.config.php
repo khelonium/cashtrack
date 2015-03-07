@@ -49,7 +49,6 @@ return [
         ],
 
 
-
         'merchants' => [
             'type' => 'Zend\Mvc\Router\Http\Literal',
             'options' => [
@@ -101,19 +100,6 @@ return [
             ],
         ],
 
-        'overview-rest' => [
-            'type'    => 'segment',
-            'options' => [
-                'route'    => '/api/overview[/:id]',
-                'constraints' => [
-                    'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
-                ],
-
-                'defaults' => [
-                    'controller' => 'Application\API\Overview',
-                ],
-            ],
-        ],
 
         'overview-time-rest' => [
             'type'    => 'segment',
