@@ -16,4 +16,7 @@ interface TimeReporterInterface
     public function weekTotals($year);
 
     public function monthTotals($year);
+
+    public function yearTotals();
+
 }

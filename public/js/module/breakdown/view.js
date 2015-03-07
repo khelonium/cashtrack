@@ -7,6 +7,7 @@ Cash.Views.MonthBarChart = Backbone.View.extend({
 
     breakdownAPI : '/report/month/',
     overviewAPI : "/api/overview/time/month/",
+
     initialize:function() {
         this.width  = 960 - this.margin.left - this.margin.right;
         this.height = 500 - this.margin.top - this.margin.bottom;
@@ -108,5 +109,10 @@ Cash.Views.WeekBarChart = Cash.Views.MonthBarChart.extend({
     breakdownUrl : '/report/week/',
     overviewAPI : "/api/overview/time/week/"
 
+});
+
+Cash.Views.YearBarChart = Cash.Views.MonthBarChart.extend({
+    breakdownAPI : '/report/year/',
+    overviewAPI : "/api/overview/time/year/"
 
 });

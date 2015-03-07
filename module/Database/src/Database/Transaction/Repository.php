@@ -4,13 +4,7 @@
  * @link      http://github.com/khelonium/zentrack
  * @license  New BSD
  */
-
-
-
-
 namespace Database\Transaction;
-
-
 
 use Finance\Transaction\Transaction;
 use Finance\Transaction\TransactionRepositoryInterface;

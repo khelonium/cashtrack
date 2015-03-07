@@ -121,7 +121,7 @@ return [
                 'route'    => '/api/overview/time/:type[/:id]',
                 'constraints' => [
                     'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
-                    'type'   => 'month|week'
+                    'type'   => 'month|week|year'
                 ],
 
                 'defaults' => [

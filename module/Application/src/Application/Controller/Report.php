@@ -31,11 +31,20 @@ class Report extends AbstractActionController
         return new ViewModel(
             [
                 'month' => $this->params('unit'),
-                'year' => $this->params('year',date('Y'))
+                'year' => $this->params('year', date('Y'))
              ]
         );
     }
 
+
+    public function yearAction()
+    {
+        return new ViewModel(
+            [
+                'year' => $this->params('unit')
+            ]
+        );
+    }
     public function weeklyAction()
     {
 
@@ -66,7 +75,17 @@ class Report extends AbstractActionController
 
     public function monthlyAction()
     {
+
     }
+
+
+    public function yearlyAction()
+    {
+
+    }
+
+
+
 
     /**
      * @param $week

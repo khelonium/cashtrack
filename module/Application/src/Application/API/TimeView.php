@@ -13,6 +13,7 @@ namespace Application\API;
 
 use Application\View\Time\Week as WeekView;
 use Application\View\Time\Month as MonthView;
+use Application\View\Time\Year as YearView;
 use Reporter\TimeReporterInterface;
 
 class TimeView extends AbstractController
@@ -48,6 +49,10 @@ class TimeView extends AbstractController
 
     }
 
+    public function getYear()
+    {
+        return new YearView($this->reporter->yearTotals());
+    }
 
     private function getType()
     {

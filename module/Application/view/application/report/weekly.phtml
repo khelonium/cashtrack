@@ -1,9 +1,19 @@
 <?php
 
-$chartClass  = 'Cash.Views.WeekBarChart';
+$chartClass = null;
 
-if (isset($chart)) {
-    $chartClass = 'Cash.Views.MonthBarChart';
+switch ($chart) {
+    case 'month':
+        $chartClass = 'Cash.Views.MonthBarChart';
+        break;
+
+    case 'year':
+        $chartClass = 'Cash.Views.YearBarChart';
+        break;
+
+    default:
+        $chartClass = 'Cash.Views.WeekBarChart';
+        break;
 }
 
 $year = date('Y');

@@ -5,10 +5,7 @@ return [
             'label' => 'Cashflow',
             'route' => 'home',
         ],
-        [
-            'label' => 'Yearly',
-            'route' => 'visual',
-        ],
+
         [
             'label' => 'Merchants',
             'route' => 'merchants',
@@ -22,6 +19,12 @@ return [
             'label' => 'Monthly',
             'route' => 'report',
             'action' => 'monthly'
+        ],
+
+        [
+            'label' => 'Yearly',
+            'route' => 'report',
+            'action' => 'yearly',
         ],
 
     ],
