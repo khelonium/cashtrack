@@ -7,7 +7,7 @@
  */
 namespace Reporter;
 
-interface TimeReporterInterface
+interface TimeViewInterface
 {
     /**
      * @param $year

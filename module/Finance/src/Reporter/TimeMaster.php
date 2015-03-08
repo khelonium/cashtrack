@@ -7,7 +7,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
 
-class TimeMaster implements TimeReporterInterface, AdapterAwareInterface
+class TimeMasterInterface implements TimeViewInterface, AdapterAwareInterface
 {
     use AdapterAwareTrait;
 

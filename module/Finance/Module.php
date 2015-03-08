@@ -48,7 +48,7 @@ class Module
 
 
                 '\Reporter\TimeMaster' => function () {
-                    return new \Reporter\TimeMaster();
+                    return new \Reporter\TimeMasterInterface();
                 },
 
                 '\Finance\Reporter\Breakdown' => function ($sm) {
