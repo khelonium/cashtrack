@@ -6,19 +6,27 @@ namespace Reporter;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
+use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Sql;
 
-class TimeMasterInterface implements TimeViewInterface, AdapterAwareInterface
+class TimeMaster implements TimeViewInterface, AdapterAwareInterface
 {
     use AdapterAwareTrait;
 
     public function yearTotals()
     {
-        return $this->getSummary(
-            " SELECT year(transaction_date) as unit_nr,sum(amount) as amount from transaction
-            left join account on account.id = transaction.to_account
-            and account.type = 'expense'
-            group by unit_nr"
+        $select = $this->getBaseSelect();
+
+
+        $select->columns(
+            [
+                'unit_nr' => new Expression('year(transaction_date)'),
+                'amount'  => new Expression('sum(amount)')
+            ]
         );
+        return $this->getSummary($select);
+
     }
 
 
@@ -28,68 +36,73 @@ class TimeMasterInterface implements TimeViewInterface, AdapterAwareInterface
      */
     public function weekTotals($year)
     {
-        $adapter = $this->adapter;
 
-        $results = $adapter->query(
-            "
-            SELECT week(transaction_date,1) as unit_nr,sum(amount) as amount from transaction
-            left join account on account.id = transaction.to_account
-            where transaction_date like '%$year%'
-            and account.type = 'expense'
-            group by unit_nr
-            ;
-        ",
-            $adapter::QUERY_MODE_EXECUTE
+        $select = $this->getBaseSelect();
+
+        $select->columns(
+            [
+                'unit_nr' => new Expression('week(transaction_date,1)'),
+                'amount' => new Expression('sum(amount)')
+            ]
         );
-
-
-        return $this->putInArray($results);
+        $select->where->like('transaction_date', "%$year%");
+        return $this->getSummary($select);
 
     }
+
+
     public function monthTotals($year)
     {
 
+        $select = $this->getBaseSelect();
 
-        return $this->getSummary(
-            "
-            SELECT month(transaction_date) as unit_nr,sum(amount) as amount from transaction
-            left join account on account.id = transaction.to_account
-            where transaction_date like '%$year%'
-            and account.type = 'expense'
-            group by unit_nr
-            ;
-        ");
+        $select->columns(
+            [
+                'unit_nr' => new Expression('month(transaction_date)'),
+                'amount' => new Expression('sum(amount)')
+            ]
+        );
+        $select->where->like('transaction_date', "%$year%");
 
+        return $this->getSummary($select);
     }
 
-    /**
-     * @param $results
-     * @return array
-     */
-    private function putInArray($results)
+
+    protected function getSummary(Select $select)
     {
+
         $out = [];
-        foreach ($results as $result) {
+
+        foreach ($this->getSql()->prepareStatementForSqlObject($select)->execute() as $result) {
             $out [] = $result;
         }
+
         return $out;
+
     }
 
     /**
-     * @param $sql
-     * @return array
+     * @return Sql
      */
-    protected function getSummary($sql)
+    protected function getSql()
     {
-        /** @var Adapter $adapter */
-        $adapter = $this->adapter;
-
-        $results = $this->adapter->query(
-            $sql,
-            $adapter::QUERY_MODE_EXECUTE
-        );
-
-        return $this->putInArray($results);
+        $sql = new Sql($this->adapter);
+        return $sql;
     }
 
-} 
+    /**
+     * @return \Zend\Db\Sql\Select
+     */
+    protected function getBaseSelect()
+    {
+        $sql = $this->getSql();
+
+        $select = $sql->select('transaction');
+
+        $select->join('account', new Expression("account.id = transaction.to_account"), []);
+
+        $select->where->equalTo('account.type', 'expense');
+        $select->group('unit_nr');
+        return $select;
+    }
+}

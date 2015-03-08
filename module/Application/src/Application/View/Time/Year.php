@@ -16,9 +16,17 @@ class Year extends JsonModel
 
     public function __construct($data)
     {
+        $data = array_map(
+            function($el) {
+                return (object) $el;
+            },
+            $data
+        );
+
         $data = array_filter($data, function ($element) {
             return $element->unit_nr != "0";
         });
+
 
         array_walk($data, function($element) {
             $element->amount = round($element->amount, 2);

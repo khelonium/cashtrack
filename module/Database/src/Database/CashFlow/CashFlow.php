@@ -15,7 +15,7 @@ use Refactoring\Time\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
 
-class CashFlow  implements  AdapterAwareInterface,CashFlowInterface
+class CashFlow implements AdapterAwareInterface, CashFlowInterface
 {
 
     use AdapterAwareTrait;
