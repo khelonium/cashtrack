@@ -23,16 +23,21 @@ class Report extends AbstractActionController
 
     public function weekAction()
     {
-        return new ViewModel(['year' => date('Y'), 'week' => $this->params('unit')]);
+        return new ViewModel(
+            [
+                'week' => $this->params('week'),
+                'year' => $this->params('year', date('Y'))
+            ]
+        );
     }
 
     public function monthAction()
     {
         return new ViewModel(
             [
-                'month' => $this->params('unit'),
+                'month' => $this->params('month'),
                 'year' => $this->params('year', date('Y'))
-             ]
+            ]
         );
     }
 
@@ -45,6 +50,7 @@ class Report extends AbstractActionController
             ]
         );
     }
+
     public function weeklyAction()
     {
 
@@ -67,7 +73,7 @@ class Report extends AbstractActionController
         return new ViewModel(
             [
                 'month' => $month->getStart()->format('m'),
-                'year'  => $month->getStart()->format('y')
+                'year' => $month->getStart()->format('y')
             ]
         );
     }
@@ -83,8 +89,6 @@ class Report extends AbstractActionController
     {
 
     }
-
-
 
 
     /**

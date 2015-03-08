@@ -62,8 +62,11 @@ Cash.Views.MonthBarChart = Cash.Views.BarChart.extend({
     render : function(year) {
         var url = this.overviewAPI + '' + year;
         var that = this;
+        that.break_url = that.breakdownAPI + year + '/';
+
         d3.json(url , function(error,data){
 
+            console.log("rendering " + year);
             that.x.domain(data.map(function(d) { return d.unit_nr; }));
             that.y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
 
@@ -73,10 +76,11 @@ Cash.Views.MonthBarChart = Cash.Views.BarChart.extend({
                 .data(data);
 
 
-            var break_url = that.breakdownAPI;
+
+
             barChart.enter().append("rect")
                 .on('click', function(d){
-                    window.location.href = break_url + d.unit_nr;
+                    window.location.href = that.break_url + d.unit_nr;
                 });
 
 
