@@ -10,7 +10,6 @@
 namespace Application\API;
 
 
-
 use Finance\Merchant\Merchant as MerchantEntity;
 use Database\Merchant\Repository;
 use Zend\Mvc\Controller\AbstractRestfulController;
@@ -48,7 +47,7 @@ class Merchant extends AbstractRestfulController
     public function update($id, $data)
     {
         $data['id'] = $id;
-        
+
         $merchant = new MerchantEntity($data);
         $this->repository->update($merchant);
         return new JsonModel($merchant);
