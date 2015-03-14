@@ -47,8 +47,10 @@ class Merchant extends AbstractRestfulController
      */
     public function update($id, $data)
     {
+        $data['id'] = $id;
+        
         $merchant = new MerchantEntity($data);
-        $this->repository->add($merchant);
+        $this->repository->update($merchant);
         return new JsonModel($merchant);
     }
 

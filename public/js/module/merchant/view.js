@@ -74,7 +74,8 @@ Cash.Views.Merchants = Backbone.View.extend({
                     return {value:account.get('id'), text:account.get('name') };
                 }),
                 success: function(response, newValue) {
-                    that.collection.merchant($(this).data('pk'))
+
+                    that.collection.merchant($(this).parent().find('.merchant-id').data('pk'))
                         .set('accountId',newValue)
                         .save();
                 }
