@@ -5,7 +5,7 @@
  * Date: 12/24/14
  * Time: 7:54 PM
  */
-namespace Application\API\BreakDown;
+namespace Application\API\Breakdown;
 
 use Application\View\Error;
 use Finance\Reporter\BreakdownInterface;

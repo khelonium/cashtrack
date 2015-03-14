@@ -5,6 +5,7 @@ return array(
         'Database',
         'Import',
         'Finance',
+        'Factory',
     ),
 
     'module_listener_options' => array(
