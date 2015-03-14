@@ -2,9 +2,7 @@
 return array(
     'modules' => array(
         'Application',
-        'Database',
         'Import',
-        'Finance',
         'Factory',
     ),
 
