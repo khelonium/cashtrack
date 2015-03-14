@@ -3,10 +3,10 @@
 <phpunit bootstrap="bootstrap.php">
 <testsuites>
     <testsuite name="Application">
-        <directory>./../module/Application/tests/</directory>
+        <directory>./../apps/web/Application/tests/</directory>
     </testsuite>
     <testsuite name="Finance">
-        <directory>./../module/Finance/tests/</directory>
+        <directory>./../src/Finance/tests/</directory>
     </testsuite>
 </testsuites>
 </phpunit>

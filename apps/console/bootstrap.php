@@ -7,9 +7,10 @@
 
 date_default_timezone_set('Europe/Bucharest');
 
-chdir (dirname(__DIR__));
+chdir (dirname(dirname(__DIR__)));
 
-echo dirname(__DIR__);
+echo dirname(dirname(dirname(__DIR__)));
+
 //SELECT year(currency_date) as `year`, month(currency_date) as `month` , currency.name , avg(value) as value FROM `currency_rate` LEFT JOIN currency on currency.id_currency = currency_rate.id_currency    group by `year`,`month`  , currency.name
 
 //SELECT year(currency_date) as `year`, month(currency_date) as `month` , currency.name , avg(value) as value FROM `currency_rate` LEFT JOIN currency on currency.id_currency = currency_rate.id_currency group by `year`,`month`

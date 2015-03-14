@@ -12,6 +12,9 @@ use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
+use Import\BT\Matcher;
+
+use Import\BT\Parser;
 
 
 class Module
@@ -73,6 +76,14 @@ class Module
 
                 '\Reporter\TimeMaster' => function () {
                     return new \Reporter\TimeMaster();
+                },
+
+                '\Import\BT\Matcher' => function ($sm) {
+                    return new Matcher($sm->get('\Database\Merchant\Repository')->all());
+                },
+
+                '\Import\BT\Parser' => function ($sm) {
+                    return new Parser($sm->get('\Import\BT\Matcher'));
                 },
 
 

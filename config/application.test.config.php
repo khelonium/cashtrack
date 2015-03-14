@@ -2,13 +2,12 @@
 return array(
     'modules' => array(
         'Application',
-        'Import',
         'Factory',
     ),
 
     'module_listener_options' => array(
         'module_paths' => array(
-            './module',
+            './apps/web',
             './vendor',
         ),
 
