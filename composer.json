@@ -1,18 +1,13 @@
 {
-    "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for ZF2",
+    "name": "refactoring/cashtrack",
+    "description": "Very Personal Finance",
     "license": "BSD-3-Clause",
     "keywords": [
         "framework",
         "zf2"
     ],
-    "homepage": "http://framework.zend.com/",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/khelonium/refactoring.ro"
-        }
-    ],
+    "homepage": "http://refactoring.ro",
+
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": ">2.2.0rc1",
@@ -31,13 +26,12 @@
 
     "autoload": {
         "psr-4": {
-            "Database\\": "module/Database/src",
-            "Reporter\\": "module/Reporter/src",
-            "Finance\\":  "module/Finance/src"
-
+            "Database\\": "src/Database/src",
+            "Reporter\\": "src/Reporter/src",
+            "Finance\\":  "src/Finance/src",
+            "Import\\": "src/Import/src"
         },
         "psr-0": {
-
         }
     }
 
