@@ -9,7 +9,7 @@
 namespace Finance\Cashflow;
 
 
-class CashEntry
+class MonthSummary
 {
     public $name      = null;
     public $accountId = null;

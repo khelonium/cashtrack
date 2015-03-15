@@ -16,11 +16,10 @@ namespace Finance\Transaction;
  */
 class Transaction extends \Database\Repository\Entity
 {
-    protected $map =  array (
-        'from_account'     => 'fromAccount',
-        'to_account'       => 'toAccount',
+    protected $map = array(
+        'from_account' => 'fromAccount',
+        'to_account' => 'toAccount',
         'transaction_date' => 'date',
-        'transaction_ref'  => 'reference'
+        'transaction_ref' => 'reference'
     );
-
 }

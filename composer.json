@@ -29,7 +29,8 @@
             "Database\\": "src/Database/src",
             "Reporter\\": "src/Reporter/src",
             "Finance\\":  "src/Finance/src",
-            "Import\\": "src/Import/src"
+            "Import\\": "src/Import/src",
+            "Prediction\\": "src/Prediction"
         },
         "psr-0": {
         }

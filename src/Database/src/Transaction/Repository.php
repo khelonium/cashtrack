@@ -71,11 +71,11 @@ class Repository extends AbstractRepository implements TransactionRepositoryInte
     }
 
     /**
-     * Convenience for tests
+     * Convenience for tests, alias for add, but from array
      * @param $data
      * @return Transaction
      */
-    public function fastAdd($data)
+    public function create($data)
     {
         $transaction = new Transaction();
         $transaction->exchangeArray($data);

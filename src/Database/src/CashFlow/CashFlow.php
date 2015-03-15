@@ -9,7 +9,7 @@
 
 namespace Database\CashFlow;
 
-use Finance\Cashflow\CashEntry;
+use Finance\Cashflow\MonthSummary;
 use Finance\Reporter\CashFlowInterface;
 use Refactoring\Time\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
@@ -39,7 +39,7 @@ class CashFlow implements AdapterAwareInterface, CashFlowInterface
 
         $out = array();
 
-        $proto = new CashEntry();
+        $proto = new MonthSummary();
 
         foreach ($results as $result) {
             $entry = clone $proto;
@@ -81,8 +81,7 @@ class CashFlow implements AdapterAwareInterface, CashFlowInterface
     }
 
     /**
-     * @param $start_day
-     * @param $end_day
+     * @param IntervalInterface $interval
      * @return string
      */
     public function incomeFor(IntervalInterface $interval)

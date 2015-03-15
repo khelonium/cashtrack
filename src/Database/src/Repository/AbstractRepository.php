@@ -1,15 +1,9 @@
 <?php
-
-
-
 namespace Database\Repository;
-
 
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ServiceManager\ServiceManager;
-
 use Zend\ServiceManager\ServiceManagerAwareInterface;
-
 
 abstract class AbstractRepository implements ServiceManagerAwareInterface
 {
