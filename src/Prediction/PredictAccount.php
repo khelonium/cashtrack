@@ -2,11 +2,9 @@
 namespace Prediction;
 
 use Finance\Account\Account;
-use Finance\Account\AccountBalanceInterface;
-use Finance\Cashflow\MonthTotal;
+use Finance\Account\BalanceInterface;
 use Refactoring\Time\Interval;
 use Refactoring\Time\Interval\LastMonth;
-use Refactoring\Time\Interval\ThisMonth;
 
 class PredictAccount
 {
@@ -14,11 +12,11 @@ class PredictAccount
      * @var Account
      */
     /**
-     * @var AccountBalanceInterface
+     * @var BalanceInterface
      */
     private $balance;
 
-    public function __construct(AccountBalanceInterface $balance)
+    public function __construct(BalanceInterface $balance)
     {
         $this->balance = $balance;
     }
@@ -39,18 +37,18 @@ class PredictAccount
             return ($a < $b) ? -1 : 1;
         };
 
-         $summaries =  $summaries->sort($sort);
+         $sorted =  $summaries->sort($sort);
 
-        $currentCadence = ((new \DateTime())->diff(new  \DateTime($summaries->first()->month))->format('%a')) / 30;
+        $currentCadence = ((new \DateTime())->diff(new  \DateTime($sorted->first()->month))->format('%a')) / 30;
 
 
-        $cadence = new Cadence($summaries);
+        $cadence = new Cadence($sorted);
 
         if ($cadence->getCadence() > $currentCadence) {
             return 0;
         }
 
-        return $this->getAmountAverage($summaries);
+        return $this->getAmountAverage($sorted);
     }
 
     /**

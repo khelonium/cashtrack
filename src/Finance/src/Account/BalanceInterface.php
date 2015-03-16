@@ -1,11 +1,10 @@
 <?php
 namespace Finance\Account;
 
-use Finance\Cashflow\MonthTotal;
 use Finance\Cashflow\MonthTotalCollection;
 use Refactoring\Time\Interval;
 
-interface AccountBalanceInterface
+interface BalanceInterface
 {
     public function __construct(Account $account);
 

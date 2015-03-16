@@ -5,14 +5,14 @@ require_once 'BuildsCashtrack.php';
 
 use Database\Transaction\Repository;
 use Finance\Account\Account;
-use Prediction\Double\AccountBalanceStub;
+use Prediction\Double\BalanceStub;
 use Refactoring\Time\Interval\LastMonth;
 
 class AccountPredictionTest extends \PHPUnit_Framework_TestCase
 {
     use BuildsCashtrack;
     /**
-     * @var AccountBalanceStub
+     * @var BalanceStub
      */
     private $accountBalance;
 
@@ -29,7 +29,7 @@ class AccountPredictionTest extends \PHPUnit_Framework_TestCase
         $account = new Account();
         $account->id = 1;
 
-        $this->accountBalance = new AccountBalanceStub($account);
+        $this->accountBalance = new BalanceStub($account);
 
         $this->prediction = new PredictAccount($this->accountBalance);
 

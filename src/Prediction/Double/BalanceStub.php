@@ -10,12 +10,12 @@ namespace Prediction\Double;
 
 
 use Finance\Account\Account;
-use Finance\Account\AccountBalanceInterface;
+use Finance\Account\BalanceInterface;
 use Finance\Cashflow\MonthTotal;
 use Finance\Cashflow\MonthTotalCollection;
 use Refactoring\Time\Interval;
 
-class AccountBalanceStub implements AccountBalanceInterface
+class BalanceStub implements BalanceInterface
 {
     public $willReturn = [];
 
