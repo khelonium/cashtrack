@@ -7,17 +7,17 @@
  */
 namespace Prediction;
 
-use Finance\Cashflow\MonthSummaryHistory;
+use Finance\Cashflow\MonthTotalCollection;
 
 class Cadence
 {
 
     /**
-     * @var MonthSummaryHistory
+     * @var MonthTotalCollection
      */
     private $summaries;
 
-    public function __construct(MonthSummaryHistory $summaries)
+    public function __construct(MonthTotalCollection $summaries)
     {
 
         $this->summaries = $summaries;

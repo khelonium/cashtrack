@@ -1,18 +1,18 @@
 <?php
 namespace Prediction;
 
-use Finance\Cashflow\MonthSummary;
+use Finance\Cashflow\MonthTotal;
 
 trait BuildsCashtrack
 {
     /**
      * @param $amount
      * @param $date
-     * @return MonthSummary
+     * @return MonthTotal
      */
     protected function cashtrackWith($amount, $date)
     {
-        $cashEntry = new MonthSummary();
+        $cashEntry = new MonthTotal();
         $cashEntry->accountId = 1;
         $cashEntry->amount = $amount;
         $cashEntry->type = 'expense';

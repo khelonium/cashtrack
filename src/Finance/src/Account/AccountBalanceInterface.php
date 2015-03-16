@@ -1,7 +1,8 @@
 <?php
 namespace Finance\Account;
 
-use Finance\Cashflow\MonthSummary;
+use Finance\Cashflow\MonthTotal;
+use Finance\Cashflow\MonthTotalCollection;
 use Refactoring\Time\Interval;
 
 interface AccountBalanceInterface
@@ -10,7 +11,7 @@ interface AccountBalanceInterface
 
     /**
      * @param Interval $interval
-     * @return []
+     * @return MonthTotalCollection
      */
     public function totalFor(Interval $interval);
 }

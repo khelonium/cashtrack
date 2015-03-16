@@ -5,7 +5,6 @@ require_once 'BuildsCashtrack.php';
 
 use Database\Transaction\Repository;
 use Finance\Account\Account;
-use Finance\Cashflow\MonthSummary;
 use Prediction\Double\AccountBalanceStub;
 use Refactoring\Time\Interval\LastMonth;
 
@@ -118,7 +117,7 @@ class AccountPredictionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function forACadenceOfTwoAndSummaryLastMonthThereIsNoPrediction()
+    public function forACadenceOfTwoAndExpenseLastMonthThereIsNoPrediction()
     {
 
         $first  =  (new LastMonth())->getStart();
@@ -137,28 +136,32 @@ class AccountPredictionTest extends \PHPUnit_Framework_TestCase
 
     }
 
-
-
-
     /**
-     * @return Repository $repo
+     * @test
      */
-    protected function getTransactionRepository()
+    public function wePredictIfCadenceExceedsTimeSinceLastEncountered()
     {
-        return \TestBootstrap::get('\Database\Transaction\Repository');
+
+        $first  =  (new LastMonth())->getStart()->sub(new \DateInterval('P1M'));
+        $second = clone $first;
+        $second = $second->sub(new \DateInterval('P1M'));
+        $third  =  clone $second;
+        $third->sub(new \DateInterval('P1M'));
+
+        $this->accountBalance->willReturn = [
+            $this->cashtrackWith(100, $first->format('Y-m-01')),
+            $this->cashtrackWith(200, $second->format('Y-m-01')),
+            $this->cashtrackWith(300, $third->format('Y-m-01')),
+
+        ];
+
+        //test is not good
+        $this->assertEquals(200, $this->prediction->thisMonth());
+
     }
 
-    /**
-     * @param $transaction
-     */
-    protected function addTransaction($transaction)
-    {
-        $repo = $this->getTransactionRepository();
 
-        $repo->add(
-            $transaction
-        );
-    }
+
 
 
 }

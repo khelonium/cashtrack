@@ -11,7 +11,8 @@ namespace Prediction\Double;
 
 use Finance\Account\Account;
 use Finance\Account\AccountBalanceInterface;
-use Finance\Cashflow\MonthSummary;
+use Finance\Cashflow\MonthTotal;
+use Finance\Cashflow\MonthTotalCollection;
 use Refactoring\Time\Interval;
 
 class AccountBalanceStub implements AccountBalanceInterface
@@ -24,19 +25,24 @@ class AccountBalanceStub implements AccountBalanceInterface
     }
 
 
+    /**
+     * @param Interval $interval
+     * @return MonthTotalCollection
+     */
     public function totalFor(Interval $interval)
     {
 
         $out = [];
 
-        /** @var MonthSummary $cash */
+        /** @var MonthTotal $cash */
         foreach ($this->willReturn as $cash) {
             if ($interval->contains(new \DateTime($cash->month))) {
                 $out[] = $cash;
             }
         }
 
-        return $out;
+        return new MonthTotalCollection($out);
+
     }
 
 }
