@@ -24,11 +24,38 @@ class IndexController extends AbstractActionController
     }
 
 
-
-
     public function merchantAction()
     {
 
     }
 
+    public function predictionAction()
+    {
+
+        $sm = $this->getServiceLocator();
+
+        /** @var Database\Account\AccountRepository $accounts */
+        $accounts = $sm->get('\Database\Account\Repository');
+
+        /** @var Adapter $adapter */
+        $adapter = $sm->get('\Zend\Db\Adapter\Adapter');
+
+        $out = [];
+
+        foreach ($accounts->getByType('expense') as $account) {
+
+            $accountBalance = new \Database\Account\Balance($account);
+            $accountBalance->setDbAdapter($adapter);
+            $prediction = new \Prediction\PredictAccount($accountBalance);
+            $amount = $prediction->thisMonth();
+
+            if ($amount) {
+                $out[$account->name] = $amount;
+            }
+
+        }
+
+        return new ViewModel(['accounts' => $out]);
+
+    }
 }

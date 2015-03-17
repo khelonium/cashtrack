@@ -51,29 +51,29 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
     {
         $transaction = $this->getTransactionRepo();
 
-        $transaction->fastAdd(
+        $transaction->create(
             ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-01-01']
         );
-        $transaction->fastAdd(
+        $transaction->create(
             ['description' => 'transaction 1', 'amount'  => 50,  'to_account'  => 87, 'date' => '2014-01-01']
         );
-        $transaction->fastAdd(
+        $transaction->create(
             ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-01-01']
         );
 
-        $transaction->fastAdd(
+        $transaction->create(
             ['description' => 'transaction 1', 'amount'  => 500,  'to_account'  => 87, 'date' => '2014-02-01']
         );
-        $transaction->fastAdd(
+        $transaction->create(
             ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-02-01']
         );
-        $transaction->fastAdd(
+        $transaction->create(
             ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-02-28']
         );
-        $transaction->fastAdd(
+        $transaction->create(
             ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-02-28']
         );
-        $transaction->fastAdd(
+        $transaction->create(
             ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2015-01-01']
         );
 

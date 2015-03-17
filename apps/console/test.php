@@ -8,11 +8,20 @@
 require_once 'bootstrap.php';
 
 
-$import = false;
-$service = $sm->get('\Finance\Balance\BalanceService');
+/** @var Database\Account\AccountRepository $accounts */
+$accounts = $sm->get('\Database\Account\Repository');
 
+/** @var Adapter $adapter */
+$adapter = $sm->get('\Zend\Db\Adapter\Adapter');
 
-$balance =  $service->get('49', new \Refactoring\Interval\SpecificMonth(new DateTime('2013-10-01')));
+foreach ($accounts->getByType('expense') as $account) {
 
-echo "\n";
-echo $balance->getBalance(),"\n";
+    $accountBalance = new \Database\Account\Balance($account);
+    $accountBalance->setDbAdapter($adapter);
+    $prediction = new \Prediction\PredictAccount($accountBalance);
+    $amount = $prediction->thisMonth();
+
+    if ($amount) {
+        echo $account->name,"\t\t\t",round($amount,2),"\n";
+    }
+}
