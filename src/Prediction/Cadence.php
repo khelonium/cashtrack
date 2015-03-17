@@ -43,12 +43,13 @@ class Cadence
             }
         );
 
-        if (count($dates) == 1) {
+        if (count($dates) <= 1) {
             return 0;
         }
 
 
         $prev = array_shift($dates);
+
 
         $cadences = [];
 

@@ -9,6 +9,9 @@
 
 namespace Application\Controller;
 
+use Prediction\Cadence;
+use Refactoring\Time\Interval;
+use Refactoring\Time\Interval\LastMonth;
 use Zend\Db\Adapter\Adapter;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -42,11 +45,18 @@ class IndexController extends AbstractActionController
 
         $out = [];
 
-        foreach ($accounts->getByType('expense') as $account) {
+        $cadences = [];
+        $ignore = [77, 1, 10, 6 , 8 ,42, 64];
 
+        foreach ($accounts->getByType('expense') as $account) {
+            if (false !== array_search($account->id, $ignore)) {
+                continue;
+            }
             $accountBalance = new \Database\Account\Balance($account);
             $accountBalance->setDbAdapter($adapter);
             $prediction = new \Prediction\PredictAccount($accountBalance);
+            $cadence = new Cadence($accountBalance->totalFor($this->getInterval()));
+            $cadences[$account->name] =  $cadence->getCadence();
             $amount = $prediction->thisMonth();
 
             if ($amount) {
@@ -55,7 +65,18 @@ class IndexController extends AbstractActionController
 
         }
 
-        return new ViewModel(['accounts' => $out]);
+        return new ViewModel(['accounts' => $out, 'cadences' => $cadences]);
 
+    }
+
+    /**
+     * @return LastMonth
+     */
+    protected function getInterval()
+    {
+        $end = (new LastMonth())->getStart();
+        $start = clone $end;
+        $start->sub(new \DateInterval('P1Y'));
+        return new Interval($start, $end);
     }
 }

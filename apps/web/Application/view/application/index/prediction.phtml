@@ -3,13 +3,13 @@
 
     <div class="col-md-6">
         <table class="table table-hover">
-            <th>Name</th> <th class="text-right">Amount</th>
+            <th>Name</th> <th class="text-right">Cadence</th><th class="text-right">Amount</th>
             <?php foreach ($this->accounts as $name => $amount): ?>
                 <tr>
-                    <td><?php echo $name;?></td><td class="text-right"><?php echo round($amount,2); ?></td>
+                    <td><?php echo $name;?></td><td class="text-right"><?php echo round($this->cadences[$name],2);?></td></td><td class="text-right"><?php echo round($amount,2); ?></td>
                 </tr>
             <?php endforeach; ?>
-            <th>Total</th><th class="text-right"><?php echo round(array_sum($this->accounts),2);?></th>
+            <th>Total</th><th colspan="2" class="text-right"><?php echo round(array_sum($this->accounts),2);?></th>
         </table>
     </div>
 </div>
