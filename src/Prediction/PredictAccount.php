@@ -30,16 +30,17 @@ class PredictAccount
         }
 
         $sort = function ($a, $b) {
-            if ($a == $b) {
+            if ($a->month == $b->month) {
                 return 0;
             }
 
-            return ($a < $b) ? -1 : 1;
+            return ($a->month > $b->month) ? -1 : 1;
         };
 
          $sorted =  $summaries->sort($sort);
 
         $currentCadence = ((new \DateTime())->diff(new  \DateTime($sorted->first()->month))->format('%a')) / 30;
+
 
 
         $cadence = new Cadence($sorted);
@@ -56,8 +57,8 @@ class PredictAccount
      */
     protected function getInterval()
     {
-        $end = (new LastMonth())->getStart();
-        $start = clone $end;
+        $end = (new LastMonth())->getEnd();
+        $start = (new LastMonth())->getStart();
         $start->sub(new \DateInterval('P1Y'));
         return new Interval($start, $end);
     }
