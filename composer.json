@@ -26,13 +26,13 @@
 
     "autoload": {
         "psr-4": {
-            "Database\\": "src/Database/src",
-            "Reporter\\": "src/Reporter/src",
-            "Finance\\":  "src/Finance/src",
-            "Import\\": "src/Import/src",
-            "Prediction\\": "src/Prediction",
-            "Library\\": "src/Library",
-            "Watch\\": "src/Watch"
+            "Database\\": "apps/core/Database/src",
+            "Reporter\\": "apps/core/Reporter/src",
+            "Finance\\":  "apps/core/Finance/src",
+            "Import\\": "apps/core/Import/src",
+            "Prediction\\": "apps/core/Prediction",
+            "Library\\": "apps/core/Library",
+            "Watch\\": "apps/core/Watch"
         },
         "psr-0": {
         }
