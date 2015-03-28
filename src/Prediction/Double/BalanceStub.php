@@ -45,4 +45,14 @@ class BalanceStub implements AccountSum
 
     }
 
+    public function setAccount(Account $account = null)
+    {
+        // TODO: Implement setAccount() method.
+    }
+
+    public function forAccount(Account $account)
+    {
+        // TODO: Implement forAccount() method.
+    }
+
 }

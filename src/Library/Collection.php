@@ -95,7 +95,7 @@ class Collection implements \IteratorAggregate, \Countable
     /**
      * @return bool
      */
-    protected function isEmpty()
+    public function isEmpty()
     {
         return 0 == count($this->entries);
     }

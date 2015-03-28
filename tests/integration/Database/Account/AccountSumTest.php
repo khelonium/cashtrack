@@ -5,7 +5,8 @@ use Database\Transaction\Repository;
 use Finance\Account\Account;
 use Refactoring\Time\Interval\ThisYear;
 
-class AccountSumTest extends \PHPUnit_Framework_TestCase {
+class AccountSumTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @var AccountSum
@@ -24,6 +25,7 @@ class AccountSumTest extends \PHPUnit_Framework_TestCase {
         $this->accountSum->setAccount($account);
 
         $this->accountSum->setDbAdapter(\TestBootstrap::get('Zend\Db\Adapter\Adapter'));
+
         foreach ($this->getRepository()->all() as $transaction) {
             $this->getRepository()->delete($transaction);
         }

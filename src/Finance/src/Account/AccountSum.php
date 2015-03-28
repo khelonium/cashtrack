@@ -12,4 +12,13 @@ interface AccountSum
      * @return Collection
      */
     public function totalFor(Interval $interval);
+
+    public function setAccount(Account $account = null);
+
+    /**
+     * Side free effect.
+     * @param Account $account
+     * @return AccountSum
+     */
+    public function forAccount(Account $account);
 }

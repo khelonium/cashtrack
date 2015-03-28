@@ -31,7 +31,8 @@
             "Finance\\":  "src/Finance/src",
             "Import\\": "src/Import/src",
             "Prediction\\": "src/Prediction",
-            "Library\\": "src/Library"
+            "Library\\": "src/Library",
+            "Watch\\": "src/Watch"
         },
         "psr-0": {
         }
