@@ -8,7 +8,7 @@ return array(
     'module_listener_options' => array(
         'module_paths' => array(
             './apps/web',
-            './vendor',
+            './apps/core',
         ),
 
         'config_glob_paths' => array(
