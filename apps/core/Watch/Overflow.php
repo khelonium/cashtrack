@@ -8,6 +8,7 @@ use Refactoring\Time\Interval\ThisMonth;
 class Overflow
 {
     private $strategy;
+    const WARNING_LIMIT = 0.75;
 
     /**
      * @var CashFlowInterface
@@ -36,5 +37,10 @@ class Overflow
         );
 
         return array_sum($total) > $limit;
+    }
+
+    public function isAlmostAbove($limit)
+    {
+        return $this->isAbove(self::WARNING_LIMIT * $limit);
     }
 }
