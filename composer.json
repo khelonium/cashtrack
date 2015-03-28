@@ -32,7 +32,8 @@
             "Import\\": "apps/core/Import/src",
             "Prediction\\": "apps/core/Prediction",
             "Library\\": "apps/core/Library",
-            "Watch\\": "apps/core/Watch"
+            "Watch\\": "apps/core/Watch",
+            "Jobs\\": "apps/jobs"
         },
         "psr-0": {
         }
