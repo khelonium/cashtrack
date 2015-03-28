@@ -6,7 +6,6 @@ use Refactoring\Time\Interval;
 
 interface AccountSum
 {
-    public function __construct(Account $account);
 
     /**
      * @param Interval $interval

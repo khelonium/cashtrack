@@ -1,6 +1,7 @@
 <?php
 namespace Database\Account;
 
+use Database\Account\Exception\NoAccountSet;
 use Finance\Account\Account;
 use Finance\Account\AccountSum as AccountSumInterface;
 use Finance\Cashflow\AccountTotal;
@@ -20,9 +21,21 @@ class AccountSum implements AccountSumInterface, AdapterAwareInterface
      */
     private $account;
 
-    public function __construct(Account $account)
+    public function setAccount(Account $account = null)
     {
         $this->account = $account;
+    }
+
+    /**
+     * Side free effect.
+     * @param Account $account
+     * @return AccountSum
+     */
+    public function forAccount(Account $account)
+    {
+        $sum = clone $this;
+        $sum->account = $account;
+        return $sum;
     }
 
     /**
@@ -32,7 +45,13 @@ class AccountSum implements AccountSumInterface, AdapterAwareInterface
     public function totalFor(Interval $interval)
     {
 
-        $result =  $this->getSql()->prepareStatementForSqlObject($this->buildSelect($interval))->execute();
+        if (null == $this->account) {
+            throw new NoAccountSet();
+        }
+
+        $result =  $this->getSql()
+            ->prepareStatementForSqlObject($this->buildSelect($interval))
+            ->execute();
 
         $out = [];
 
@@ -71,8 +90,7 @@ class AccountSum implements AccountSumInterface, AdapterAwareInterface
 
     /**
      * @param Interval $interval
-     * @param $sql
-     * @return mixed
+     * @return \Zend\Db\Sql\Select
      */
     protected function buildSelect(Interval $interval)
     {

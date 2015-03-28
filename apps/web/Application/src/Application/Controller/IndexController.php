@@ -9,6 +9,7 @@
 
 namespace Application\Controller;
 
+use Database\Account\AccountSum;
 use Prediction\Cadence;
 use Refactoring\Time\Interval;
 use Refactoring\Time\Interval\LastMonth;
@@ -48,14 +49,16 @@ class IndexController extends AbstractActionController
         $cadences = [];
         $ignore = [77, 1, 10, 6 , 8 ,42, 64];
 
+        $accountBalance = new AccountSum();
+        $accountBalance->setDbAdapter($adapter);
+
         foreach ($accounts->getByType('expense') as $account) {
             if (false !== array_search($account->id, $ignore)) {
                 continue;
             }
-            $accountBalance = new \Database\Account\AccountSum($account);
-            $accountBalance->setDbAdapter($adapter);
-            $prediction = new \Prediction\PredictAccount($accountBalance);
-            $cadence = new Cadence($accountBalance->totalFor($this->getInterval()));
+
+            $prediction = new \Prediction\PredictAccount($accountBalance->forAccount($account));
+            $cadence = new Cadence($accountBalance->forAccount($account)->totalFor($this->getInterval()));
             $cadences[$account->name] =  $cadence->getCadence();
             $amount = $prediction->thisMonth();
 

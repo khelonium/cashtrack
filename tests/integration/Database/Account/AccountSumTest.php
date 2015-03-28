@@ -1,25 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cdordea
- * Date: 3/16/15
- * Time: 9:26 PM
- */
+namespace Database\Account;
 
-namespace integration\Database\Account;
-
-
-use Database\Account\AccountSum;
 use Database\Transaction\Repository;
 use Finance\Account\Account;
 use Refactoring\Time\Interval\ThisYear;
 
-class BalanceTest extends \PHPUnit_Framework_TestCase {
+class AccountSumTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @var AccountSum
      */
-    private $balance;
+    private $accountSum;
 
     /**
     * @before
@@ -29,9 +20,10 @@ class BalanceTest extends \PHPUnit_Framework_TestCase {
         $account = new Account();
         $account->id = 4;
         $account->name = 'mancare';
-        $this->balance = new AccountSum($account);
+        $this->accountSum = new AccountSum();
+        $this->accountSum->setAccount($account);
 
-        $this->balance->setDbAdapter(\TestBootstrap::get('Zend\Db\Adapter\Adapter'));
+        $this->accountSum->setDbAdapter(\TestBootstrap::get('Zend\Db\Adapter\Adapter'));
         foreach ($this->getRepository()->all() as $transaction) {
             $this->getRepository()->delete($transaction);
         }
@@ -43,7 +35,7 @@ class BalanceTest extends \PHPUnit_Framework_TestCase {
      */
     public function withNoTransactionsThereWillBeNoTotals()
     {
-        $this->assertEquals(0, count($this->balance->totalFor(new ThisYear())));
+        $this->assertEquals(0, count($this->accountSum->totalFor(new ThisYear())));
     }
 
     /**
@@ -60,7 +52,29 @@ class BalanceTest extends \PHPUnit_Framework_TestCase {
             ]
         );
 
-        $summaries = $this->balance->totalFor(new ThisYear());
+        $summaries = $this->accountSum->totalFor(new ThisYear());
+
+        $this->assertEquals(10, $summaries->first()->amount);
+    }
+
+    /**
+     * @test
+     */
+    public function alternateQueryMethodWorks()
+    {
+        $this->getRepository()->create(
+            [
+                'toAccount' =>5,
+                'fromAccount' =>1,
+                'amount' =>10,
+                'transaction_date' => (new \DateTime())->format('Y-m-d')
+            ]
+        );
+
+        $account = new Account();
+        $account->id = 5;
+        $account->name = 'stuff';
+        $summaries = $this->accountSum->forAccount($account)->totalFor(new ThisYear());
 
         $this->assertEquals(10, $summaries->first()->amount);
     }
@@ -81,7 +95,7 @@ class BalanceTest extends \PHPUnit_Framework_TestCase {
                 ]
             );
 
-            $summaries = $this->balance->totalFor(new ThisYear());
+            $summaries = $this->accountSum->totalFor(new ThisYear());
             $this->assertEquals(($i+1) * 10, $summaries->first()->amount);
 
 
@@ -118,7 +132,7 @@ class BalanceTest extends \PHPUnit_Framework_TestCase {
         );
 
 
-        $totals = $this->balance->totalFor(new ThisYear());
+        $totals = $this->accountSum->totalFor(new ThisYear());
 
         $this->assertEquals(2, count($totals));
 
