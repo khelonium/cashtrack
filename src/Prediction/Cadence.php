@@ -7,17 +7,17 @@
  */
 namespace Prediction;
 
-use Finance\Cashflow\MonthTotalCollection;
+use Library\Collection;
 
 class Cadence
 {
 
     /**
-     * @var MonthTotalCollection
+     * @var \Library\Collection
      */
     private $summaries;
 
-    public function __construct(MonthTotalCollection $summaries)
+    public function __construct(Collection $summaries)
     {
 
         $this->summaries = $summaries;

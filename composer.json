@@ -30,7 +30,8 @@
             "Reporter\\": "src/Reporter/src",
             "Finance\\":  "src/Finance/src",
             "Import\\": "src/Import/src",
-            "Prediction\\": "src/Prediction"
+            "Prediction\\": "src/Prediction",
+            "Library\\": "src/Library"
         },
         "psr-0": {
         }

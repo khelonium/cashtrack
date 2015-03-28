@@ -12,7 +12,7 @@ namespace Database\Account;
 use Finance\Account\Account;
 use Finance\Account\BalanceInterface;
 use Finance\Cashflow\MonthTotal;
-use Finance\Cashflow\MonthTotalCollection;
+use Library\Collection;
 use Refactoring\Time\Interval;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
@@ -35,7 +35,7 @@ class Balance implements BalanceInterface, AdapterAwareInterface
 
     /**
      * @param Interval $interval
-     * @return MonthTotalCollection
+     * @return \Library\Collection
      */
     public function totalFor(Interval $interval)
     {
@@ -48,7 +48,7 @@ class Balance implements BalanceInterface, AdapterAwareInterface
             $out[] = $this->buildEntry($entry);
         }
 
-        return new MonthTotalCollection($out);
+        return new Collection($out);
     }
 
 

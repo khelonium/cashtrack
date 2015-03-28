@@ -2,7 +2,7 @@
 namespace Prediction;
 
 use Finance\Cashflow\MonthTotal;
-use Finance\Cashflow\MonthTotalCollection;
+use Library\Collection;
 use Zend\Stdlib\ArrayObject;
 
 require_once 'BuildsCashtrack.php';
@@ -17,7 +17,7 @@ class CadenceTest extends \PHPUnit_Framework_TestCase
     public function withOneEntryCadenceIsZero()
     {
         $cadence = new Cadence(
-            new MonthTotalCollection(
+            new Collection(
                 [
                     $this->cashtrackWith(100, (new \DateTime())->format('Y-m-01'))
                 ]
@@ -54,7 +54,7 @@ class CadenceTest extends \PHPUnit_Framework_TestCase
         $last = (new \DateTime())->sub(new \DateInterval('P3M'));
 
         $cadence = new Cadence(
-            new MonthTotalCollection(
+            new Collection(
                 [
                     $this->cashtrackWith(100, $start->format('Y-m-01')),
                     $this->cashtrackWith(100, $second->format('Y-m-01')),
@@ -76,7 +76,7 @@ class CadenceTest extends \PHPUnit_Framework_TestCase
         $end = (new \DateTime())->sub(new \DateInterval('P' . $expectedCadence . 'M'));
 
         $cadence = new Cadence(
-            new MonthTotalCollection(
+            new Collection(
                 [
                     $this->cashtrackWith(100, $start->format('Y-m-01')),
                     $this->cashtrackWith(100, $end->format('Y-m-01'))

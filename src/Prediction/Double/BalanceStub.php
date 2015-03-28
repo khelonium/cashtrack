@@ -12,7 +12,7 @@ namespace Prediction\Double;
 use Finance\Account\Account;
 use Finance\Account\BalanceInterface;
 use Finance\Cashflow\MonthTotal;
-use Finance\Cashflow\MonthTotalCollection;
+use Library\Collection;
 use Refactoring\Time\Interval;
 
 class BalanceStub implements BalanceInterface
@@ -27,7 +27,7 @@ class BalanceStub implements BalanceInterface
 
     /**
      * @param Interval $interval
-     * @return MonthTotalCollection
+     * @return \Library\Collection
      */
     public function totalFor(Interval $interval)
     {
@@ -41,7 +41,7 @@ class BalanceStub implements BalanceInterface
             }
         }
 
-        return new MonthTotalCollection($out);
+        return new Collection($out);
 
     }
 

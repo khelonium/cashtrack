@@ -1,28 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cdordea
- * Date: 3/15/15
- * Time: 10:15 PM
- */
+namespace Library;
 
-namespace Finance\Cashflow;
-
-
-class MonthTotalCollection implements \IteratorAggregate, \Countable
+class Collection implements \IteratorAggregate, \Countable
 {
     private $entries = [];
 
     public function __construct(array $entries)
     {
         foreach ($entries as $summary) {
-            $this->add($summary);
+            $this->entries [] = $summary;
         }
-    }
-
-    private function add(MonthTotal $summary)
-    {
-        $this->entries [] = $summary;
     }
 
     public function getIterator()
@@ -61,24 +48,24 @@ class MonthTotalCollection implements \IteratorAggregate, \Countable
 
     public function nth($index)
     {
-        if ($index > count($this->entries)) {
+        if (($index+1) > count($this->entries)) {
             throw new \OutOfBoundsException();
         }
-        return $this->entries[$index];
+        return $this->entries[$index+1];
     }
 
     /**
      * @param callable $callback
-     * @return MonthTotalCollection
+     * @return Collection
      */
     public function filter(callable $callback)
     {
-        return new MonthTotalCollection(array_filter($this->entries, $callback));
+        return new Collection(array_filter($this->entries, $callback));
     }
 
     /**
      * @param callable $callback
-     * @return MonthTotalCollection
+     * @return Collection
      */
     public function sort(callable $callback)
     {
@@ -112,6 +99,5 @@ class MonthTotalCollection implements \IteratorAggregate, \Countable
     {
         return 0 == count($this->entries);
     }
-
-
 }
+
