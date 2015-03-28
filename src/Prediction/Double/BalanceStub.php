@@ -10,12 +10,12 @@ namespace Prediction\Double;
 
 
 use Finance\Account\Account;
-use Finance\Account\BalanceInterface;
-use Finance\Cashflow\MonthTotal;
+use Finance\Account\AccountSum;
+use Finance\Cashflow\AccountTotal;
 use Library\Collection;
 use Refactoring\Time\Interval;
 
-class BalanceStub implements BalanceInterface
+class BalanceStub implements AccountSum
 {
     public $willReturn = [];
 
@@ -34,7 +34,7 @@ class BalanceStub implements BalanceInterface
 
         $out = [];
 
-        /** @var MonthTotal $cash */
+        /** @var AccountTotal $cash */
         foreach ($this->willReturn as $cash) {
             if ($interval->contains(new \DateTime($cash->month))) {
                 $out[] = $cash;

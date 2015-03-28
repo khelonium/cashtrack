@@ -2,7 +2,7 @@
 namespace Prediction;
 
 use Finance\Account\Account;
-use Finance\Account\BalanceInterface;
+use Finance\Account\AccountSum;
 use Refactoring\Time\Interval;
 use Refactoring\Time\Interval\LastMonth;
 
@@ -12,11 +12,11 @@ class PredictAccount
      * @var Account
      */
     /**
-     * @var BalanceInterface
+     * @var AccountSum
      */
     private $balance;
 
-    public function __construct(BalanceInterface $balance)
+    public function __construct(AccountSum $balance)
     {
         $this->balance = $balance;
     }

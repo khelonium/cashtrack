@@ -1,7 +1,7 @@
 <?php
 namespace Prediction;
 
-use Finance\Cashflow\MonthTotal;
+use Finance\Cashflow\AccountTotal;
 use Library\Collection;
 use Zend\Stdlib\ArrayObject;
 

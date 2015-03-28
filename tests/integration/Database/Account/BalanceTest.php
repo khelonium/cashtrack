@@ -9,7 +9,7 @@
 namespace integration\Database\Account;
 
 
-use Database\Account\Balance;
+use Database\Account\AccountSum;
 use Database\Transaction\Repository;
 use Finance\Account\Account;
 use Refactoring\Time\Interval\ThisYear;
@@ -17,7 +17,7 @@ use Refactoring\Time\Interval\ThisYear;
 class BalanceTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @var Balance
+     * @var AccountSum
      */
     private $balance;
 
@@ -29,7 +29,7 @@ class BalanceTest extends \PHPUnit_Framework_TestCase {
         $account = new Account();
         $account->id = 4;
         $account->name = 'mancare';
-        $this->balance = new Balance($account);
+        $this->balance = new AccountSum($account);
 
         $this->balance->setDbAdapter(\TestBootstrap::get('Zend\Db\Adapter\Adapter'));
         foreach ($this->getRepository()->all() as $transaction) {

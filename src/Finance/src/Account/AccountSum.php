@@ -4,7 +4,7 @@ namespace Finance\Account;
 use Library\Collection;
 use Refactoring\Time\Interval;
 
-interface BalanceInterface
+interface AccountSum
 {
     public function __construct(Account $account);
 

@@ -1,17 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cdordea
- * Date: 3/16/15
- * Time: 9:15 PM
- */
-
 namespace Database\Account;
 
-
 use Finance\Account\Account;
-use Finance\Account\BalanceInterface;
-use Finance\Cashflow\MonthTotal;
+use Finance\Account\AccountSum as AccountSumInterface;
+use Finance\Cashflow\AccountTotal;
 use Library\Collection;
 use Refactoring\Time\Interval;
 use Zend\Db\Adapter\AdapterAwareInterface;
@@ -19,7 +11,7 @@ use Zend\Db\Adapter\AdapterAwareTrait;
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Sql;
 
-class Balance implements BalanceInterface, AdapterAwareInterface
+class AccountSum implements AccountSumInterface, AdapterAwareInterface
 {
     use AdapterAwareTrait;
 
@@ -63,11 +55,11 @@ class Balance implements BalanceInterface, AdapterAwareInterface
 
     /**
      * @param $entry
-     * @return MonthTotal
+     * @return AccountTotal
      */
     protected function buildEntry($entry)
     {
-        $total = new MonthTotal();
+        $total = new AccountTotal();
         $total->amount = $entry['amount'];
         $total->month = (new \DateTime($entry['year']."-".$entry['month'].'-'.'01'))->format('Y-m-d');
         $total->year = $entry['year'];

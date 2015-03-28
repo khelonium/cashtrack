@@ -16,7 +16,7 @@ $adapter = $sm->get('\Zend\Db\Adapter\Adapter');
 
 foreach ($accounts->getByType('expense') as $account) {
 
-    $accountBalance = new \Database\Account\Balance($account);
+    $accountBalance = new \Database\Account\AccountSum($account);
     $accountBalance->setDbAdapter($adapter);
     $prediction = new \Prediction\PredictAccount($accountBalance);
     $amount = $prediction->thisMonth();

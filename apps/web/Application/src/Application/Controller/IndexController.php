@@ -52,7 +52,7 @@ class IndexController extends AbstractActionController
             if (false !== array_search($account->id, $ignore)) {
                 continue;
             }
-            $accountBalance = new \Database\Account\Balance($account);
+            $accountBalance = new \Database\Account\AccountSum($account);
             $accountBalance->setDbAdapter($adapter);
             $prediction = new \Prediction\PredictAccount($accountBalance);
             $cadence = new Cadence($accountBalance->totalFor($this->getInterval()));

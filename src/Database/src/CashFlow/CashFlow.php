@@ -9,7 +9,7 @@
 
 namespace Database\CashFlow;
 
-use Finance\Cashflow\MonthTotal;
+use Finance\Cashflow\AccountTotal;
 use Finance\Reporter\CashFlowInterface;
 use Refactoring\Time\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
@@ -39,7 +39,7 @@ class CashFlow implements AdapterAwareInterface, CashFlowInterface
 
         $out = array();
 
-        $proto = new MonthTotal();
+        $proto = new AccountTotal();
 
         foreach ($results as $result) {
             $entry = clone $proto;
