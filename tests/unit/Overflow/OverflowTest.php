@@ -1,214 +1,118 @@
 <?php
 namespace Overflow;
 
-use Finance\Account\Account;
-use Finance\Account\AccountSum;
+use Database\Transaction\Repository;
 use Finance\Cashflow\AccountTotal;
-use Library\Collection;
-use Refactoring\Time\Interval;
+use Finance\Reporter\CashFlowInterface;
+use Refactoring\Time\Interval\IntervalInterface;
+use Refactoring\Time\Interval\ThisYear;
 use Watch\Overflow;
 
 class OverflowTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
     * @test
     */
-    public function noOverflowUnlessConfigured()
+    public function withNoEntriesThereIsNoOverflow()
     {
-        $overflow = new Overflow(new AccountSumStub());
-
-        $this->assertFalse($overflow->account($this->getAccount())->isAbove(100));
-    }
-
-
-    /**
-     * @test
-     */
-    public function weDontOverflowIfTotalIsLessThanConfigured()
-    {
-        $overflow = new Overflow(new AccountSumStub());
-        $this->assertFalse($overflow->account($this->getAccount())->isAbove(100));
+        $overflow = new Overflow(new CashDouble());
+        $this->assertFalse($overflow->isAbove(10));
     }
 
     /**
      * @test
      */
-    public function weUseAnAccountTotalToGetData()
+    public function weUseACashflowObject()
     {
 
-        $spy      = new AccountSumSpy();
-        $overflow = new Overflow($spy);
+        $double = new CashDouble();
 
-        $this->assertFalse($overflow->account($this->getAccount())->isAbove(100));
+        $overflow = new Overflow($double);
 
-        $this->assertTrue($spy->wasCalled);
-        $this->assertTrue($spy->forAccountCalled);
+        $overflow->isAbove(10);
+
+        $this->assertTrue($double->expenseCalled);
     }
-
 
     /**
      * @test
      */
-    public function ifWeHaveASumBellowConfigurationWeDoNotOverflow()
+    public function isAbove()
     {
-        $summer = new AccountSumStub();
 
-        $monthTotal         = new AccountTotal();
-        $monthTotal->amount = 50;
-        $monthTotal->accountId  = 4;
+        $double = new CashDouble();
 
+        $overflow = new Overflow($double);
 
-
-        $collection = new Collection([$monthTotal]);
-        $summer->willReturn = $collection;
-
-        $overflow = new Overflow($summer);
-
-        $this->assertFalse($overflow->account($this->getAccount())->isAbove(100));
+        $expense = new AccountTotal();
+        $expense->id       = 1;
+        $expense->type    = 'expense';
+        $expense->amount =  11;
 
 
-    }
+        $double->expenses[] = $expense;
 
+        $this->assertTrue($overflow->isAbove(10));
 
-    /**
-     * @test
-     */
-    public function weOverflowIfSumIsMoreThanConfigured()
-    {
-        $summer = new AccountSumStub();
+        $double->expenses[] = $expense;
 
-        $monthTotal         = new AccountTotal();
-        $monthTotal->amount = 101;
-        $monthTotal->accountId  = 4;
-
-
-
-        $collection = new Collection([$monthTotal]);
-        $summer->willReturn = $collection;
-
-        $overflow = new Overflow($summer);
-
-        $this->assertTrue($overflow->account($this->getAccount())->isAbove(100));
+        $this->assertTrue($overflow->isAbove(20));
 
     }
 
     /**
      * @test
      */
-    public function weKnowWhenWeAlmostOverflow()
-    {
-        $summer = new AccountSumStub();
-
-        $monthTotal         = new AccountTotal();
-        $monthTotal->amount = 76;
-        $monthTotal->accountId  = 4;
-
-
-        $collection = new Collection([$monthTotal]);
-        $summer->willReturn = $collection;
-
-        $overflow = new Overflow($summer);
-
-        $this->assertTrue($overflow->account($this->getAccount())->isAlmostAbove(100));
-
-    }
-
-    /**
-     * @test
-     */
-    public function weCanUseADifferentTimeInterval()
+    public function weCanPassAStrategy()
     {
 
-        $overflow = new Overflow(new StrategySpy(), new Interval\ThisYear());
+        $year = new ThisYear();
+        $double = new CashDouble();
+        $overflow = new Overflow($double, $year);
 
-        $overflow->account($this->getAccount())->isAbove(100);
+        $overflow->isAbove(10);
 
+        $this->assertSame($year, $double->strategy);
     }
-
-    /**
-     * @return Account
-     */
-    protected function getAccount()
-    {
-        $account       = new Account();
-        $account->id   = 4;
-        $account->name = 'mancare';
-
-        return $account;
-    }
-}
-
-class AccountSumSpy implements AccountSum
-{
-    public $wasCalled = false;
-    public $forAccountCalled = false;
-
-    /**
-     * @param Interval $interval
-     * @return Collection
-     */
-    public function totalFor(Interval $interval)
-    {
-        $this->wasCalled = true;
-        return new Collection([]);
-    }
-
-    public function setAccount(Account $account = null)
-    {
-        // TODO: Implement setAccount() method.
-    }
-
-    public function forAccount(Account $account)
-    {
-        $this->forAccountCalled = true;
-        return $this;
-    }
-}
-
-class StrategySpy extends AccountSumSpy
-{
-    public function totalFor(Interval $interval)
-    {
-        if (!$interval instanceof Interval\ThisYear) {
-            throw new \Exception("Unexpected interval");
-        }
-        return new Collection([]);
-    }
-
-
-
 
 }
 
-class AccountSumStub implements \Finance\Account\AccountSum
+class CashDouble implements CashFlowInterface
 {
+    public $expenses = [];
 
-    public $willReturn = null;
+    public $expenseCalled = false;
 
-    public function __construct()
-    {
-        $this->willReturn = new Collection([]);
-    }
-
+    public $strategy;
 
     /**
-     * @param Interval $interval
-     * @return Collection
+     * @param IntervalInterface $interval
+     * @return array of CashEntry
      */
-    public function totalFor(Interval $interval)
+    public function forInterval(IntervalInterface $interval)
     {
-        return $this->willReturn;
+        // TODO: Implement forInterval() method.
     }
 
-    public function setAccount(Account $account = null)
+    /**
+     * @param IntervalInterface $interval
+     * @return string
+     */
+    public function expensesFor(IntervalInterface $interval)
     {
-        // TODO: Implement setAccount() method.
+        $this->strategy = $interval;
+
+        $this->expenseCalled = true;
+        return $this->expenses;
     }
 
-    public function forAccount(Account $account)
+    /**
+     * @param IntervalInterface $interval
+     * @return string
+     */
+    public function incomeFor(IntervalInterface $interval)
     {
-        return $this;
+        // TODO: Implement incomeFor() method.
     }
 
 }

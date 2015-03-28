@@ -1,75 +1,40 @@
 <?php
 namespace Watch;
 
-use Finance\Account\Account;
-use Finance\Account\AccountSum;
-use Refactoring\Time\Interval\IntervalInterface;
+use Finance\Reporter\CashFlowInterface;
+use Library\Collection;
 use Refactoring\Time\Interval\ThisMonth;
-use Watch\Exception\NoAccountSet;
 
 class Overflow
 {
-    const WARNING_LIMIT = 0.75;
-
-    /**
-     * @var AccountSum
-     */
-    private $accountSum;
-
-    /**
-     * @var Account
-     */
-    private $account;
-    /**
-     * @var IntervalInterface
-     */
     private $strategy;
 
-    public function __construct(AccountSum $accountSum, IntervalInterface $strategy = null)
+    /**
+     * @var CashFlowInterface
+     */
+    private $cashflow = null;
+
+    public function __construct(CashFlowInterface $cashflow, $strategy = null)
     {
-        $this->accountSum = $accountSum;
-
-        $this->strategy = $strategy;
-
-        $this->strategy or $this->strategy = new ThisMonth();
+        $this->strategy = $strategy or $this->strategy = new ThisMonth();
+        $this->cashflow = $cashflow;
     }
+
 
     public function isAbove($limit)
     {
-        $collection = $this->accountSum->forAccount($this->getAccount())->totalFor($this->strategy);
+        $collection = new Collection($this->cashflow->expensesFor($this->strategy));
 
         if ($collection->isEmpty()) {
             return false;
         }
 
-        return   $collection->first()->amount  > $limit;
+        $total = $collection->map(
+            function ($el) {
+                return $el->amount;
+            }
+        );
 
-    }
-
-    public function account(Account $account)
-    {
-        $overflow = clone $this;
-
-        $overflow->setAccount($account);
-        return $overflow;
-    }
-
-    private function setAccount(Account $account)
-    {
-        $this->account = $account;
-    }
-
-    private function getAccount()
-    {
-        if (null == $this->account) {
-            throw new NoAccountSet();
-        }
-
-        return $this->account;
-    }
-
-    public function isAlmostAbove($amount)
-    {
-        return $this->isAbove(self::WARNING_LIMIT * $amount);
+        return array_sum($total) > $limit;
     }
 }
