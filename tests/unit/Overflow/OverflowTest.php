@@ -115,6 +115,18 @@ class OverflowTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function weCanUseADifferentTimeInterval()
+    {
+
+        $overflow = new Overflow(new StrategySpy(), new Interval\ThisYear());
+
+        $overflow->account($this->getAccount())->isAbove(100);
+
+    }
+
+    /**
      * @return Account
      */
     protected function getAccount()
@@ -152,6 +164,21 @@ class AccountSumSpy implements AccountSum
         $this->forAccountCalled = true;
         return $this;
     }
+}
+
+class StrategySpy extends AccountSumSpy
+{
+    public function totalFor(Interval $interval)
+    {
+        if (!$interval instanceof Interval\ThisYear) {
+            throw new \Exception("Unexpected interval");
+        }
+        return new Collection([]);
+    }
+
+
+
+
 }
 
 class AccountSumStub implements \Finance\Account\AccountSum

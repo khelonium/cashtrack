@@ -3,6 +3,7 @@ namespace Watch;
 
 use Finance\Account\Account;
 use Finance\Account\AccountSum;
+use Refactoring\Time\Interval\IntervalInterface;
 use Refactoring\Time\Interval\ThisMonth;
 use Watch\Exception\NoAccountSet;
 
@@ -19,15 +20,23 @@ class Overflow
      * @var Account
      */
     private $account;
+    /**
+     * @var IntervalInterface
+     */
+    private $strategy;
 
-    public function __construct(AccountSum $accountSum)
+    public function __construct(AccountSum $accountSum, IntervalInterface $strategy = null)
     {
         $this->accountSum = $accountSum;
+
+        $this->strategy = $strategy;
+
+        $this->strategy or $this->strategy = new ThisMonth();
     }
 
     public function isAbove($limit)
     {
-        $collection = $this->accountSum->forAccount($this->getAccount())->totalFor(new ThisMonth());
+        $collection = $this->accountSum->forAccount($this->getAccount())->totalFor($this->strategy);
 
         if ($collection->isEmpty()) {
             return false;
