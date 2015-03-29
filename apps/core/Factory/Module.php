@@ -8,6 +8,7 @@ use Finance\Account\Account;
 use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Transaction\Transaction as TransactionEntity;
 
+use Watch\Overflow;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -82,10 +83,14 @@ class Module
                     return new Matcher($sm->get('\Database\Merchant\Repository')->all());
                 },
 
+
                 '\Import\BT\Parser' => function ($sm) {
                     return new Parser($sm->get('\Import\BT\Matcher'));
                 },
 
+                '\Overflow\MonthlyOverflow' => function ($sm) {
+                    return new Overflow($sm->get('\Reporter\CashFlow'));
+                },
 
             ),
         );
