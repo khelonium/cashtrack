@@ -112,7 +112,9 @@ class AccountSumTest extends \PHPUnit_Framework_TestCase
     public function itGroupsByMonth()
     {
         $first = new \DateTime();
-        $second = (new \DateTime())->sub(new \DateInterval('P1M'));
+        $second = (new \DateTime())->sub(new \DateInterval('P31D'));
+
+
 
         $this->getRepository()->create(
             [
