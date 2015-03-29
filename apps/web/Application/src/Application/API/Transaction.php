@@ -60,6 +60,7 @@ class Transaction extends AbstractController
     {
         $entity = new TransactionEntity($data);
         $this->getRepository()->update($entity);
+        $this->triggerCheck();
 
         return new JsonModel($entity);
     }
@@ -72,13 +73,12 @@ class Transaction extends AbstractController
      */
     public function create($data)
     {
-
-
         $entity = new TransactionEntity($data);
-
 
         try {
             $this->getRepository()->add($entity);
+            $this->triggerCheck();
+
         } catch (\Exception $e) {
             $this->response->setStatusCode(500);
             return new JsonModel(array(
@@ -87,6 +87,11 @@ class Transaction extends AbstractController
         }
 
         return new JsonModel($entity);
+    }
+
+    private function triggerCheck()
+    {
+        \Resque::enqueue('finance.watchdog', 'Jobs\CheckMonthly');
     }
 
 }

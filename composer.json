@@ -13,7 +13,9 @@
         "zendframework/zendframework": ">2.2.0rc1",
         "refactoring/time": "0.2.0",
         "zf-commons/zfc-user": "dev-master",
-        "chrisboulton/php-resque": "1.2.x"
+        "chrisboulton/php-resque": "1.2.x",
+        "colinmollenhour/credis": "~1.2"
+
 
     },
     "require-dev": {
