@@ -24,7 +24,7 @@ class Overflow
 
     public function isAbove($limit)
     {
-        $collection = new Collection($this->cashflow->expensesFor($this->strategy));
+        $collection = $this->cashflow->expensesFor($this->strategy);
 
         if ($collection->isEmpty()) {
             return false;

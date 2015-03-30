@@ -4,6 +4,7 @@ namespace Overflow;
 use Database\Transaction\Repository;
 use Finance\Cashflow\AccountTotal;
 use Finance\Reporter\CashFlowInterface;
+use Library\Collection;
 use Refactoring\Time\Interval\IntervalInterface;
 use Refactoring\Time\Interval\ThisYear;
 use Watch\Overflow;
@@ -85,6 +86,8 @@ class CashDouble implements CashFlowInterface
 
     public $strategy;
 
+
+
     /**
      * @param IntervalInterface $interval
      * @return array of CashEntry
@@ -103,7 +106,7 @@ class CashDouble implements CashFlowInterface
         $this->strategy = $interval;
 
         $this->expenseCalled = true;
-        return $this->expenses;
+        return new Collection($this->expenses);
     }
 
     /**

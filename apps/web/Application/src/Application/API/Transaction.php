@@ -92,6 +92,7 @@ class Transaction extends AbstractController
     private function triggerCheck()
     {
         \Resque::enqueue('finance.watchdog', 'Jobs\CheckMonthly');
+        \Resque::enqueue('finance.watchdog', 'Jobs\CheckWeekly');
     }
 
 }

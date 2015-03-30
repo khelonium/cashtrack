@@ -1,24 +1,23 @@
 <?php
 namespace Jobs;
 
-use Refactoring\Time\Interval\ThisMonth;
-
-class CheckMonthly extends AbstractCheck
+class CheckWeekly extends AbstractCheck
 {
-    const OVERFLOW_KEY = "overflow_month";
-    const ALMOST_OVERFLOW_MONTH = "almost_overflow_month";
+    const OVERFLOW_KEY = "overflow_week";
+    const ALMOST_OVERFLOW_MONTH = "almost_overflow_week";
 
 
     private $overflow;
 
     protected function init()
     {
-        $this->overflow = $this->sm->get('Overflow\MonthlyOverflow');
+        $this->overflow = $this->sm->get('Overflow\WeeklyOverflow');
     }
+
 
     public function perform()
     {
-        $amount = 3500;
+        $amount = 850;
 
         if ($this->overflow->isAbove($amount)) {
             $this->sent(self::OVERFLOW_KEY) or $this->notifyExcess();

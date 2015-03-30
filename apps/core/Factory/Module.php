@@ -8,6 +8,7 @@ use Finance\Account\Account;
 use Finance\Merchant\Merchant as MerchantEntity;
 use Finance\Transaction\Transaction as TransactionEntity;
 
+use Refactoring\Time\Interval\ThisWeek;
 use Watch\Overflow;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\ResultSet\ResultSet;
@@ -90,6 +91,10 @@ class Module
 
                 '\Overflow\MonthlyOverflow' => function ($sm) {
                     return new Overflow($sm->get('\Reporter\CashFlow'));
+                },
+
+                '\Overflow\WeeklyOverflow' => function ($sm) {
+                    return new Overflow($sm->get('\Reporter\CashFlow', new ThisWeek()));
                 },
 
             ),
