@@ -11,6 +11,8 @@ class ResetWatchdog
         $client->del(CheckMonthly::OVERFLOW_KEY);
         $client->del(CheckMonthly::ALMOST_OVERFLOW_MONTH);
 
+        $client->del(CheckWeekly::ALMOST_OVERFLOW_WEEK);
+        $client->del(CheckWeekly::OVERFLOW_KEY_WEEK);
         echo "Watchdog reset \n";
     }
 
