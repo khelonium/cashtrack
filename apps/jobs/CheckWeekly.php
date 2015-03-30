@@ -3,8 +3,8 @@ namespace Jobs;
 
 class CheckWeekly extends AbstractCheck
 {
-    const OVERFLOW_KEY = "overflow_week";
-    const ALMOST_OVERFLOW_MONTH = "almost_overflow_week";
+    const OVERFLOW_KEY_WEEK = "overflow_week";
+    const ALMOST_OVERFLOW_WEEK = "almost_overflow_week";
 
 
     private $overflow;
@@ -20,12 +20,12 @@ class CheckWeekly extends AbstractCheck
         $amount = 850;
 
         if ($this->overflow->isAbove($amount)) {
-            $this->sent(self::OVERFLOW_KEY) or $this->notifyExcess();
+            $this->sent(self::OVERFLOW_KEY_WEEK) or $this->notifyExcess();
             return;
         }
 
         if ($this->overflow->isAlmostAbove($amount)) {
-            $this->sent(self::ALMOST_OVERFLOW_MONTH) or $this->notifyAlmost();
+            $this->sent(self::ALMOST_OVERFLOW_WEEK) or $this->notifyAlmost();
         }
 
     }
@@ -33,14 +33,14 @@ class CheckWeekly extends AbstractCheck
     private function notifyExcess()
     {
         mail('cosmin.dordea@yahoo.com', "Weekly Limit  Exceeded", "Sent by finance", $this->getHeaders());
-        $this->markSent(self::OVERFLOW_KEY);
+        $this->markSent(self::OVERFLOW_KEY_WEEK);
         echo "Exceeded \n";
     }
 
     private function notifyAlmost()
     {
         mail('cosmin.dordea@yahoo.com', "Weekly Limit Almost Reached", "Sent by finance", $this->getHeaders());
-        $this->markSent(self::ALMOST_OVERFLOW_MONTH);
+        $this->markSent(self::ALMOST_OVERFLOW_WEEK);
         echo "Almost exceeded \n";
     }
 
