@@ -90,11 +90,12 @@ class Module
                 },
 
                 '\Overflow\MonthlyOverflow' => function ($sm) {
+
                     return new Overflow($sm->get('\Reporter\CashFlow'));
                 },
 
                 '\Overflow\WeeklyOverflow' => function ($sm) {
-                    return new Overflow($sm->get('\Reporter\CashFlow', new ThisWeek()));
+                    return new Overflow($sm->get('\Reporter\CashFlow'),new ThisWeek());
                 },
 
             ),
