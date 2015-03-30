@@ -11,6 +11,7 @@ namespace Database\CashFlow;
 
 use Finance\Cashflow\AccountTotal;
 use Finance\Reporter\CashFlowInterface;
+use Library\Collection;
 use Refactoring\Time\Interval\IntervalInterface;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Adapter\AdapterAwareTrait;
@@ -22,12 +23,7 @@ class CashFlow implements AdapterAwareInterface, CashFlowInterface
 
     public function forInterval(IntervalInterface $interval)
     {
-
-        return array_merge(
-            $this->expensesFor($interval),
-            $this->incomeFor($interval)
-        );
-
+        return $this->expensesFor($interval)->merge($this->incomeFor($interval));
     }
 
     private function fetchSql($sql)
@@ -57,9 +53,8 @@ class CashFlow implements AdapterAwareInterface, CashFlowInterface
     }
 
     /**
-     * @param $start_day
-     * @param $end_day
-     * @return string
+     * @param IntervalInterface $interval
+     * @return Collection
      */
     public function expensesFor(IntervalInterface $interval)
     {
@@ -77,12 +72,12 @@ class CashFlow implements AdapterAwareInterface, CashFlowInterface
 
             GROUP BY account.name";
 
-        return $this->fetchSql($sql);
+        return new Collection($this->fetchSql($sql));
     }
 
     /**
      * @param IntervalInterface $interval
-     * @return string
+     * @return Collection
      */
     public function incomeFor(IntervalInterface $interval)
     {
@@ -101,6 +96,6 @@ class CashFlow implements AdapterAwareInterface, CashFlowInterface
             AND account.type='income'
             GROUP BY account.name";
 
-        return $this->fetchSql($income_sql);
+        return new Collection($this->fetchSql($income_sql));
     }
 }
