@@ -99,5 +99,10 @@ class Collection implements \IteratorAggregate, \Countable
     {
         return 0 == count($this->entries);
     }
+
+    public function merge(Collection $collection)
+    {
+        return new Collection(array_merge($this->entries, $collection->entries));
+    }
 }
 
