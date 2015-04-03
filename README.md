@@ -1,11 +1,12 @@
-cashtrack
+cashtrack 
 =========
+
+[![Build Status](https://travis-ci.org/khelonium/cashtrack.svg?branch=master)](https://travis-ci.org/khelonium/cashtrack)
 
 Install
 -------
 
 Install Vagrant and then do a vagrant up. If you encounter problems, check the travis build file for some tips
-
 
 
 
