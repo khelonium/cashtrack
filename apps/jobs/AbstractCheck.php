@@ -14,7 +14,6 @@ abstract class AbstractCheck
 
     public function setUp()
     {
-
         $bootstrap = \Zend\Mvc\Application::init(include 'config/application.config.php');
         $this->sm = $bootstrap->getServiceManager();
 

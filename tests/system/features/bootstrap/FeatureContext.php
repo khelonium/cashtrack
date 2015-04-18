@@ -165,6 +165,7 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
             throw new \Exception("There are no entries");
         }
 
+
         foreach ($json as $unit) {
             if ($expected[$unit->name] != $unit->amount) {
                 throw new \Exception("{$unit->name} not sa expected");

@@ -22,9 +22,13 @@ class Collection implements \IteratorAggregate, \Countable
         return array_reduce($this->entries, $callback, $carry);
     }
 
+    /**
+     * @param callable $callback
+     * @return Collection
+     */
     public function map(callable $callback)
     {
-        return array_map($callback, $this->entries);
+        return new Collection(array_map($callback, $this->entries));
     }
 
     public function first()
@@ -103,6 +107,11 @@ class Collection implements \IteratorAggregate, \Countable
     public function merge(Collection $collection)
     {
         return new Collection(array_merge($this->entries, $collection->entries));
+    }
+
+    public function toArray()
+    {
+        return $this->entries;
     }
 }
 

@@ -2,7 +2,7 @@
 
 include_once 'bootstrap.php';
 
-$class = new \Jobs\CheckMonthly();
+$class = new \Jobs\CheckWeekly();
 
 $class->setUp();
 $class->perform();

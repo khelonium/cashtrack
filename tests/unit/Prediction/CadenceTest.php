@@ -1,6 +1,7 @@
 <?php
 namespace Prediction;
 
+use DateTime;
 use Finance\Cashflow\AccountTotal;
 use Library\Collection;
 use Zend\Stdlib\ArrayObject;
@@ -19,13 +20,12 @@ class CadenceTest extends \PHPUnit_Framework_TestCase
         $cadence = new Cadence(
             new Collection(
                 [
-                    $this->cashtrackWith(100, (new \DateTime())->format('Y-m-01'))
+                    new DateTime()
                 ]
             )
         );
         $this->assertEquals(0, $cadence->getCadence());
     }
-
 
 
     /**
@@ -37,10 +37,9 @@ class CadenceTest extends \PHPUnit_Framework_TestCase
         $expectedCadence = 2;
 
 
-        for ($i =1; $i <= 12; $i++) {
-            $cadence = $this->buildWithAMonthDifferenceOf($expectedCadence);
-            $this->assertEquals($expectedCadence, $cadence->getCadence(), " $i failed");
-        }
+        $cadence = $this->buildWithAMonthDifferenceOf($expectedCadence);
+
+        $this->assertEquals($expectedCadence, $cadence->getCadence(), " uniform cadence failed");
 
     }
 
@@ -49,16 +48,16 @@ class CadenceTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithRandomDistribution()
     {
-        $start = new \DateTime();
-        $second = (new \DateTime())->sub(new \DateInterval('P1M'));
-        $last = (new \DateTime())->sub(new \DateInterval('P3M'));
+        $start = new DateTime();
+        $second = (new DateTime())->sub(new \DateInterval('P1M'));
+        $last = (new DateTime())->sub(new \DateInterval('P3M'));
 
         $cadence = new Cadence(
             new Collection(
                 [
-                    $this->cashtrackWith(100, $start->format('Y-m-01')),
-                    $this->cashtrackWith(100, $second->format('Y-m-01')),
-                    $this->cashtrackWith(100, $last->format('Y-m-01'))
+                    $start,
+                    $second,
+                    $last
                 ]
             )
         );
@@ -67,19 +66,42 @@ class CadenceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function threeEntriesInSixMonthsHaveACadenceOfThree()
+    {
+        $start = new DateTime();
+        $second = (new DateTime())->sub(new \DateInterval('P6M'));
+        $last = (new DateTime())->sub(new \DateInterval('P2M'));
+
+        $cadence = new Cadence(
+            new Collection(
+                [
+                    $start,
+                    $second,
+                    $last
+                ]
+            )
+        );
+
+        $this->assertEquals(3, $cadence->getCadence());
+    }
+
+
+    /**
      * @param $expectedCadence
      * @return Cadence
      */
     protected function buildWithAMonthDifferenceOf($expectedCadence)
     {
-        $start = new \DateTime();
-        $end = (new \DateTime())->sub(new \DateInterval('P' . $expectedCadence . 'M'));
+        $start = new DateTime();
+        $end = (new DateTime())->sub(new \DateInterval('P' . $expectedCadence . 'M'));
 
         $cadence = new Cadence(
             new Collection(
                 [
-                    $this->cashtrackWith(100, $start->format('Y-m-01')),
-                    $this->cashtrackWith(100, $end->format('Y-m-01'))
+                    $start,
+                    $end
                 ]
             )
         );

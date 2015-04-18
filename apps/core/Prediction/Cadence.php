@@ -26,11 +26,12 @@ class Cadence
     public function getCadence()
     {
 
+
         $dates = $this->summaries->map(
-            function ($summary) {
-                return new \DateTime($summary->month);
+            function ($datetime) {
+                return $datetime->modify('first day of this month');
             }
-        );
+        )->toArray();
 
         usort(
             $dates,
@@ -46,7 +47,6 @@ class Cadence
         if (count($dates) <= 1) {
             return 0;
         }
-
 
         $prev = array_shift($dates);
 

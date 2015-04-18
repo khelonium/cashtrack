@@ -1,8 +1,6 @@
 <?php
 namespace Jobs;
 
-use Refactoring\Time\Interval\ThisMonth;
-
 class CheckMonthly extends AbstractCheck
 {
     const OVERFLOW_KEY = "overflow_month";

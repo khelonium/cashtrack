@@ -36,7 +36,7 @@ class Overflow
             }
         );
 
-        return array_sum($total) > $limit;
+        return array_sum($total->toArray()) > $limit;
     }
 
     public function isAlmostAbove($limit)
