@@ -25,31 +25,44 @@ class PredictAccount
 
     public function thisMonth()
     {
-        $summaries = $this->balance->totalFor($this->getInterval());
 
-        if (count($summaries) < 3) {
-            return 0;
-        }
+        return $this->requiresNoPrediction() ? 0 : $this->getAverage();
+    }
 
-        $sort = function ($a, $b) {
-            if ($a->month == $b->month) {
-                return 0;
-            }
+    /**
+     * @return float
+     * @internal param $summaries
+     */
+    protected function getAverage()
+    {
+        $summaries = $this->getPayments();
 
-            return ($a->month > $b->month) ? -1 : 1;
-        };
+        return $summaries->reduce(function ($total, $item) {
+            return $total + $item->amount;
+        }, 0) / count($summaries);
+    }
 
-        $sorted = $summaries->sort($sort);
 
-        $currentCadence = ((new \DateTime())->diff(new  \DateTime($sorted->first()->month))->format('%a')) / 30;
+    public function getCadence()
+    {
+        return $this->buildCadence()->getCadence();
+    }
 
-        $cadence = $this->buildCadence($sorted);
+    /**
+     * @return Cadence
+     * @internal param $sorted
+     */
+    protected function buildCadence()
+    {
 
-        if ($cadence->getCadence() > $currentCadence) {
-            return 0;
-        }
+        return new Cadence(
+            $this->balance->totalFor($this->getInterval())->map(
+                function ($item) {
+                    return new \DateTime($item->month);
+                }
+            )
+        );
 
-        return $this->getAmountAverage($sorted);
     }
 
     /**
@@ -64,41 +77,75 @@ class PredictAccount
     }
 
     /**
-     * @param $summaries
-     * @return float
+     * @return Collection
      */
-    protected function getAmountAverage($summaries)
+    private function getPayments()
     {
-        return $summaries->reduce(function ($total, $item) {
-            return $total + $item->amount;
-        }, 0) / count($summaries);
+        return $this->balance->totalFor($this->getInterval());
     }
 
     /**
-     * @param $sorted
-     * @return Cadence
+     * @return bool
+     * @internal param $monthsPassed
+     * @internal param $cadence
      */
-    protected function buildCadence($sorted)
+    private function requiresNoPrediction()
     {
-        $dates = $sorted->map(
-            function ($item) {
-                return new \DateTime($item->month);
-            }
-        );
+        $monthsPassed = $this->monthsSinceLastPay();
+        $cadence      = $this->getCadence();
 
-        $dates->merge(new Collection([new \DateTime()]));
-
-
-        $cadence = new Cadence(
-            $dates
-        );
-
-        return $cadence;
+        return
+            ($cadence == 0 and $monthsPassed == 0) or
+            ($this->looksLikeAbandonedAccount($monthsPassed, $cadence) ||
+                $this->payedRecently($cadence, $monthsPassed));
     }
 
-    public function getCadence()
+
+    /**
+     * @return array
+     * @internal param $summaries
+     */
+    private function monthsSinceLastPay()
     {
-        return $this->buildCadence($this->balance->totalFor($this->getInterval()))->getCadence();
+        $sort = function ($a, $b) {
+
+            if ($a->month == $b->month) {
+                return 0;
+            }
+
+            return ($a->month > $b->month) ? -1 : 1;
+        };
+
+        $sorted = $this->getPayments()->sort($sort);
+
+        if ($sorted->count() < 3) {
+            return 0;
+        }
+
+        $currentCadence = ((new \DateTime())->modify('first day of this month')
+                ->diff(new  \DateTime($sorted->first()->month))->format('%a')) / 30;
+        return round(10 * $currentCadence) / 10;
+    }
+
+
+    /**
+     * @param $cadence
+     * @param $monthsPassed
+     * @return bool
+     */
+    private function payedRecently($cadence, $monthsPassed)
+    {
+        return $cadence > $monthsPassed;
+    }
+
+    /**
+     * @param $monthsPassed
+     * @param $cadence
+     * @return float
+     */
+    private function looksLikeAbandonedAccount($monthsPassed, $cadence)
+    {
+        return ($monthsPassed / $cadence) > 4;
     }
 
 }

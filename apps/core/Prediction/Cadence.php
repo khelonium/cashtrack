@@ -33,6 +33,7 @@ class Cadence
             }
         )->toArray();
 
+
         usort(
             $dates,
             function ($a, $b) {
@@ -44,11 +45,14 @@ class Cadence
             }
         );
 
+
         if (count($dates) <= 1) {
             return 0;
         }
 
+
         $prev = array_shift($dates);
+
 
 
         $cadences = [];
@@ -59,7 +63,8 @@ class Cadence
             $prev = $date;
         } while (count($dates));
 
-        return array_sum($cadences)/ count($cadences);
+
+        return array_sum($cadences)/count($cadences);
 
     }
 }
