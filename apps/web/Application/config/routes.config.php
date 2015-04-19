@@ -135,20 +135,50 @@ return [
         ],
 
 
-        'overview-time-rest' => [
+
+
+        'overview-year-rest' => [
             'type'    => 'segment',
             'options' => [
-                'route'    => '/api/overview/time/:type[/:id]',
+                'route'    => '/api/overview/time/year[/:id]',
                 'constraints' => [
-                    'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?',
-                    'type'   => 'month|week|year'
+                    'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?'
                 ],
 
                 'defaults' => [
-                    'controller' => 'Application\API\TimeView',
+                    'controller' => 'Application\API\Overview\Year',
                 ],
             ],
         ],
+
+        'overview-month-rest' => [
+            'type'    => 'segment',
+            'options' => [
+                'route'    => '/api/overview/time/month[/:id]',
+                'constraints' => [
+                    'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?'
+                ],
+
+                'defaults' => [
+                    'controller' => 'Application\API\Overview\Month',
+                ],
+            ],
+        ],
+
+        'overview-month-week' => [
+            'type'    => 'segment',
+            'options' => [
+                'route'    => '/api/overview/time/week[/:id]',
+                'constraints' => [
+                    'id'     => '[0-9]+[-]?((0)?[1-9]|1[012])?'
+                ],
+
+                'defaults' => [
+                    'controller' => 'Application\API\Overview\Week',
+                ],
+            ],
+        ],
+
 
         'breakdown-rest-month' => [
             'type'    => 'segment',

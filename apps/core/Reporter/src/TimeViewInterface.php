@@ -13,10 +13,10 @@ interface TimeViewInterface
      * @param $year
      * @return array
      */
-    public function weekTotals($year);
+    public function weekly($year);
 
-    public function monthTotals($year);
+    public function monthly($year);
 
-    public function yearTotals();
+    public function yearly();
 
 }

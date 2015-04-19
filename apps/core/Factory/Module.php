@@ -77,7 +77,7 @@ class Module
 
 
                 '\Reporter\TimeMaster' => function () {
-                    return new \Reporter\TimeMaster();
+                    return new \Database\Reporter\TimeMaster();
                 },
 
                 '\Import\BT\Matcher' => function ($sm) {
