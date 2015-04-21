@@ -152,7 +152,7 @@ mysql:
             host: localhost
             user: cashtrack
             password: cashtrack
-            sql_file: /var/www/sql/cashtrack.sql
+            sql_file: /var/www/data/sql/dump.sql
         oE7lK6B8AGYF:
             grant:
                 - ALL
