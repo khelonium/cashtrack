@@ -26,7 +26,7 @@ cashCode.Views.AccountSelect = Backbone.View.extend({
 cashCode.Views.Transaction = Backbone.View.extend({
 
     tagName: 'tr',
-    template: _.template('<td><%= description %><td><%= amount %></td><td><a href="/#transaction/<%= id %>/edit">Edit</a></td>'),
+    template: _.template('<td><%= description %><td class="text-right"><%= amount %></td><td class="text-right"><a href="/#transaction/<%= id %>/edit">Edit</a></td>'),
 
     initialize : function() {
         this.listenTo(this.model, 'change', this.render);
@@ -41,7 +41,7 @@ cashCode.Views.Transaction = Backbone.View.extend({
 cashCode.Views.Category = Backbone.View.extend({
 
     tagName: 'tr',
-    template: _.template('<td><span class="glyphicon glyphicon-chevron-right"</span> <%= name %><td><%= amount %></td>'),
+    template: _.template('<td><span class="glyphicon glyphicon-chevron-right"</span> <%= name %><td class="text-right"><%= amount %></td>'),
     expanded:false,
     expandedView:NaN,
 
@@ -72,12 +72,15 @@ cashCode.Views.Category = Backbone.View.extend({
         }
 
 
-        var new_el = $("<tr colspan='2'><td><table class='table table-hover'></table></td></tr>");
+        var new_el = $("<tr><td  colspan='2'><table class='transaction-container table '></table></td></tr>");
 
         this.$el.after(new_el);
 
-        transactions       = new cashCode.Collections.Transaction();
-        this.expandedView  = new cashCode.Views.Transactions({collection:transactions, el:new_el});
+
+
+
+        var transactions       = new cashCode.Collections.Transaction();
+        this.expandedView  = new cashCode.Views.Transactions({collection:transactions, el:new_el.find('.transaction-container')});
         transactions.fetch({data:{month:this.model.get('month'), accountId:this.model.get('accountId')}, reset:true});
 
     },
@@ -233,8 +236,7 @@ cashCode.Views.Transactions = cashCode.Views.AbstractTransaction.extend({
 
 
     addAll: function() {
-        var total = 0;
-        this.$el.append('<tr class="warning"><th>Transactions</th><th>'+  total.toFixed(2) + '</th><th>#</th></tr>');
+        this.$el.append('<tr><th colspan="3">Transactions</th></tr>');
         this.collection.forEach(this.addOne,this);
     },
 
@@ -266,19 +268,19 @@ cashCode.Views.CategoryList = cashCode.Views.AbstractTransaction.extend({
 
         var total =0;
 
-        for (i =0; i< expenses.length; i++ ) {
+        for (var i =0; i< expenses.length; i++ ) {
             total = total +  +expenses[i].get('amount').valueOf();
         }
 
         var round = new Number(total);
 
-        this.$el.append('<tr class="danger"><th>Expense</th><th>'+  total.toFixed(2) + '</th></tr>');
+        this.$el.append('<tr class="danger" class="text-right"><th>Expense</th><th class="text-right">'+  total.toFixed(2) + '</th></tr>');
         expenses.forEach(this.addOne,this);
     },
 
 
     addIncomes:function() {
-        this.$el.append('<tr><th>Income</th><th>Value</th></tr>');
+        this.$el.append('<tr><th>Income</th><th class="text-right">Value</th></tr>');
         this.incomes().forEach(this.addOne,this);
 
     },

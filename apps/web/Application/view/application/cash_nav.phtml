@@ -1,0 +1,102 @@
+
+
+        <div class="left-menu-block">
+            <h5>Operations</h5>
+            <hr/>
+            <a id="addTransactionLink" href="#addTransaction">Add Expense</a>
+            <div id="addTransactionForm" class="add-transaction" >
+            </div>
+
+        </div>
+
+
+        <div class="left-menu-block">
+            <h5>Expenses</h5>
+
+            <hr/>
+            <div>
+                <a id="transactionView" href="/">By Transactions</a>
+            </div>
+
+            <div>
+                <a id="accountView" href="/" data-backbone="true">By Accounts</a>
+            </div>
+        </div>
+
+
+
+        <div class="left-menu-block">
+            <h5>Reports</h5>
+            <hr/>
+            <div>
+                <a  href="/report/lastweek">Last Week</a>
+            </div>
+
+            <div>
+                <a  href="/report/thisweek">This Week</a>
+            </div>
+
+            <div>
+                <a  href="/report/thismonth">This Month</a>
+            </div>
+            <br/>
+            <div>
+                <a  href="/report/weekly">Weekly</a>
+            </div>
+
+            <div>
+                <a  href="/report/monthly">Monthly</a>
+            </div>
+
+
+            <div>
+                <a  href="/report/yearly">Yearly</a>
+            </div>
+        </div>
+
+
+
+
+        <script type="text/template" id="add-transaction-template">
+
+            <form   class="form-horizontal" role="form">
+
+                <div class="form-group">
+
+                    <label for="idAccount">Account</label>
+                    <select  id="idAccount" name="idAccount" class="form-control">
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="datepicker">Date</label>
+                    <input type="text"  class="form-control" name="datepicker" id="datepicker" value="<%= date %>" />
+                </div>
+
+                <div class="form-group">
+                    <input type="text" name="amount" class="form-control" id="amount" placeholder="Amount" value="<%= amount %>">
+                </div>
+                <div class="form-group">
+
+                    <textarea class="form-control" name="description" rows="3"><%= description %> </textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Add</button>
+                    </div>
+                </div>
+            </form>
+        </script>
+
+        <div id="monthOperations" class="month-operations">
+
+
+
+            <div class="Accounts">
+                <table id="bufferList" class="table table-hover">
+                </table>
+            </div>
+
+        </div>
+

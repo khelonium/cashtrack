@@ -14,23 +14,32 @@ foreach ($javascripts as $script) {
 }
 
 if (!isset($url)) {
-$url = "/api/breakdown/week/".$this->year."/" . $this->week;
+    $url = "/api/breakdown/week/" . $this->year . "/" . $this->week;
 }
 
+isset($report_title) or $report_title = 'This week';
 
 ?>
 
 <div class="row">
-    <div class="col-md-12 bar-chart-container">
-        <script>
+    <div id="formContainer" class="col-md-2">
+        <?php echo $this->render('application/cash_nav.phtml'); ?>
+    </div>
+
+    <div class="col-md-10">
+        <div>
+            <h5 class="left"><?php echo $report_title; ?></h5>
+        </div>
+        <div class="bar-chart-container">
+            <script>
 
 
-            var chart = new Cash.Views.WeekCategoriesBarChart();
+                var chart = new Cash.Views.WeekCategoriesBarChart();
 
-            chart.render('<?php echo $url; ?>');
+                chart.render('<?php echo $url; ?>');
 
 
-        </script>
-
+            </script>
+        </div>
     </div>
 </div>

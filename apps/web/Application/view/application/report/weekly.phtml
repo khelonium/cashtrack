@@ -5,6 +5,8 @@ $chartClass = null;
 if (!isset($chart)) {
     $chart = null;
 }
+isset($report_title) or $report_title = "Weekly";
+
 switch ($chart) {
     case 'month':
         $chartClass = 'Cash.Views.MonthBarChart';
@@ -18,6 +20,7 @@ switch ($chart) {
         $chartClass = 'Cash.Views.WeekBarChart';
         break;
 }
+
 
 $year = date('Y');
 
@@ -38,21 +41,31 @@ foreach ($javascripts as $script) {
 </div>
 
 <div class="row">
-        <div class="col-md-12 bar-chart-container">
-            <script>
+        <div id="formContainer" class="col-md-2">
+            <?php echo $this->render('application/cash_nav.phtml'); ?>
+        </div>
+        <div class="col-md-10">
+
+            <div>
+                <h5 class="left"><?php echo $report_title; ?></h5>
+            </div>
+
+            <div class="bar-chart-container">
+                <script>
 
 
-                var breakdown = new <?php echo $chartClass?>();
-                breakdown.render(<?php echo $year;?>);
+                    var breakdown = new <?php echo $chartClass?>();
+                    breakdown.render(<?php echo $year;?>);
 
-                var loader = function(year){
-                    breakdown.render(year);
-                };
+                    var loader = function(year){
+                        breakdown.render(year);
+                    };
 
-                (new Cash.Views.NavigationYearView({el:$('.pagination'), doOnYearChange:loader})).render();
+                    (new Cash.Views.NavigationYearView({el:$('.pagination'), doOnYearChange:loader})).render();
 
 
-            </script>
+                </script>
+            </div>
 
     </div>
 </div>

@@ -20,6 +20,7 @@
             ->prependStylesheet($this->basePath() . '/css/normalize.css')
             ->prependStylesheet($this->basePath() . '/css/main.css')
             ->prependStylesheet($this->basePath() . '/css/bar.css')
+            ->prependStylesheet($this->basePath() . '/css/style.css')
                         ?>
 
         <!-- Scripts -->
@@ -50,14 +51,17 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <nav>
-    <?php
-    echo $this->navigation('navigation')->menu()->setUlClass('nav nav-pills');
-    ?>
 
-    </nav>
+        <div class="container-fluid finance-app">
 
-        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <?php
+                    echo $this->navigation('navigation')->menu()->setUlClass('nav nav-pills');
+                    ?>
+
+                </div>
+            </div>
 
 
             <?php echo $this->content; ?>
