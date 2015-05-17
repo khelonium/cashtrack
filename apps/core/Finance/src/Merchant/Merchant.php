@@ -16,7 +16,7 @@ namespace Finance\Merchant;
  * @property name
  * @package Finance\Merchant
  */
-class Merchant extends \Database\Repository\Entity
+class Merchant extends \Library\Entity
 {
     protected $map =  array (
         'id_account' => 'accountId'

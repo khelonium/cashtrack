@@ -8,7 +8,7 @@
 
 namespace Database\Merchant;
 
-use Database\Repository\AbstractRepository;
+use Library\AbstractRepository;
 use Finance\Merchant\Merchant;
 
 class Repository extends AbstractRepository

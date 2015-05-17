@@ -9,7 +9,7 @@ namespace Database\Transaction;
 use Finance\Transaction\Transaction;
 use Finance\Transaction\TransactionRepositoryInterface;
 use Refactoring\Interval\IntervalInterface;
-use Database\Repository\AbstractRepository;
+use Library\AbstractRepository;
 
 class Repository extends AbstractRepository implements TransactionRepositoryInterface
 {

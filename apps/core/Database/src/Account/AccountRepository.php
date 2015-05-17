@@ -9,7 +9,7 @@ namespace Database\Account;
 
 
 use Finance\Account\Account;
-use Database\Repository\AbstractRepository;
+use Library\AbstractRepository;
 
 
 class AccountRepository extends AbstractRepository

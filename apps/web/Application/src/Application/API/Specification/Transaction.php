@@ -2,8 +2,8 @@
 
 namespace Application\API\Specification;
 
-use Database\Transaction\Repository\Specification;
-use Database\Repository\SqlSpecification;
+use Library\Specification;
+use Library\SqlSpecification;
 use Refactoring\Time\Interval\SpecificMonth;
 use Refactoring\Time\Interval\ThisMonth;
 

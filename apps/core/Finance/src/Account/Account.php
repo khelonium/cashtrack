@@ -8,7 +8,7 @@
 namespace Finance\Account;
 
 
-class Account extends \Database\Repository\Entity
+class Account extends \Library\Entity
 {
 
 }
