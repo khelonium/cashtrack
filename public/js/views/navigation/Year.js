@@ -63,7 +63,6 @@ define([
         },
 
         yearChanged: function(year) {
-            console.log("Year has changed");
             this.doOnYearChange && this.doOnYearChange(year);
         },
         initialize:function(options) {
@@ -95,6 +94,7 @@ define([
                 this.yearChanged(this.year.year);
             },this));
         },
+
         render : function() {
             this.$el.find('.month-view').remove();
             this.collection.forEach(this.addMonth,this);

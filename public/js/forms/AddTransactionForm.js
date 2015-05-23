@@ -20,7 +20,7 @@ define([
             this.listenTo(this.model, 'change',this.render);
             this.listenTo(this.model, 'canHide',this.hide);
             this.initModelListeners(this.model);
-            this.on('working_month',this.setDate,this);
+            //this.on('active_month',this.setDate,this);
             this.accountList.fetch();
 
         },
@@ -58,7 +58,6 @@ define([
         },
 
         show: function() {
-            console.log("Must show");
             this.$el.show();
         },
 
