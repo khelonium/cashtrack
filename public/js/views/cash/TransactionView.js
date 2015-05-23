@@ -9,13 +9,11 @@ define([
     return AbstractTransaction.extend({
 
         addAll: function () {
-            console.log("Add all");
             this.$el.append('<tr><th colspan="3">Transactions</th></tr>');
             this.collection.forEach(this.addOne, this);
         },
 
         addOne: function (transaction) {
-            console.log("Add one");
             var categoryView = new SingleTransactionView({model: transaction});
             categoryView.render();
             if (categoryView.model.get('toAccount') == '') {

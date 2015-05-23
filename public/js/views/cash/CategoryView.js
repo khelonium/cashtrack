@@ -3,13 +3,20 @@ define([
     'underscore',
     'backbone',
     'views/AbstractTransaction',
-    'views/Category'
+    'views/Category',
+    'collections/CategoryCollection',
 
-], function($, _, Backbone, AbstractTransaction, Category){
+
+], function($, _, Backbone, AbstractTransaction, Category, CategoryCollection){
 
     return  AbstractTransaction.extend({
 
 
+        initialize:function () {
+          this.collection = new CategoryCollection();
+          this.collection.on('reset', this.render, this);
+
+        },
         addAll: function() {
             this.addIncomes();
             this.addExpenses();

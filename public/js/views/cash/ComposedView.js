@@ -5,6 +5,7 @@ define([
     'views/AbstractTransaction',
     'views/cash/TransactionView',
     'views/cash/CategoryView',
+
 ], function($, _, Backbone, AbstractTransaction, TransactionView, CategoryView){
 
     return AbstractTransaction.extend({
@@ -14,8 +15,10 @@ define([
         activeView : NaN,
 
         initialize : function(options) {
-            this.categoryMode       = new CategoryView({collection:options.categories, el: this.el});
-            this.transactionMode    = new TransactionView({collection:options.transactions, el: this.el});
+            this.$el.html('<table class="table table-hover"></table>');
+
+            this.categoryMode       = new CategoryView({ el: this.$el.find('table')});
+            this.transactionMode    = new TransactionView({collection:options.transactions, el: this.$el.find('table')});
 
             this.activeView = this.categoryMode;
 
@@ -25,9 +28,12 @@ define([
         },
 
         setMonth : function (month) {
+            console.log("Set Month");
             this.activeMonth = month;
             this.categoryMode.setMonth(month);
             this.transactionMode.setMonth(month);
+
+            this.categoryMode.collection.fetchMonth(month);
 
         },
 
@@ -35,11 +41,9 @@ define([
         setMode:function(mode){
             switch (mode) {
                 case 'category':
-                    console.log("Category view");
                     this.activeView = this.categoryMode;
                     break;
                 case 'transaction':
-                    console.log("Transaction view");
                     this.activeView = this.transactionMode;
                     break;
                 default:

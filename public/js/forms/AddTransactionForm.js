@@ -50,8 +50,6 @@ define([
             this.stopListening(this.model);
             this.initModelListeners(model);
             this.model = model;
-
-            this.render();
         },
 
         initModelListeners: function(model) {
@@ -71,6 +69,7 @@ define([
 
         render:function(){
 
+            console.log("Rendering");
             var template = _.template(transactionTemplate);
 
             this.$el.html(template(this.model.attributes));

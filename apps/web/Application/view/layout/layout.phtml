@@ -26,8 +26,7 @@
         <!-- Scripts -->
         <?php
 
-        $javascripts = array(
-        );
+        $javascripts = array();
 
         foreach (array_reverse($javascripts) as $script) {
             $this->headScript()->prependFile($this->basePath($script));

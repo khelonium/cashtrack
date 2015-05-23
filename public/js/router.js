@@ -6,13 +6,12 @@ define([
     'backbone',
     'forms/AddTransactionForm',
     'views/navigation/Year',
-    'collections/CategoryCollection',
     'collections/TransactionCollection',
     'models/TransactionModel',
     'views/Cash/ComposedView'
 
 
-], function($, _, Backbone , AddTransaction, YearView, CategoryCollection, TransactionCollection, TransactionModel, ComposedView){
+], function($, _, Backbone , AddTransaction, YearView, TransactionCollection, TransactionModel, ComposedView){
 
     var CashRouter  =  Backbone.Router.extend({
         activeMonth: NaN,
@@ -21,28 +20,32 @@ define([
             "": "index",
             "cashflow/:id": "cashflow",
             'addTransaction': 'showAddTransaction',
+            'report/lastWeek': 'lastWeekReport',
             'transaction/:id/edit': 'editTransaction'
+        },
+
+
+        lastWeekReport : function ()
+        {
+
         },
 
         initialize: function(){
 
 
-            this.categoryList       = new CategoryCollection();
             this.transactions       = new TransactionCollection();
             this.cashNavigation     = new YearView({el:$('.pagination')});
             this.addTransactionForm = new AddTransaction({model: this.emptyTransaction(), el:$('#addTransactionForm')});
 
             this.cashNavigation.render();
 
-            this.cashView    =  new ComposedView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
+            this.cashView    =  new ComposedView({transactions:this.transactions , el: $('#app')});
 
 
             this.members = [];
             this.members.push(this.cashView);
             this.members.push(this.cashNavigation);
             this.members.push(this.addTransactionForm);
-            this.members.push(this.categoryList);
-            this.members.push(this.transactions);
 
 
             $('#accountView').bind('click', $.proxy(function(e) {e.preventDefault(); $('.panel-title').html('Category View'); this.raise('view_mode','category');}, this));
@@ -71,15 +74,20 @@ define([
 
         editTransaction:function(id) {
 
-            this.addTransactionForm.switchModel(this.transactions.get(id));
-            this.addTransactionForm.render();
+
+            var transaction = new TransactionModel({id:id});
+
+            this.addTransactionForm.switchModel(transaction);
+
+
+            transaction.fetch();
+
             this.addTransactionForm.show();
 
         },
 
         index: function(){
-            var month = this.getFirstOfMonth();
-            this.setActiveMonth(month);
+            this.cashflow(this.getFirstOfMonth());
         },
 
         setActiveMonth : function(month) {
@@ -93,9 +101,7 @@ define([
 
         showAddTransaction : function() {
 
-            console.log("Adding transaction ");
             if (this.addTransactionForm.model.get('id')) {
-                console.log(" Empty transaction ");
                 this.addTransactionForm.switchModel(this.emptyTransaction());
             }
 
@@ -106,15 +112,6 @@ define([
         },
 
 
-
-        showTransactions : function () {
-            this.raise('view_mode','transaction');
-
-        },
-
-        showAccounts : function () {
-            this.raise('view_mode','category');
-        },
 
         raise : function (eventName, eventData) {
             _.each(this.members,function( item ){
@@ -133,7 +130,7 @@ define([
 
     var initialize = function(){
 
-        var app_router = new CashRouter();
+        new CashRouter();
 
         Backbone.history.start();
     };
