@@ -65,6 +65,7 @@ define([
         yearChanged: function(year) {
             this.doOnYearChange && this.doOnYearChange(year);
         },
+
         initialize:function(options) {
 
 
@@ -73,7 +74,7 @@ define([
             this.collection = new Backbone.Collection(this.year.getMonths());
 
             this.collection.on('reset',this.render,this);
-            this.collection.on('activatedMonth',this.activatedMonth, this);
+           this.collection.on('activatedMonth',this.activatedMonth, this);
 
             options.doOnClick && (this.doOnClick = options.doOnClick);
             options.doOnYearChange && (this.doOnYearChange = options.doOnYearChange);

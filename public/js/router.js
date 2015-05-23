@@ -7,19 +7,25 @@ define([
     'forms/AddTransactionForm',
     'views/navigation/Year',
     'models/TransactionModel',
-    'views/Cash/ComposedView'
+    'views/report/LastWeekView',
+    'views/cash/TransactionView',
+    'views/cash/CategoryView',
 
 
-], function($, _, Backbone , AddTransaction, YearView, TransactionModel, ComposedView){
+
+
+], function($, _, Backbone , AddTransaction, YearView, TransactionModel,LastWeekView, TransactionView, CategoryView){
 
     var CashRouter  =  Backbone.Router.extend({
         activeMonth: NaN,
+        app : NaN,
+        view :NaN,
 
         routes: {
             "": "index",
             "cashflow/:id": "cashflow",
             'addTransaction': 'showAddTransaction',
-            'report/lastWeek': 'lastWeekReport',
+            'report/lastweek': 'lastWeekReport',
             'transaction/:id/edit': 'editTransaction',
             'transactions': 'transactions',
             'accounts': 'accounts'
@@ -28,7 +34,8 @@ define([
 
         lastWeekReport : function ()
         {
-
+            var view = new LastWeekView({ el: $('#app')});
+            view.render();
         },
 
         initialize: function(){
@@ -39,11 +46,11 @@ define([
 
             this.cashNavigation.render();
 
-            this.cashView    =  new ComposedView({ el: $('#app')});
+
+            this.app = $('#app');
 
 
             this.members = [];
-            this.members.push(this.cashView);
             this.members.push(this.cashNavigation);
             this.members.push(this.addTransactionForm);
 
@@ -52,23 +59,39 @@ define([
             $('#addTransactionLink').bind('click', $.proxy(function(e) {
                 e.preventDefault(); this.showAddTransaction()}, this));
 
+            this.accounts();
 
-            this.cashView.render();
 
         },
 
+
         transactions : function () {
+
+
             this.activeMonth || this.setActiveMonth(this.getFirstOfMonth());
-            this.raise('view_mode','transaction');
+
+            this.app.html('<table class="table table-hover"></table>');
+
+            this.view = new TransactionView({el:this.app.find('table')});
+
+            this.view.collection.fetchMonth(this.activeMonth);
+
+
         },
 
         accounts : function() {
-            this.raise('view_mode','category');
+            this.activeMonth || this.setActiveMonth(this.getFirstOfMonth());
+
+            this.app.html('<table class="table table-hover"></table>');
+
+            this.view = new CategoryView({el:this.app.find('table')});
+
+            this.view.collection.fetchMonth(this.activeMonth);
         },
 
         emptyTransaction : function () {
             return new TransactionModel(
-                {description:"Completeaza-ma!",fromAccount:49,date:this.getToday(),reference:'added from ui', amount:0}
+                {description:"Completeaza-ma!",fromAccount:49,date:  this.getToday(),reference:'added from ui', amount:0}
             );
         },
 
@@ -99,6 +122,7 @@ define([
 
         setActiveMonth : function(month) {
             this.raise('active_month', month);
+            this.view && this.view.collection && this.view.collection.fetchMonth && this.view.collection.fetchMonth(month);
             this.activeMonth = month;
         },
 

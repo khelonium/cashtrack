@@ -9,9 +9,6 @@ define([
         className:'table table-hover',
         activeMonth: NaN,
 
-        initialize:function() {
-            this.collection.on('reset', this.render, this);
-        },
 
         setMonth : function (month) {
             this.activeMonth = month;

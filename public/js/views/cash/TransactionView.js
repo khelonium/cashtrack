@@ -3,10 +3,16 @@ define([
     'underscore',
     'backbone',
     'views/AbstractTransaction',
-    'views/Transaction'
-], function($, _, Backbone, AbstractTransaction, SingleTransactionView){
+    'views/Transaction',
+    'collections/TransactionCollection',
+], function($, _, Backbone, AbstractTransaction, SingleTransactionView, TransactionCollection){
 
     return AbstractTransaction.extend({
+
+        initialize:function() {
+            this.collection = new TransactionCollection();
+            this.collection.on('reset', this.render, this);
+        },
 
         addAll: function () {
             this.$el.append('<tr><th colspan="3">Transactions</th></tr>');
