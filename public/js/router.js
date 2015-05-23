@@ -5,11 +5,6 @@ var cashCode = {
     Collections:{}
 };
 
-window.Cash = {
-    Models: {},
-    Collections: {},
-    Views: {}
-};
 
 // Filename: router.js
 define([
@@ -17,12 +12,15 @@ define([
     'underscore',
     'backbone',
     'cashapp/views',
-    'cashapp/models',
-    'module/navigation/NavigationYear',
-    'module/account/collection',
+    'forms/AddTransactionForm',
+    'views/navigation/Year',
+    'collections/CategoryCollection',
+    'collections/TransactionCollection',
+    'models/TransactionModel',
+    'views/Cash/ComposedView'
 
 
-], function($, _, Backbone , views, models, navigation, collection){
+], function($, _, Backbone , views, AddTransaction, YearView, CategoryCollection, TransactionCollection, TransactionModel, ComposedView){
 
     var CashRouter  =  Backbone.Router.extend({
         activeMonth: NaN,
@@ -37,17 +35,14 @@ define([
         initialize: function(){
 
 
-            this.categoryList     = new cashCode.Collections.CategoryList();
-            this.transactions     = new cashCode.Collections.Transaction();
-
-
-            console.log(navigation);
-            this.cashNavigation     = new Cash.Views.NavigationYearView({el:$('.pagination')});
-            this.addTransactionForm = new cashCode.Forms.AddTransaction({model: this.emptyTransaction(), el:$('#addTransactionForm')});
+            this.categoryList       = new CategoryCollection();
+            this.transactions       = new TransactionCollection();
+            this.cashNavigation     = new YearView({el:$('.pagination')});
+            this.addTransactionForm = new AddTransaction({model: this.emptyTransaction(), el:$('#addTransactionForm')});
 
             this.cashNavigation.render();
 
-            this.cashView    =  new cashCode.Views.CashView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
+            this.cashView    =  new ComposedView({categories:this.categoryList,transactions:this.transactions , el: $('#app')});
 
 
             this.members = [];
@@ -70,7 +65,7 @@ define([
         },
 
         emptyTransaction : function () {
-            return new cashCode.Models.Transaction(
+            return new TransactionModel(
                 {description:"Completeaza-ma!",fromAccount:49,date:this.getToday(),reference:'added from ui', amount:0}
             );
         },
@@ -118,11 +113,7 @@ define([
 
         },
 
-        emptyTransaction : function () {
-            return new cashCode.Models.Transaction(
-                {description:"Completeaza-ma!",fromAccount:49,date:this.getToday(),reference:'added from ui', amount:0}
-            );
-        },
+
 
         showTransactions : function () {
             this.raise('view_mode','transaction');

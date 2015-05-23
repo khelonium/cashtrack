@@ -1,10 +1,11 @@
 
 
 require.config({
+    urlArgs: "bust=v2",
     paths: {
         jquery: 'vendor/jquery.min',
         underscore: 'vendor/underscore-min',
-        backbone: 'vendor/backbone-min'
+        backbone: 'vendor/backbone-min',
     }
 
 });

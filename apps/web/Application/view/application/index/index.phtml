@@ -1,4 +1,7 @@
 <?php
+
+
+
 $javascripts = array(
     'js/module/account/collection.js',
     'js/cashapp.js',
@@ -7,9 +10,15 @@ $javascripts = array(
     'js/module/navigation/NavigationYear.js',
 );
 
-foreach ($javascripts as $script) {
-    $this->headScript()->appendFile($this->basePath($script));
-}
+
+$this -> headScript() -> setAllowArbitraryAttributes(true);
+$this->headScript()->appendFile('js/vendor/require/require.js','text/javascript', ['data-main' => 'js/main']);
+//
+//foreach ($javascripts as $script) {
+//    $this->headScript()->appendFile($this->basePath($script));
+//}
+
+
 ?>
 
 <?php include_once 'year_navigation.phtml'; ?>
@@ -21,6 +30,7 @@ foreach ($javascripts as $script) {
     <div id="formContainer" class="col-md-2">
          <?php echo $this->render('application/cash_nav.phtml'); ?>
     </div>
+
     <div class="col-md-10">
             <div>
                 <h5 class="left">Category View</h5>
