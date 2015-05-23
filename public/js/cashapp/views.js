@@ -417,4 +417,3 @@ cashCode.Views.MonthOperation = Backbone.View.extend({
 
 
 });
-
