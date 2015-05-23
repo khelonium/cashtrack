@@ -1,17 +1,9 @@
-var cashCode = {
-    Models:{},
-    Views:{},
-    Forms:{},
-    Collections:{}
-};
-
 
 // Filename: router.js
 define([
     'jquery',
     'underscore',
     'backbone',
-    'cashapp/views',
     'forms/AddTransactionForm',
     'views/navigation/Year',
     'collections/CategoryCollection',
@@ -20,7 +12,7 @@ define([
     'views/Cash/ComposedView'
 
 
-], function($, _, Backbone , views, AddTransaction, YearView, CategoryCollection, TransactionCollection, TransactionModel, ComposedView){
+], function($, _, Backbone , AddTransaction, YearView, CategoryCollection, TransactionCollection, TransactionModel, ComposedView){
 
     var CashRouter  =  Backbone.Router.extend({
         activeMonth: NaN,
