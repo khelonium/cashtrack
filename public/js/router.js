@@ -7,14 +7,15 @@ define([
     'forms/AddTransactionForm',
     'views/navigation/Year',
     'models/TransactionModel',
-    'views/report/LastWeekView',
     'views/cash/TransactionView',
     'views/cash/CategoryView',
+    'views/report/CategoryBarChart',
 
 
 
 
-], function($, _, Backbone , AddTransaction, YearView, TransactionModel,LastWeekView, TransactionView, CategoryView){
+
+], function($, _, Backbone , AddTransaction, YearView, TransactionModel, TransactionView, CategoryView, CategoryBarChart){
 
     var CashRouter  =  Backbone.Router.extend({
         activeMonth: NaN,
@@ -26,6 +27,8 @@ define([
             "cashflow/:id": "cashflow",
             'addTransaction': 'showAddTransaction',
             'report/lastweek': 'lastWeekReport',
+            'report/thisweek': 'thisWeekReport',
+            'report/thismonth': 'thisMonthReport',
             'transaction/:id/edit': 'editTransaction',
             'transactions': 'transactions',
             'accounts': 'accounts'
@@ -34,9 +37,23 @@ define([
 
         lastWeekReport : function ()
         {
-            var view = new LastWeekView({ el: $('#app')});
-            view.render();
+            var view = new CategoryBarChart({ el: $('#app')});
+            view.lastWeekReport();
         },
+
+
+        thisWeekReport : function ()
+        {
+            var view = new CategoryBarChart({ el: $('#app')});
+            view.thisWeekReport();
+        },
+
+        thisMonthReport : function ()
+        {
+            var view = new CategoryBarChart({ el: $('#app')});
+            view.thisMonthReport();
+        },
+
 
         initialize: function(){
 

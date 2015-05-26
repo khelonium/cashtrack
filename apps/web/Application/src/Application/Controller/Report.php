@@ -57,26 +57,6 @@ class Report extends AbstractActionController
     }
 
 
-    public function lastWeekAction()
-    {
-        return $this->getWeekModel(new LastWeek());
-    }
-
-    public function thisWeekAction()
-    {
-        return $this->getWeekModel(new ThisWeek());
-    }
-
-    public function thisMonthAction()
-    {
-        $month = new ThisMonth();
-        return new ViewModel(
-            [
-                'month' => $month->getStart()->format('m'),
-                'year' => $month->getStart()->format('y')
-            ]
-        );
-    }
 
 
     public function monthlyAction()

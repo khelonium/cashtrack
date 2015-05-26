@@ -132,6 +132,7 @@ Cash.Views.WeekCategoriesBarChart =  Cash.Views.BarChart.extend (({
     render : function(url){
 
         var that = this;
+
         d3.json(url , function(error, data) {
             that.x.domain(data.map(function(d) { return d.name; }));
             that.y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
