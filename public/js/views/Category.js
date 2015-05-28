@@ -20,6 +20,7 @@ define([
         },
 
         toggleTransactions:function() {
+            console.log("Toggle transaction");
             if (this.expanded) {
                 this.expandedView.$el.hide();
                 this.expanded = false;
@@ -46,11 +47,11 @@ define([
             this.$el.after(new_el);
 
 
+            this.expandedView  = new TransactionView({ el:new_el.find('.transaction-container')});
+            console.log("new view");
 
-
-            var transactions       = new TransactionCollection();
-            this.expandedView  = new TransactionView({collection:transactions, el:new_el.find('.transaction-container')});
-            transactions.fetch({data:{month:this.model.get('month'), accountId:this.model.get('accountId')}, reset:true});
+            this.expandedView.collection.fetch({data:{month:this.model.get('month'), accountId:this.model.get('accountId')}, reset:true});
+            console.log(this.expandedView);
 
         },
 

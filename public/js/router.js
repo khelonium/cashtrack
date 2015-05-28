@@ -10,12 +10,15 @@ define([
     'views/cash/TransactionView',
     'views/cash/CategoryView',
     'views/report/CategoryBarChart',
+    'views/report/MonthBarChart',
+    'views/report/WeekBarChart',
+    'views/report/YearBarChart',
 
 
 
 
 
-], function($, _, Backbone , AddTransaction, YearView, TransactionModel, TransactionView, CategoryView, CategoryBarChart){
+], function($, _, Backbone , AddTransaction, YearView, TransactionModel, TransactionView, CategoryView, CategoryBarChart, MonthBarChart, WeekBarChart , YearBarChart){
 
     var CashRouter  =  Backbone.Router.extend({
         activeMonth: NaN,
@@ -29,11 +32,68 @@ define([
             'report/lastweek': 'lastWeekReport',
             'report/thisweek': 'thisWeekReport',
             'report/thismonth': 'thisMonthReport',
+            'report/month/:year/:month': 'monthReport',
+            'report/year/:year': 'yearReport',
+            'report/week/:year/:week': 'weekReport',
+            'report/yearly': 'yearlyReport',
+            'report/monthly': 'monthlyReport',
+            'report/weekly': 'weeklyReport',
             'transaction/:id/edit': 'editTransaction',
             'transactions': 'transactions',
             'accounts': 'accounts'
         },
 
+        yearReport : function (year) {
+            var view = new CategoryBarChart({ el: $('#app')});
+            view.yearReport(year);
+        },
+
+        yearlyReport : function() {
+            var view = new YearBarChart({ el: $('#app')});
+
+            var that = this;
+
+            view.onClick(function(url){
+                that.navigate(url, true);
+            });
+
+            view.render((new Date().getFullYear()));
+        },
+
+        weeklyReport:function(){
+            var view = new WeekBarChart({ el: $('#app')});
+
+            var that = this;
+
+            view.onClick(function(url){
+                that.navigate(url, true);
+            });
+
+            view.render((new Date().getFullYear()));
+        },
+
+        monthReport : function (year, month) {
+            var view = new CategoryBarChart({ el: $('#app')});
+            view.monthReport(year, month);
+        },
+
+        weekReport : function (year, week) {
+            var view = new CategoryBarChart({ el: $('#app')});
+            view.weekReport(year, week);
+        },
+
+
+        monthlyReport : function () {
+            var view = new MonthBarChart({ el: $('#app')});
+
+            var that = this;
+
+            view.onClick(function(url){
+                that.navigate(url, true);
+            });
+
+            view.render((new Date().getFullYear()));
+        },
 
         lastWeekReport : function ()
         {

@@ -3,7 +3,7 @@ define([
     'underscore',
     'backbone',
     'd3',
-    'views/report/BaseBarChart'
+    'views/report/BaseBarChart',
 
 
 ], function ($, _, Backbone, d3, BaseBarChart) {
@@ -18,16 +18,26 @@ define([
 
         thisMonthReport: function () {
             var today = new Date();
-            var url = "/api/breakdown/month/" + today.getFullYear()  + "/" + (today.getMonth() + 1);
-            this.renderFrom(url);
+            this.monthReport(today.getFullYear(), today.getMonth());
         },
 
 
+        monthReport : function(year, month) {
+            this.renderFrom("/api/breakdown/month/" + year  + "/" +  month);
+        },
+
         thisWeekReport: function () {
             var today = new Date();
-            this.renderFrom( '/api/breakdown/week/' + today.getFullYear() + '/' +  (today.getWeek() -1));
-        }
+            this.weekReport(today.getFullYear(), today.getWeek());
+        },
 
+        weekReport : function (year, week) {
+            this.renderFrom( '/api/breakdown/week/' + year + '/' +  week);
+        },
+
+        yearReport : function (year) {
+            this.renderFrom( '/api/breakdown/year/' + year );
+        }
 
     });
 
