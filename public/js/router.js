@@ -45,7 +45,9 @@ define([
 
         yearReport : function (year) {
             var view = new CategoryBarChart({ el: $('#app')});
+
             view.yearReport(year);
+
         },
 
         yearlyReport : function() {
@@ -69,17 +71,12 @@ define([
                 that.navigate(url, true);
             });
 
+            this.cashNavigation.doOnYearChange = function(anotherYear) {
+                view.render(anotherYear);
+            };
+
+
             view.render((new Date().getFullYear()));
-        },
-
-        monthReport : function (year, month) {
-            var view = new CategoryBarChart({ el: $('#app')});
-            view.monthReport(year, month);
-        },
-
-        weekReport : function (year, week) {
-            var view = new CategoryBarChart({ el: $('#app')});
-            view.weekReport(year, week);
         },
 
 
@@ -92,8 +89,25 @@ define([
                 that.navigate(url, true);
             });
 
+            this.cashNavigation.doOnYearChange = function(anotherYear) {
+                view.render(anotherYear);
+            };
+
+
             view.render((new Date().getFullYear()));
         },
+
+
+        monthReport : function (year, month) {
+            var view = new CategoryBarChart({ el: $('#app')});
+            view.monthReport(year, month);
+        },
+
+        weekReport : function (year, week) {
+            var view = new CategoryBarChart({ el: $('#app')});
+            view.weekReport(year, week);
+        },
+
 
         lastWeekReport : function ()
         {
