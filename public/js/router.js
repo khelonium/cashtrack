@@ -1,4 +1,3 @@
-
 // Filename: router.js
 define([
     'jquery',
@@ -13,17 +12,21 @@ define([
     'views/report/MonthBarChart',
     'views/report/WeekBarChart',
     'views/report/YearBarChart',
+    'views/navigation/Meta',
 
 
+], function (
+    $, _, Backbone, AddTransaction,
+    YearView, TransactionModel, TransactionView,
+    CategoryView, CategoryBarChart, MonthBarChart, WeekBarChart, YearBarChart,
+    Meta) {
 
-
-
-], function($, _, Backbone , AddTransaction, YearView, TransactionModel, TransactionView, CategoryView, CategoryBarChart, MonthBarChart, WeekBarChart , YearBarChart){
-
-    var CashRouter  =  Backbone.Router.extend({
+    var CashRouter = Backbone.Router.extend({
         activeMonth: NaN,
-        app : NaN,
-        view :NaN,
+        navMeta:NaN,
+
+        app: NaN,
+        view: NaN,
 
         routes: {
             "": "index",
@@ -43,97 +46,127 @@ define([
             'accounts': 'accounts'
         },
 
-        yearReport : function (year) {
-            var view = new CategoryBarChart({ el: $('#app')});
+        yearReport: function (year) {
+            this.navMeta.title("Year " + year);
+            var view = new CategoryBarChart({el: $('#app')});
 
             view.yearReport(year);
 
         },
 
-        yearlyReport : function() {
-            var view = new YearBarChart({ el: $('#app')});
 
+
+        weeklyReport: function () {
+            this.navMeta.title("Weekly report");
+
+            this.timeReport(new WeekBarChart({el: $('#app')}));
+        },
+
+        monthlyReport: function (account) {
+
+            this.navMeta.title("Monthly report");
+
+            account && this.navMeta.title("Monthly report for " + account.name);
+
+            var accountId = null;
+
+            if (account) {
+                console.log("Setyin");
+                accountId = account.accountId;
+            }
+
+            this.timeReport(new MonthBarChart({el: $('#app')}), accountId);
+        },
+
+        yearlyReport: function () {
+            this.navMeta.title("Yearly report");
+
+            var view = new YearBarChart({el: $('#app')});
             var that = this;
 
-            view.onClick(function(url){
+            view.onClick(function (url) {
                 that.navigate(url, true);
             });
 
             view.render((new Date().getFullYear()));
         },
 
-        weeklyReport:function(){
-            var view = new WeekBarChart({ el: $('#app')});
+        timeReport: function (view, accountId) {
 
             var that = this;
 
-            view.onClick(function(url){
+            view.onClick(function (url) {
                 that.navigate(url, true);
             });
 
-            this.cashNavigation.doOnYearChange = function(anotherYear) {
+            this.cashNavigation.doOnYearChange = function (anotherYear) {
                 view.render(anotherYear);
             };
+            console.log("Rendering " + accountId);
 
-
-            view.render((new Date().getFullYear()));
+            view.render((new Date().getFullYear()), accountId);
         },
 
-
-        monthlyReport : function () {
-            var view = new MonthBarChart({ el: $('#app')});
-
-            var that = this;
-
-            view.onClick(function(url){
-                that.navigate(url, true);
-            });
-
-            this.cashNavigation.doOnYearChange = function(anotherYear) {
-                view.render(anotherYear);
-            };
-
-
-            view.render((new Date().getFullYear()));
-        },
-
-
-        monthReport : function (year, month) {
-            var view = new CategoryBarChart({ el: $('#app')});
+        monthReport: function (year, month) {
+            this.navMeta.title("Month breakdown" +' '+ year + '/' +  month);
+            var view = new CategoryBarChart({el: $('#app')});
             view.monthReport(year, month);
+            view.on("barAction",this.categoryOverMonth, this);
         },
 
-        weekReport : function (year, week) {
-            var view = new CategoryBarChart({ el: $('#app')});
+        categoryOverMonth: function(event) {
+            this.navMeta.title(event.barChart.amount + " on " + event.barChart.name  + " in " + event.barChart.month);
+
+            var evolution = function () {
+                console.log("Trigger");
+                this.monthlyReport(event.barChart);
+            }.bind(this);
+
+
+            this.navMeta.actions({evolution:evolution});
+        },
+
+        weekReport: function (year, week) {
+            this.navMeta.title("Week breakdown" +' '+ year + '/' +  week);
+
+            var view = new CategoryBarChart({el: $('#app')});
             view.weekReport(year, week);
         },
 
+        lastWeekReport: function () {
+            this.navMeta.title("Last Week");
 
-        lastWeekReport : function ()
-        {
-            var view = new CategoryBarChart({ el: $('#app')});
+            var view = new CategoryBarChart({el: $('#app')});
             view.lastWeekReport();
         },
 
 
-        thisWeekReport : function ()
-        {
-            var view = new CategoryBarChart({ el: $('#app')});
+        thisWeekReport: function () {
+            this.navMeta.title("This Week");
+
+            var view = new CategoryBarChart({el: $('#app')});
             view.thisWeekReport();
         },
 
-        thisMonthReport : function ()
-        {
-            var view = new CategoryBarChart({ el: $('#app')});
+        thisMonthReport: function () {
+            this.navMeta.title("This Month");
+
+            var view = new CategoryBarChart({el: $('#app')});
             view.thisMonthReport();
         },
 
 
-        initialize: function(){
+        initialize: function () {
 
 
-            this.cashNavigation     = new YearView({el:$('.pagination')});
-            this.addTransactionForm = new AddTransaction({model: this.emptyTransaction(), el:$('#addTransactionForm')});
+            this.navMeta = new Meta({el: $('#nav-meta')});
+
+
+            this.cashNavigation = new YearView({el: $('.pagination')});
+            this.addTransactionForm = new AddTransaction({
+                model: this.emptyTransaction(),
+                el: $('#addTransactionForm')
+            });
 
             this.cashNavigation.render();
 
@@ -146,9 +179,10 @@ define([
             this.members.push(this.addTransactionForm);
 
 
-
-            $('#addTransactionLink').bind('click', $.proxy(function(e) {
-                e.preventDefault(); this.showAddTransaction()}, this));
+            $('#addTransactionLink').bind('click', $.proxy(function (e) {
+                e.preventDefault();
+                this.showAddTransaction()
+            }, this));
 
             this.accounts();
 
@@ -156,47 +190,54 @@ define([
         },
 
 
-        transactions : function () {
+        transactions: function () {
 
+            this.navMeta.title("Transactions on " +  this.activeMonth);
 
             this.activeMonth || this.setActiveMonth(this.getFirstOfMonth());
 
             this.app.html('<table class="table table-hover"></table>');
 
-            this.view = new TransactionView({el:this.app.find('table')});
+            this.view = new TransactionView({el: this.app.find('table')});
 
             this.view.collection.fetchMonth(this.activeMonth);
 
 
         },
 
-        accounts : function() {
+        accounts: function () {
             this.activeMonth || this.setActiveMonth(this.getFirstOfMonth());
+
 
             this.app.html('<table class="table table-hover"></table>');
 
-            this.view = new CategoryView({el:this.app.find('table')});
+            this.view = new CategoryView({el: this.app.find('table')});
 
             this.view.collection.fetchMonth(this.activeMonth);
         },
 
-        emptyTransaction : function () {
+        emptyTransaction: function () {
             return new TransactionModel(
-                {description:"Completeaza-ma!",fromAccount:49,date:  this.getToday(),reference:'added from ui', amount:0}
+                {
+                    description: "Completeaza-ma!",
+                    fromAccount: 49,
+                    date: this.getToday(),
+                    reference: 'added from ui',
+                    amount: 0
+                }
             );
         },
 
-        getToday: function(){
+        getToday: function () {
             var myDate = new Date();
-            return myDate.getFullYear()  + '-' + (myDate.getMonth()+1) + '-' + myDate.getDate() ;
+            return myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate();
         },
 
 
+        editTransaction: function (id) {
 
-        editTransaction:function(id) {
 
-
-            var transaction = new TransactionModel({id:id});
+            var transaction = new TransactionModel({id: id});
 
             this.addTransactionForm.switchModel(transaction);
 
@@ -207,21 +248,23 @@ define([
 
         },
 
-        index: function(){
+        index: function () {
             this.cashflow(this.getFirstOfMonth());
         },
 
-        setActiveMonth : function(month) {
+        setActiveMonth: function (month) {
             this.raise('active_month', month);
             this.view && this.view.collection && this.view.collection.fetchMonth && this.view.collection.fetchMonth(month);
             this.activeMonth = month;
         },
 
-        cashflow: function(month){
+        cashflow: function (month) {
+            this.navMeta.title("Accounts on " + month);
+
             this.setActiveMonth(month);
         },
 
-        showAddTransaction : function() {
+        showAddTransaction: function () {
 
             if (this.addTransactionForm.model.get('id')) {
                 this.addTransactionForm.switchModel(this.emptyTransaction());
@@ -231,29 +274,28 @@ define([
         },
 
 
-
-        raise : function (eventName, eventData) {
-            _.each(this.members,function( item ){
+        raise: function (eventName, eventData) {
+            _.each(this.members, function (item) {
                 item.trigger(eventName, eventData);
-            },this);
+            }, this);
         },
 
-        getFirstOfMonth:function() {
+        getFirstOfMonth: function () {
             var myDate = new Date();
-            return myDate.getFullYear()  + '-' + (myDate.getMonth()+1) + '-01';
+            return myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-01';
         }
 
 
     });
 
 
-
-    var initialize = function(){
+    var initialize = function () {
 
         new CashRouter();
 
         Backbone.history.start();
     };
+
     return {
         initialize: initialize
     };

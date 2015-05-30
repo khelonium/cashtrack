@@ -24,17 +24,16 @@ $this->headScript()->appendFile('js/vendor/require/require.js','text/javascript'
 <?php include_once 'year_navigation.phtml'; ?>
 
 
-
+<div id="nav-meta" class="row nav-meta darkgray">
+</div>
 <div class="row">
 
-    <div id="formContainer" class="col-md-2">
+    <div id="formContainer" class="col-md-2 lightgray">
          <?php echo $this->render('application/cash_nav.phtml'); ?>
     </div>
 
+
     <div  class="col-md-10">
-            <div>
-                <h5 class="left">&nbsp;</h5>
-            </div>
 
             <div id="app">
             </div>

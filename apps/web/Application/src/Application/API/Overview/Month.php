@@ -16,6 +16,8 @@ class Month extends AbstractRestfulController
 
     public function get($year)
     {
+        $this->reporter->filter($this->params()->fromQuery('accountId'));
+
         return new MonthView($this->reporter->monthly($year));
 
     }

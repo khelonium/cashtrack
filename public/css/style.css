@@ -11,6 +11,17 @@ div.finance-app {
     margin: 20px;
 }
 
-div.bar-chart-container {
-    border-top: 1px solid #eee;
+div.lightgray {
+    background-color: #fAfAfA;
+}
+
+div.darkgray {
+    background-color: #f1f1f1;
+}
+
+div.nav-meta {
+    border-bottom: 1px solid #eee;
+}
+div.control-buttons span {
+    margin-left: 10px;
 }

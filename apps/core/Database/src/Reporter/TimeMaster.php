@@ -9,6 +9,13 @@ class TimeMaster implements TimeViewInterface, AdapterAwareInterface
 
     use AdapterAwareTrait;
 
+    private $accountId = null;
+
+    public function filter($accountId)
+    {
+        $this->accountId = $accountId;
+    }
+
     public function yearly()
     {
         return $this->build('year')->totals();
@@ -48,6 +55,7 @@ class TimeMaster implements TimeViewInterface, AdapterAwareInterface
                 break;
         }
 
+        $implementation->filter($this->accountId);
         $implementation->setDbAdapter($this->adapter);
 
         return $implementation;

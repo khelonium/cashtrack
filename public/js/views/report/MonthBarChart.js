@@ -23,15 +23,21 @@ define([
             return this.breakdownAPI + year + '/';
         },
 
-        render : function(year) {
+        render : function(year, accountId) {
 
 
             var that = this;
 
             that.break_url = this.getBreakdownUrl(year);
 
+           var overviewUrl =  this.overviewAPI  + year;
 
-            d3.json(this.overviewAPI  + year , function(error,data){
+            if (accountId) {
+                overviewUrl = overviewUrl + '?accountId=' + accountId;
+            }
+
+            console.log("Rendering in this part " + overviewUrl);
+            d3.json(overviewUrl , function(error,data){
 
                 that.x.domain(data.map(function(d) { return d.unit_nr; }));
                 that.y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
@@ -39,12 +45,11 @@ define([
                 var barChart =that.svg.selectAll(".bar")
                     .data(data);
 
-
                 barChart.enter().append("rect")
                     .on('click',function(d){
+                        that.trigger("barClick",d);
                         that.click(that.break_url + d.unit_nr);
-                    });
-
+                });
 
                 barChart.transition()
                     .delay(function(d, i) {

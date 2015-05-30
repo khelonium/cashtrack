@@ -12,6 +12,15 @@ class AbstractPeriod implements AdapterAwareInterface
 
     use AdapterAwareTrait;
 
+    protected $accountId = null;
+
+    public function filter($accountId)
+    {
+        $this->accountId = $accountId;
+        return $this;
+    }
+
+
     /**
      * @return \Zend\Db\Sql\Select
      */
@@ -24,6 +33,10 @@ class AbstractPeriod implements AdapterAwareInterface
         $select->join('account', new Expression("account.id = transaction.to_account"), []);
 
         $select->where->equalTo('account.type', 'expense');
+
+        if ($this->accountId) {
+            $select->where->equalTo('transaction.to_account', $this->accountId);
+        }
         $select->group('unit_nr');
         return $select;
     }

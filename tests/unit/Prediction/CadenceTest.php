@@ -62,7 +62,7 @@ class CadenceTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertEquals(1.5, $cadence->getCadence());
+        $this->assertEquals(1, $cadence->getCadence());
     }
 
     /**

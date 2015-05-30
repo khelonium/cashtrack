@@ -12,8 +12,8 @@ define([
     return Backbone.View.extend({
         margin : {top: 20, right: 20, bottom: 70, left: 40},
 
-        initialize:function() {
 
+        initialize:function() {
 
             Date.prototype.getWeek = function() {
                 var onejan = new Date(this.getFullYear(),0,1);
@@ -21,7 +21,7 @@ define([
             };
 
 
-            this.$el.html('<div class="bar-chart-container">I am the report</div>');
+            this.$el.html('<div class="bar-chart-container"></div>');
 
             this.width  = 960 - this.margin.left - this.margin.right;
             this.height = 500 - this.margin.top - this.margin.bottom;
@@ -69,6 +69,7 @@ define([
 
         renderFrom: function (url) {
             var that = this;
+            console.log("Rending gear " + url);
             d3.json(url , function(error, data) {
                 that.x.domain(data.map(function(d) { return d.name; }));
                 that.y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
@@ -79,8 +80,16 @@ define([
                     .data(data);
 
 
+
+
                 barChart.enter().append("rect");
 
+
+                barChart.enter().append("rect")
+                    .on('click',function(d){
+                        that.trigger('barAction',{barChart:d});
+                        console.log("Trigger bar event");
+                });
 
                 barChart.transition()
                     .delay(function(d, i) {

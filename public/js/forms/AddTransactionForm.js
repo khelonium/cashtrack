@@ -68,7 +68,6 @@ define([
 
         render:function(){
 
-            console.log("Rendering");
             var template = _.template(transactionTemplate);
 
             this.$el.html(template(this.model.attributes));
