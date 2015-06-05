@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 
 /**
@@ -8,7 +8,7 @@ require_once __DIR__.'/../../../bootstrap.php';
  */
 class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
 {
-    
+
     /**
      * @beforeScenario
      */
@@ -35,7 +35,6 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
     }
 
 
-
     /**
      * @Then /^I show last response$/
      */
@@ -52,29 +51,29 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         $transaction = $this->getTransactionRepo();
 
         $transaction->create(
-            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-01-01']
+            ['description' => 'transaction 1', 'amount' => 100, 'to_account' => 86, 'date' => '2014-01-01']
         );
         $transaction->create(
-            ['description' => 'transaction 1', 'amount'  => 50,  'to_account'  => 87, 'date' => '2014-01-01']
+            ['description' => 'transaction 1', 'amount' => 50, 'to_account' => 87, 'date' => '2014-01-01']
         );
         $transaction->create(
-            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-01-01']
+            ['description' => 'transaction 1', 'amount' => 100, 'to_account' => 87, 'date' => '2014-01-01']
         );
 
         $transaction->create(
-            ['description' => 'transaction 1', 'amount'  => 500,  'to_account'  => 87, 'date' => '2014-02-01']
+            ['description' => 'transaction 1', 'amount' => 500, 'to_account' => 87, 'date' => '2014-02-01']
         );
         $transaction->create(
-            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2014-02-01']
+            ['description' => 'transaction 1', 'amount' => 100, 'to_account' => 87, 'date' => '2014-02-01']
         );
         $transaction->create(
-            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-02-28']
+            ['description' => 'transaction 1', 'amount' => 100, 'to_account' => 86, 'date' => '2014-02-28']
         );
         $transaction->create(
-            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 86, 'date' => '2014-02-28']
+            ['description' => 'transaction 1', 'amount' => 100, 'to_account' => 86, 'date' => '2014-02-28']
         );
         $transaction->create(
-            ['description' => 'transaction 1', 'amount'  => 100,  'to_account'  => 87, 'date' => '2015-01-01']
+            ['description' => 'transaction 1', 'amount' => 100, 'to_account' => 87, 'date' => '2015-01-01']
         );
 
     }
@@ -161,7 +160,7 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
 
         $json = $this->getJson();
 
-        if (count($json) ==0) {
+        if (count($json) == 0) {
             throw new \Exception("There are no entries");
         }
 
@@ -173,6 +172,80 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         }
     }
 
+    /**
+     * @Given /^there are some transactions which exceed the weekly limit$/
+     */
+    public function thereAreSomeTransactionsWhichExceedTheWeeklyLimit()
+    {
+        $transaction = $this->getTransactionRepo();
+
+        $transaction->create(
+            [
+                'description' => 'transaction 1',
+                'amount'      => 10000,
+                'to_account'  => 86,
+                'date' => (new DateTime())->format('Y-m-d')
+            ]
+        );
+
+        $transaction->create(
+            [
+                'description' => 'transaction 1',
+                'amount'      => 10000,
+                'to_account'  => 86,
+                'date' => (new DateTime())->format('Y-m-d')
+            ]
+        );
+
+    }
+
+    private $last= null;
+
+    /**
+     * @When /^the monthly job runs$/
+     */
+    public function theMonthlyJobRuns()
+    {
+        $job = new MonthCheckDouble();
+        $job->setUp();
+        $job->perform();
+
+        $this->last= $job;
+    }
+
+    /**
+     * @Then /^the montly notification is triggered$/
+     */
+    public function theMonthlyNotificationIsTriggered()
+    {
+        if (!$this->last->excessNotified) {
+            throw new \Exception("Notification was not triggered");
+        };
+    }
 
 }
 
+
+class MonthCheckDouble extends \Jobs\CheckMonthly
+{
+
+
+    public $excessNotified = false;
+
+    protected function sent($key)
+    {
+        return false;
+    }
+
+    protected function notifyExcess()
+    {
+        $this->excessNotified = true;
+    }
+
+    protected function getConfig()
+    {
+        return include 'config/application.test.config.php';
+    }
+
+
+}

@@ -14,7 +14,7 @@ abstract class AbstractCheck
 
     public function setUp()
     {
-        $bootstrap = \Zend\Mvc\Application::init(include 'config/application.config.php');
+        $bootstrap = \Zend\Mvc\Application::init($this->getConfig());
         $this->sm = $bootstrap->getServiceManager();
 
         $this->init();
@@ -55,5 +55,13 @@ abstract class AbstractCheck
         $thisMonth = new ThisMonth();
         $this->redisClient()->set($key, "sent");
         $this->redisClient()->expireAt($key, $thisMonth->getEnd()->getTimestamp());
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getConfig()
+    {
+        return include 'config/application.config.php';
     }
 }

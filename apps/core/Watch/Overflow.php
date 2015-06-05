@@ -2,12 +2,12 @@
 namespace Watch;
 
 use Finance\Reporter\CashFlowInterface;
-use Library\Collection;
+use Refactoring\Time\Interval;
 use Refactoring\Time\Interval\ThisMonth;
 
 class Overflow
 {
-    private $strategy;
+    private $interval;
     const WARNING_LIMIT = 0.75;
 
     /**
@@ -15,16 +15,21 @@ class Overflow
      */
     private $cashflow = null;
 
-    public function __construct(CashFlowInterface $cashflow, $strategy = null)
+    /**
+     * @param CashFlowInterface $cashflow
+     * @param Interval $interval
+     */
+    public function __construct(CashFlowInterface $cashflow, $interval = null)
     {
-        $this->strategy = $strategy or $this->strategy = new ThisMonth();
+        $this->interval = $interval or $this->interval = new ThisMonth();
         $this->cashflow = $cashflow;
     }
 
 
     public function isAbove($limit)
     {
-        $collection = $this->cashflow->expensesFor($this->strategy);
+
+        $collection = $this->cashflow->expensesFor($this->interval);
 
         if ($collection->isEmpty()) {
             return false;

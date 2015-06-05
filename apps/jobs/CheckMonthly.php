@@ -29,14 +29,14 @@ class CheckMonthly extends AbstractCheck
 
     }
 
-    private function notifyExcess()
+    protected function notifyExcess()
     {
         mail('cosmin.dordea@yahoo.com', "Monthly Limit  Exceeded", "Sent by finance", $this->getHeaders());
         $this->markSent(self::OVERFLOW_KEY);
         echo "Exceeded \n";
     }
 
-    private function notifyAlmost()
+    protected function notifyAlmost()
     {
         mail('cosmin.dordea@yahoo.com', "Monthly Limit Almost Reached", "Sent by finance", $this->getHeaders());
         $this->markSent(self::ALMOST_OVERFLOW_MONTH);
