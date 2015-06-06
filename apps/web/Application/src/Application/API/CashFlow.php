@@ -17,10 +17,6 @@ use Zend\View\Model\JsonModel;
 
 class CashFlow extends AbstractRestfulController
 {
-    public function get($id)
-    {
-        return new JsonModel(array("type" => 'expense', 'amount' => '30', 'name' => 'ceapa'));
-    }
 
     public function getList()
     {

@@ -58,7 +58,6 @@ class AbstractPeriod implements AdapterAwareInterface
         foreach ($this->getSql()->prepareStatementForSqlObject($select)->execute() as $result) {
             $out [] = $result;
         }
-
         return $out;
 
     }

@@ -51,6 +51,17 @@ class AccountRepository extends AbstractRepository
 
     }
 
+
+    /**
+     * @param $type possible values income|expense|buffer|saving
+     * @return array
+     */
+    public function getByType($type)
+    {
+        return $this->gateway()->select(array('type' => $type));
+    }
+
+
     /**
      * @var \Zend\Db\TableGateway\TableGateway
      */

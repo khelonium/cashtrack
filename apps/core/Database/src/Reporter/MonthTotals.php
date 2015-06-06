@@ -13,7 +13,7 @@ class MonthTotals extends AbstractPeriod
         $select->columns(
             [
                 'unit_nr' => new Expression('month(transaction_date)'),
-                'amount' => new Expression('sum(amount)')
+                'amount'  => new Expression('sum(amount)')
             ]
         );
         $select->where->like('transaction_date', "%$year%");

@@ -8,4 +8,5 @@ class AccountTotal
     public $amount    = null;
     public $type      = null;
     public $month     = null;
+    public $year      = null;
 }

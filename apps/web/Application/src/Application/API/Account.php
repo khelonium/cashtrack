@@ -36,10 +36,7 @@ class Account extends AbstractController
 
         $list = $this->getRepository()->all();
 
-        $out = array();
-        foreach ($list as $account) {
-            $out[] = $account->getArrayCopy();
-        }
+
         return new JsonModel($list);
     }
 
