@@ -7,11 +7,6 @@ return [
         ],
 
         [
-            'label' => 'Prediction',
-            'route' => 'prediction',
-        ],
-
-        [
             'label' => 'Merchants',
             'route' => 'merchants',
         ]

@@ -23,9 +23,7 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        /** @var \Finance\Account\Repository $repo */
-        $repo    = $this->getServiceLocator()->get('Database\Account\Repository');
-        return new ViewModel(array('buffers' => $repo->getByType('buffer')));
+
     }
 
 
@@ -34,55 +32,5 @@ class IndexController extends AbstractActionController
 
     }
 
-    public function predictionAction()
-    {
 
-        $sm = $this->getServiceLocator();
-
-        /** @var Database\Account\AccountRepository $accounts */
-        $accounts = $sm->get('\Database\Account\Repository');
-
-        /** @var Adapter $adapter */
-        $adapter = $sm->get('\Zend\Db\Adapter\Adapter');
-
-        $out = [];
-
-        $cadences = [];
-        $ignore = [77, 1, 10, 6 , 8 ,42, 64];
-
-        $accountBalance = new AccountSum();
-        $accountBalance->setDbAdapter($adapter);
-
-        foreach ($accounts->getByType('expense') as $account) {
-            if (false !== array_search($account->id, $ignore)) {
-                continue;
-            }
-
-            $prediction = new \Prediction\PredictAccount($accountBalance->forAccount($account));
-
-
-
-            $cadences[$account->name] =  $prediction->getCadence();
-            $amount = $prediction->thisMonth();
-
-            if ($amount) {
-                $out[$account->name] = $amount;
-            }
-
-        }
-
-        return new ViewModel(['accounts' => $out, 'cadences' => $cadences]);
-
-    }
-
-    /**
-     * @return LastMonth
-     */
-    protected function getInterval()
-    {
-        $end = (new LastMonth())->getStart();
-        $start = clone $end;
-        $start->sub(new \DateInterval('P1Y'));
-        return new Interval($start, $end);
-    }
 }

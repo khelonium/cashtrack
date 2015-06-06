@@ -26,17 +26,6 @@ return [
             ],
         ],
 
-        'prediction' => [
-            'type' => 'Zend\Mvc\Router\Http\Literal',
-            'options' => [
-                'route'    => '/prediction',
-                'defaults' => [
-                    'controller' => 'Application\Controller\Index',
-                    'action'     => 'prediction',
-                ],
-            ],
-        ],
-
         'application' => array(
             'type'    => 'Literal',
             'options' => [
