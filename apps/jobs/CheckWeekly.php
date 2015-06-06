@@ -9,6 +9,8 @@ class CheckWeekly extends AbstractCheck
 
     private $overflow;
 
+    const WEEKLY_LIMIT = 850;
+
     protected function init()
     {
         $this->overflow = $this->sm->get('Overflow\WeeklyOverflow');
@@ -17,27 +19,26 @@ class CheckWeekly extends AbstractCheck
 
     public function perform()
     {
-        $amount = 850;
-
-        if ($this->overflow->isAbove($amount)) {
+        if ($this->overflow->isAbove(self::WEEKLY_LIMIT)) {
             $this->sent(self::OVERFLOW_KEY_WEEK) or $this->notifyExcess();
             return;
         }
 
-        if ($this->overflow->isAlmostAbove($amount)) {
+        if ($this->overflow->isAlmostAbove(self::WEEKLY_LIMIT)) {
             $this->sent(self::ALMOST_OVERFLOW_WEEK) or $this->notifyAlmost();
         }
 
+
     }
 
-    private function notifyExcess()
+    protected function notifyExcess()
     {
         mail('cosmin.dordea@yahoo.com', "Weekly Limit  Exceeded", "Sent by finance", $this->getHeaders());
         $this->markSent(self::OVERFLOW_KEY_WEEK);
         echo "Exceeded \n";
     }
 
-    private function notifyAlmost()
+    protected function notifyAlmost()
     {
         mail('cosmin.dordea@yahoo.com', "Weekly Limit Almost Reached", "Sent by finance", $this->getHeaders());
         $this->markSent(self::ALMOST_OVERFLOW_WEEK);

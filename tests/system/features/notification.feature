@@ -22,3 +22,9 @@ Feature: Notifications for overspending
       Given there are some transactions which exceed the warning threshold
       When the monthly job runs
       Then the monthly warning notification is triggered
+
+
+  Scenario: Weekly Notification with overflow
+    Given there are some transactions which exceed the weekly limit
+    When the weekly job runs
+    Then the weekly notification is triggered

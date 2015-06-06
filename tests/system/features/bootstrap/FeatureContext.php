@@ -304,6 +304,52 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         };
     }
 
+    /**
+     * @Given /^there are some transactions which exceed the weekly limit$/
+     */
+    public function thereAreSomeTransactionsWhichExceedTheWeeklyLimit()
+    {
+        $transaction = $this->getTransactionRepo();
+
+        $transaction->create(
+            [
+                'description' => 'transaction 1',
+                'amount' =>  \Jobs\CheckWeekly::WEEKLY_LIMIT + 100,
+                'to_account' => 86,
+                'date' => (new DateTime())->format('Y-m-d')
+            ]
+        );
+
+        $transaction->create(
+            [
+                'description' => 'transaction 1',
+                'amount' =>  \Jobs\CheckWeekly::WEEKLY_LIMIT + 100,
+                'to_account' => 86,
+                'date' => (new DateTime())->format('Y-m-d')
+            ]
+        );
+    }
+
+    /**
+     * @When /^the weekly job runs$/
+     */
+    public function theWeeklyJobRuns()
+    {
+        $this->last = new \Jobs\Double\WeekCheckDouble();
+        $this->last->setUp();
+        $this->last->perform();
+    }
+
+    /**
+     * @Then /^the weekly notification is triggered$/
+     */
+    public function theWeeklyNotificationIsTriggered()
+    {
+        if (!$this->last->excessNotified) {
+            throw new \Exception("Weekly limit notification  was  not triggered");
+        };
+    }
+
 }
 
 
