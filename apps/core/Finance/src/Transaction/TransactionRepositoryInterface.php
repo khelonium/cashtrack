@@ -8,7 +8,7 @@
 namespace Finance\Transaction;
 
 use Library\Entity;
-use Refactoring\Interval\IntervalInterface;
+use Refactoring\Time\Interval\IntervalInterface;
 
 /**
  * Interface TransactionRepositoryInterface
@@ -39,7 +39,6 @@ interface TransactionRepositoryInterface
 
     /**
      * @param IntervalInterface $interval
-     * @param null $account
      * @return array
      * @todo REFACTOR WITH specification
      */

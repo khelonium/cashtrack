@@ -28,6 +28,7 @@ class Transaction extends AbstractController
         $list = $this->getRepository()->fromSpecification($spec);
 
 
+        $out = [];
         foreach ($list as $account) {
             $out[] = $account->getArrayCopy();
         }

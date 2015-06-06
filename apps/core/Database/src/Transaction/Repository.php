@@ -8,8 +8,8 @@ namespace Database\Transaction;
 
 use Finance\Transaction\Transaction;
 use Finance\Transaction\TransactionRepositoryInterface;
-use Refactoring\Interval\IntervalInterface;
 use Library\AbstractRepository;
+use Refactoring\Time\Interval\IntervalInterface;
 
 class Repository extends AbstractRepository implements TransactionRepositoryInterface
 {
