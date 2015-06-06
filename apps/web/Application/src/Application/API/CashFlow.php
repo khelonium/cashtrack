@@ -19,12 +19,12 @@ class CashFlow extends AbstractRestfulController
 {
     public function get($id)
     {
-        return new JsonModel(array("type" => 'expense', 'amount' => '30', 'name'=>'ceapa'));
+        return new JsonModel(array("type" => 'expense', 'amount' => '30', 'name' => 'ceapa'));
     }
 
     public function getList()
     {
-        $month =  $this->params()->fromQuery('month' , null );
+        $month = $this->params()->fromQuery('month', null);
         $list = $this->generateCashflow($month);
 
         return new JsonModel($list);
@@ -48,7 +48,6 @@ class CashFlow extends AbstractRestfulController
 
 
     }
-
 
 
 }

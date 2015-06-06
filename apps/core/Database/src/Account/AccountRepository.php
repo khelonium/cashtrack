@@ -1,16 +1,8 @@
 <?php
-/**
- * 
- * @author Cosmin Dordea <cosmin.dordea@refactoring.ro>
- * Date: 12/1/13
- */
-
 namespace Database\Account;
-
 
 use Finance\Account\Account;
 use Library\AbstractRepository;
-
 
 class AccountRepository extends AbstractRepository
 {
@@ -58,24 +50,6 @@ class AccountRepository extends AbstractRepository
         return $result->current();
 
     }
-
-
-    /**
-     * @param $type possible values income|expense|buffer|saving
-     * @return array
-     */
-    public function getByType($type)
-    {
-
-        $out = array();
-        $result = $this->gateway()->select(array('type' => $type));
-        foreach ($result as $entry) {
-            $out[] = $entry;
-        }
-        return $out;
-
-    }
-
 
     /**
      * @var \Zend\Db\TableGateway\TableGateway

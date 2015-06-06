@@ -34,12 +34,7 @@ abstract class AbstractRepository implements ServiceManagerAwareInterface
      */
     public function all()
     {
-        $out = array();
-        $result = $this->gateway()->select();
-        foreach ($result as $entry) {
-            $out[] = $entry;
-        }
-        return $out;
+        return $this->gateway()->select();
     }
 
 

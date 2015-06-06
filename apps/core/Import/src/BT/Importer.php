@@ -50,6 +50,8 @@ class Importer
         $parts   =  explode ("/", $parts[0]);
         $account =  array_pop($parts);
 
+
+
         foreach ($transactions as $transaction) {
             $transaction->fromAccount = $this->map[$account];
             $this->service->add($this->mapToEntity($transaction));
