@@ -1,13 +1,15 @@
 <?php namespace Application\API\Overview;
 
 use Application\View\Time\Year as YearView;
+use Database\Reporter\TimeMaster;
+use Reporter\TimeViewInterface;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
 class Year extends AbstractRestfulController
 {
 
     /**
-     * @var YearView
+     * @var TimeViewInterface
      */
     private $reporter = null;
 

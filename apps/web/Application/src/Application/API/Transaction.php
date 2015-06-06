@@ -20,20 +20,6 @@ class Transaction extends AbstractController
 
     protected $repositoryServiceKey = 'Database\Transaction\Repository';
 
-    /**
-     * @param mixed $id
-     * @return array|mixed|JsonModel
-     */
-    public function get($id)
-    {
-
-        if (!$response = $this->getRepository()->get($id)) {
-            $this->response->setStatusCode(404);
-            return array('content' => "Transaction not found");
-        }
-
-        return new JsonModel($response);
-    }
 
     public function getList()
     {

@@ -20,16 +20,6 @@ class Account extends AbstractController
 
     protected $repositoryServiceKey = 'Database\Account\Repository';
 
-    public function get($id)
-    {
-
-        if (! $response = $this->getRepository()->get($id)) {
-            $this->response->setStatusCode(404);
-            return;
-        }
-
-        return new JsonModel($response);
-    }
 
     public function getList()
     {

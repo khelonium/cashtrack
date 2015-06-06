@@ -3,6 +3,7 @@
 namespace Application\API;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\View\Model\JsonModel;
 
 abstract class AbstractController extends AbstractRestfulController
 {
@@ -17,6 +18,21 @@ abstract class AbstractController extends AbstractRestfulController
      * @var Repository
      */
     private $_repo = null;
+
+    /**
+     * @param mixed $id
+     * @return array|mixed|JsonModel
+     */
+    public function get($id)
+    {
+
+        if (!$response = $this->getRepository()->get($id)) {
+            $this->response->setStatusCode(404);
+            return array('content' => "Resource not found");
+        }
+
+        return new JsonModel($response);
+    }
 
     /**
      * @return repository
