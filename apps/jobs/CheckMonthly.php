@@ -9,6 +9,8 @@ class CheckMonthly extends AbstractCheck
 
     private $overflow;
 
+    const MONTH_LIMIT = 3500;
+
     protected function init()
     {
         $this->overflow = $this->sm->get('Overflow\MonthlyOverflow');
@@ -16,14 +18,12 @@ class CheckMonthly extends AbstractCheck
 
     public function perform()
     {
-        $amount = 3500;
-
-        if ($this->overflow->isAbove($amount)) {
+        if ($this->overflow->isAbove(self::MONTH_LIMIT)) {
             $this->sent(self::OVERFLOW_KEY) or $this->notifyExcess();
             return;
         }
 
-        if ($this->overflow->isAlmostAbove($amount)) {
+        if ($this->overflow->isAlmostAbove(self::MONTH_LIMIT)) {
             $this->sent(self::ALMOST_OVERFLOW_MONTH) or $this->notifyAlmost();
         }
 

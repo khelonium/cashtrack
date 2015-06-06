@@ -173,17 +173,17 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
     }
 
     /**
-     * @Given /^there are some transactions which exceed the weekly limit$/
+     * @Given /^there are some transactions which exceed the monthly limit$/
      */
-    public function thereAreSomeTransactionsWhichExceedTheWeeklyLimit()
+    public function thereAreSomeTransactionsWhichExceedTheMonthlyLimit()
     {
         $transaction = $this->getTransactionRepo();
 
         $transaction->create(
             [
                 'description' => 'transaction 1',
-                'amount'      => 10000,
-                'to_account'  => 86,
+                'amount' => \Jobs\CheckMonthly::MONTH_LIMIT,
+                'to_account' => 86,
                 'date' => (new DateTime())->format('Y-m-d')
             ]
         );
@@ -191,30 +191,29 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         $transaction->create(
             [
                 'description' => 'transaction 1',
-                'amount'      => 10000,
-                'to_account'  => 86,
+                'amount' => \Jobs\CheckMonthly::MONTH_LIMIT,
+                'to_account' => 86,
                 'date' => (new DateTime())->format('Y-m-d')
             ]
         );
 
     }
 
-    private $last= null;
+    private $last = null;
 
     /**
      * @When /^the monthly job runs$/
      */
     public function theMonthlyJobRuns()
     {
-        $job = new MonthCheckDouble();
+        $job = new \Jobs\Double\MonthCheckDouble();
         $job->setUp();
         $job->perform();
-
-        $this->last= $job;
+        $this->last = $job;
     }
 
     /**
-     * @Then /^the montly notification is triggered$/
+     * @Then /^the monthly notification is triggered$/
      */
     public function theMonthlyNotificationIsTriggered()
     {
@@ -223,29 +222,88 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         };
     }
 
+    /**
+     * @Given /^there are some transactions which don't exceed monthly limit$/
+     */
+    public function thereAreSomeTransactionsWhichDonTExceedMonthlyLimit()
+    {
+        $transaction = $this->getTransactionRepo();
+
+        $transaction->create(
+            [
+                'description' => 'transaction 1',
+                'amount' => \Jobs\CheckMonthly::MONTH_LIMIT - 1,
+                'to_account' => 86,
+                'date' => (new DateTime())->format('Y-m-d')
+            ]
+        );
+
+    }
+
+    /**
+     * @Then /^the monthly notification is not triggered$/
+     */
+    public function theMonthlyNotificationIsNotTriggered()
+    {
+        if ($this->last->excessNotified) {
+            throw new \Exception("Notification was  triggered and should have not");
+        };
+    }
+
+    /**
+     * @Given /^there are some transactions which do not exceed the warning limit$/
+     */
+    public function thereAreSomeTransactionsWhichDoNotExceedTheWarningLimit()
+    {
+        $transaction = $this->getTransactionRepo();
+
+        $transaction->create(
+            [
+                'description' => 'transaction 1',
+                'amount' => 0.4 * \Jobs\CheckMonthly::MONTH_LIMIT,
+                'to_account' => 86,
+                'date' => (new DateTime())->format('Y-m-d')
+            ]
+        );
+    }
+
+    /**
+     * @Given /^the monthly warning notification is not triggered$/
+     */
+    public function theMonthlyWarningNotificationIsNotTriggered()
+    {
+        if ($this->last->almostNotified) {
+            throw new \Exception("Warning notification was  triggered and should have not");
+        };
+    }
+
+    /**
+     * @Given /^there are some transactions which exceed the warning threshold$/
+     */
+    public function thereAreSomeTransactionsWhichExceedTheWarningThreshold()
+    {
+        $transaction = $this->getTransactionRepo();
+
+        $transaction->create(
+            [
+                'description' => 'transaction 1',
+                'amount' => 0.9 * \Jobs\CheckMonthly::MONTH_LIMIT,
+                'to_account' => 86,
+                'date' => (new DateTime())->format('Y-m-d')
+            ]
+        );
+    }
+
+    /**
+     * @Then /^the monthly warning notification is triggered$/
+     */
+    public function theMonthlyWarningNotificationIsTriggered()
+    {
+        if (!$this->last->almostNotified) {
+            throw new \Exception("Warning notification was  not triggered");
+        };
+    }
+
 }
 
 
-class MonthCheckDouble extends \Jobs\CheckMonthly
-{
-
-
-    public $excessNotified = false;
-
-    protected function sent($key)
-    {
-        return false;
-    }
-
-    protected function notifyExcess()
-    {
-        $this->excessNotified = true;
-    }
-
-    protected function getConfig()
-    {
-        return include 'config/application.test.config.php';
-    }
-
-
-}
