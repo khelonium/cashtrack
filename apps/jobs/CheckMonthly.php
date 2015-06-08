@@ -15,16 +15,14 @@ class CheckMonthly extends AbstractCheck
 
     protected function notifyExcess()
     {
-        mail('cosmin.dordea@yahoo.com', "Monthly Limit  Exceeded", "Sent by finance", $this->getHeaders());
+        $this->mailer->subject("Monthly Limit Exceeded")->send();
         $this->markSent(self::OVERFLOW_KEY);
-        echo "Exceeded \n";
     }
 
     protected function notifyAlmost()
     {
-        mail('cosmin.dordea@yahoo.com', "Monthly Limit Almost Reached", "Sent by finance", $this->getHeaders());
+        $this->mailer->subject("Monthly Limit  Almost Reached")->send();
         $this->markSent(self::ALMOST_OVERFLOW_MONTH);
-        echo "Almost exceeded \n";
     }
 
 
@@ -52,6 +50,4 @@ class CheckMonthly extends AbstractCheck
     {
         return $this->sent(self::ALMOST_OVERFLOW_MONTH);
     }
-
-
 }

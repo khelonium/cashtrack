@@ -1,6 +1,7 @@
 <?php
 namespace Jobs;
 
+use Library\Mail;
 use Refactoring\Time\Interval\ThisMonth;
 
 abstract class AbstractCheck
@@ -14,12 +15,20 @@ abstract class AbstractCheck
 
     protected $overflow;
 
+    /**
+     * @var Mail
+     */
+    protected $mailer = null;
+
 
     public function setUp()
     {
         $bootstrap = \Zend\Mvc\Application::init($this->getConfig());
+
         $this->sm = $bootstrap->getServiceManager();
         $this->init();
+
+        $this->mailer = new Mail();
 
     }
 
@@ -38,10 +47,15 @@ abstract class AbstractCheck
 
 
     abstract protected function notifyExcess();
+
     abstract protected function notifyAlmost();
+
     abstract protected function init();
+
     abstract protected function overflowNotificationSent();
+
     abstract protected function warningNotificationSent();
+
     abstract protected function getLimit();
 
 
@@ -73,9 +87,8 @@ abstract class AbstractCheck
      */
     protected function markSent($key)
     {
-        $thisMonth = new ThisMonth();
         $this->redisClient()->set($key, "sent");
-        $this->redisClient()->expireAt($key, $thisMonth->getEnd()->getTimestamp());
+        $this->redisClient()->expireAt($key, (new ThisMonth())->getEnd()->getTimestamp());
     }
 
     /**
@@ -84,12 +97,5 @@ abstract class AbstractCheck
     protected function getConfig()
     {
         return include 'config/application.config.php';
-    }
-
-    protected function getHeaders()
-    {
-        return 'From: finance@refactoring.ro' . "\r\n" .
-        'Reply-To: no-reply@refactoring.ro' . "\r\n" .
-        'X-Mailer: PHP/' . phpversion();
     }
 }

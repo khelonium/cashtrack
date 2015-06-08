@@ -19,16 +19,14 @@ class CheckWeekly extends AbstractCheck
 
     protected function notifyExcess()
     {
-        mail('cosmin.dordea@yahoo.com', "Weekly Limit  Exceeded", "Sent by finance", $this->getHeaders());
+        $this->mailer->subject("Weekly limit exceeded")->send();
         $this->markSent(self::OVERFLOW_KEY_WEEK);
-        echo "Exceeded \n";
     }
 
     protected function notifyAlmost()
     {
-        mail('cosmin.dordea@yahoo.com', "Weekly Limit Almost Reached", "Sent by finance", $this->getHeaders());
+        $this->mailer->subject("Weekly limit Almost Reached")->send();
         $this->markSent(self::ALMOST_OVERFLOW_WEEK);
-        echo "Almost exceeded \n";
     }
 
     /**
