@@ -28,3 +28,8 @@ Feature: Notifications for overspending
     Given there are some transactions which exceed the weekly limit
     When the weekly job runs
     Then the weekly notification is triggered
+
+  Scenario: There is a warning before we reach weekly limit
+    Given there are some transactions which do not exceed the weekly warning limit
+    When the weekly job runs
+    Then the weekly notification is not triggered

@@ -12,17 +12,38 @@ abstract class AbstractCheck
      */
     protected $sm = null;
 
+    protected $overflow;
+
+
     public function setUp()
     {
         $bootstrap = \Zend\Mvc\Application::init($this->getConfig());
         $this->sm = $bootstrap->getServiceManager();
-
         $this->init();
 
     }
 
+    public function perform()
+    {
+        if ($this->overflow->isAbove($this->getLimit())) {
+            $this->overflowNotificationSent() or $this->notifyExcess();
+            return;
+        }
 
+        if ($this->overflow->isAlmostAbove($this->getLimit())) {
+            $this->warningNotificationSent() or $this->notifyAlmost();
+        }
+
+    }
+
+
+    abstract protected function notifyExcess();
+    abstract protected function notifyAlmost();
     abstract protected function init();
+    abstract protected function overflowNotificationSent();
+    abstract protected function warningNotificationSent();
+    abstract protected function getLimit();
+
 
     protected function sent($key)
     {

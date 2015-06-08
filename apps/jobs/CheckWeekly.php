@@ -7,7 +7,7 @@ class CheckWeekly extends AbstractCheck
     const ALMOST_OVERFLOW_WEEK = "almost_overflow_week";
 
 
-    private $overflow;
+    protected $overflow;
 
     const WEEKLY_LIMIT = 850;
 
@@ -16,20 +16,6 @@ class CheckWeekly extends AbstractCheck
         $this->overflow = $this->sm->get('Overflow\WeeklyOverflow');
     }
 
-
-    public function perform()
-    {
-        if ($this->overflow->isAbove(self::WEEKLY_LIMIT)) {
-            $this->sent(self::OVERFLOW_KEY_WEEK) or $this->notifyExcess();
-            return;
-        }
-
-        if ($this->overflow->isAlmostAbove(self::WEEKLY_LIMIT)) {
-            $this->sent(self::ALMOST_OVERFLOW_WEEK) or $this->notifyAlmost();
-        }
-
-
-    }
 
     protected function notifyExcess()
     {
@@ -50,6 +36,30 @@ class CheckWeekly extends AbstractCheck
         return 'From: finance@refactoring.ro' . "\r\n" .
         'Reply-To: no-reply@refactoring.ro' . "\r\n" .
         'X-Mailer: PHP/' . phpversion();
+    }
+
+    /**
+     * @return int
+     */
+    protected function getLimit()
+    {
+        return self::WEEKLY_LIMIT;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function overflowNotificationSent()
+    {
+        return $this->sent(self::OVERFLOW_KEY_WEEK);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function warningNotificationSent()
+    {
+        return $this->sent(self::ALMOST_OVERFLOW_WEEK);
     }
 
 

@@ -314,7 +314,7 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         $transaction->create(
             [
                 'description' => 'transaction 1',
-                'amount' =>  \Jobs\CheckWeekly::WEEKLY_LIMIT + 100,
+                'amount' => \Jobs\CheckWeekly::WEEKLY_LIMIT + 100,
                 'to_account' => 86,
                 'date' => (new DateTime())->format('Y-m-d')
             ]
@@ -323,7 +323,7 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         $transaction->create(
             [
                 'description' => 'transaction 1',
-                'amount' =>  \Jobs\CheckWeekly::WEEKLY_LIMIT + 100,
+                'amount' => \Jobs\CheckWeekly::WEEKLY_LIMIT + 100,
                 'to_account' => 86,
                 'date' => (new DateTime())->format('Y-m-d')
             ]
@@ -347,6 +347,33 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
     {
         if (!$this->last->excessNotified) {
             throw new \Exception("Weekly limit notification  was  not triggered");
+        };
+    }
+
+    /**
+     * @Given /^there are some transactions which do not exceed the weekly warning limit$/
+     */
+    public function thereAreSomeTransactionsWhichDoNotExceedTheWeeklyWarningLimit()
+    {
+        $transaction = $this->getTransactionRepo();
+
+        $transaction->create(
+            [
+                'description' => 'transaction 1',
+                'amount' => \Jobs\CheckWeekly::WEEKLY_LIMIT * 0.3,
+                'to_account' => 86,
+                'date' => (new DateTime())->format('Y-m-d')
+            ]
+        );
+    }
+
+    /**
+     * @Then /^the weekly notification is not triggered$/
+     */
+    public function theWeeklyNotificationIsNotTriggered()
+    {
+        if ($this->last->excessNotified || $this->last->almostNotified) {
+            throw new \Exception("Weekly limit : There should be no notifications");
         };
     }
 
