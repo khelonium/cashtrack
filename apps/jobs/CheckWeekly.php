@@ -31,13 +31,6 @@ class CheckWeekly extends AbstractCheck
         echo "Almost exceeded \n";
     }
 
-    private function getHeaders()
-    {
-        return 'From: finance@refactoring.ro' . "\r\n" .
-        'Reply-To: no-reply@refactoring.ro' . "\r\n" .
-        'X-Mailer: PHP/' . phpversion();
-    }
-
     /**
      * @return int
      */

@@ -85,4 +85,11 @@ abstract class AbstractCheck
     {
         return include 'config/application.config.php';
     }
+
+    protected function getHeaders()
+    {
+        return 'From: finance@refactoring.ro' . "\r\n" .
+        'Reply-To: no-reply@refactoring.ro' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+    }
 }
