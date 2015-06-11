@@ -25,7 +25,7 @@ class Week extends JsonModel
             'amount' => 0,
         ];
 
-        for ($i =1; $i<= self::WEEKS; $i++) {
+        for ($i =1; $i<= $this->getUnitRange(); $i++) {
             $found = false;
             foreach($variables as $entry) {
                 if ($entry['unit_nr'] == $i) {
@@ -45,5 +45,13 @@ class Week extends JsonModel
         }
 
         parent::__construct($out, $options);
+    }
+
+    /**
+     * @return int
+     */
+    protected function getUnitRange()
+    {
+        return self::WEEKS;
     }
 }
