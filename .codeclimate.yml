@@ -1,8 +1,9 @@
 languages:
-  Ruby: true
+  Ruby: false
   JavaScript: true
   PHP: true
-  Python: true
+  Python: false
 exclude_paths:
-- "public/js/vendor/bootstrap.js"
-- "tests/"
+- "public/js/vendor/*"
+- "public/js/plugins/*"
+- "tests/*"
