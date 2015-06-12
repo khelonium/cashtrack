@@ -1,7 +1,8 @@
 cashtrack 
 =========
 
-[![Build Status](https://travis-ci.org/khelonium/cashtrack.svg?branch=master)](https://travis-ci.org/khelonium/cashtrack)
+[![Build Status](https://travis-ci.org/khelonium/cashtrack.svg?branch=master)](https://travis-ci.org/khelonium/cashtrack) 
+[![Code Climate](https://codeclimate.com/github/khelonium/cashtrack/badges/gpa.svg)](https://codeclimate.com/github/khelonium/cashtrack)
 
 Install
 -------
