@@ -27,7 +27,7 @@ define([
             this.height = 500 - this.margin.top - this.margin.bottom;
 
             this.x =  d3.scale.ordinal()
-                .rangeRoundBands([0, this.width], .1);
+                .rangeRoundBands([0, this.width], 0.1);
 
             this.y =  d3.scale.linear()
                 .range([this.height, 0]);
@@ -96,7 +96,7 @@ define([
                         return i / data.length * 1000;
                     })
                     .duration(500)
-                    .attr("class", function (d) {  if (d.amount<10000) return 'bar excelent';if (d.amount > 20000) return "bar excessive"; if (d.amount > 14000) return "bar over";return "bar";})
+                    .attr("class", function (d) {  if (d.amount<10000) {return 'bar excelent'};if (d.amount > 20000) {return "bar excessive"}; if (d.amount > 14000) {return "bar over"};return "bar";})
                     .attr("x", function(d) { return that.x(d.name); })
                     .attr("width", that.x.rangeBand())
                     .attr("y", function(d) { return that.y(d.amount); })
@@ -111,8 +111,8 @@ define([
                     .style("text-anchor", "end")
                     .attr("dx", "-.8em")
                     .attr("dy", ".15em")
-                    .attr("transform", function(d) {
-                        return "rotate(-55)"
+                    .attr("transform", function() {
+                        return "rotate(-55)";
                     });
 
                 //Update Y axis
