@@ -36,7 +36,6 @@ define([
         },
 
         showEvolution : function() {
-            console.log("Must show evolution");
             this.evolutionCallback && this.evolutionCallback();
         }
 

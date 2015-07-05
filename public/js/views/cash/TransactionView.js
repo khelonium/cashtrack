@@ -16,7 +16,6 @@ define([
         },
 
         addAll: function () {
-            console.log("Add all");
             this.$el.append('<tr><th colspan="3">Transactions</th></tr>');
 
             var groupped = d3.nest().key(function (d) {

@@ -36,7 +36,6 @@ define([
                 overviewUrl = overviewUrl + '?accountId=' + accountId;
             }
 
-            console.log("Rendering in this part " + overviewUrl);
             d3.json(overviewUrl , function(error,data){
 
                 that.x.domain(data.map(function(d) { return d.unit_nr; }));

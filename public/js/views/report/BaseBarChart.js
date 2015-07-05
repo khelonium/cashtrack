@@ -69,7 +69,6 @@ define([
 
         renderFrom: function (url) {
             var that = this;
-            console.log("Rending gear " + url);
             d3.json(url , function(error, data) {
                 that.x.domain(data.map(function(d) { return d.name; }));
                 that.y.domain([0, d3.max(data, function(d) { return +d.amount; })]);
@@ -88,7 +87,6 @@ define([
                 barChart.enter().append("rect")
                     .on('click',function(d){
                         that.trigger('barAction',{barChart:d});
-                        console.log("Trigger bar event");
                 });
 
                 barChart.transition()
