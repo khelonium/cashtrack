@@ -18,7 +18,7 @@ define([
 
         thisMonthReport: function () {
             var today = new Date();
-            this.monthReport(today.getFullYear(), today.getMonth());
+            this.monthReport(today.getFullYear(), today.getMonth() + 1);
         },
 
 
