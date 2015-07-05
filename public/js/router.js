@@ -71,7 +71,6 @@ define([
             var accountId = null;
 
             if (account) {
-                console.log("Setyin");
                 accountId = account.accountId;
             }
 
@@ -102,7 +101,6 @@ define([
             this.cashNavigation.doOnYearChange = function (anotherYear) {
                 view.render(anotherYear);
             };
-            console.log("Rendering " + accountId);
 
             view.render((new Date().getFullYear()), accountId);
         },
@@ -118,7 +116,6 @@ define([
             this.navMeta.title(event.barChart.amount + " on " + event.barChart.name  + " in " + event.barChart.month);
 
             var evolution = function () {
-                console.log("Trigger");
                 this.monthlyReport(event.barChart);
             }.bind(this);
 
@@ -208,7 +205,6 @@ define([
         accounts: function () {
             this.activeMonth || this.setActiveMonth(this.getFirstOfMonth());
 
-
             this.app.html('<table class="table table-hover"></table>');
 
             this.view = new CategoryView({el: this.app.find('table')});
@@ -254,8 +250,10 @@ define([
 
         setActiveMonth: function (month) {
             this.raise('active_month', month);
-            this.view && this.view.collection && this.view.collection.fetchMonth && this.view.collection.fetchMonth(month);
             this.activeMonth = month;
+
+            this.accounts();
+
         },
 
         cashflow: function (month) {

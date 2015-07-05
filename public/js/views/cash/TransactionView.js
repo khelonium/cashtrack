@@ -32,14 +32,13 @@ define([
             var sum = d3.sum(group.values, function (d) {
                 return d.get('amount')
             });
-            
+
             this.$el.append('<tr class="active"><th colspan="1"> Week ' + (+group.key + 1) + '</th><th class="text-right">' + sum + '</th><th></th></tr>');
 
             group.values.forEach(this.addOne, this);
         },
 
         addOne: function (transaction) {
-            console.log("Adding ");
             var categoryView = new SingleTransactionView({model: transaction});
             categoryView.render();
             if (categoryView.model.get('toAccount') == '') {
