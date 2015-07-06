@@ -81,7 +81,11 @@ class Module
                 },
 
                 '\Import\BT\Matcher' => function ($sm) {
-                    return new Matcher($sm->get('\Database\Merchant\Repository')->all());
+                    $out = [];
+                    foreach($sm->get('\Database\Merchant\Repository')->all() as $smth) {
+                        $out[] = $smth;
+                    }
+                    return new Matcher($out);
                 },
 
 

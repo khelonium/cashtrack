@@ -1,0 +1,22 @@
+
+
+
+
+Tranzactii
+Criterii de cautare
+Numar cont:,RO81BTRL11111111111111XX RON
+Perioada:,01.01.2015-31.01.2015
+
+
+Cont
+Utilizator:, DORDEA COSMIN 
+Client:, DORDEA COSMIN 
+Numar cont:,RO81BTRL11111111111111XX RON
+Gasit:,2 Tranzactii.
+Rezultat cautare
+Data tranzactie,Data valuta:,Descriere:,Referinta tranzactiei,Debit,Credit,Sold contabil
+2015-01-02,2015-01-03,"Transfer intern - canal electronic;Alimentare cont personal;",066ECIT150030110,,"1","2"
+2015-01-23,2015-01-23,"Plata la POS non-BT cu card MASTERCARD;EPOS 21/01/2015 000980021427995 TID:00000001 PAYPAL CLEANCODERS  35314369001 LU 52990213 valoare tranzactie: 48.79 RON RRN:000017081150   comision tranzactie 0.00 RON;",066NMPO1502300CO,"-48.79",,"200.91"
+2015-01-29,2015-01-29,"Direct debit plata;CJFPF00000212906373511/01/2015;ELECTRICA FURNIZARE TN DD;000RONINCS000701001;BTRLRO22",066DI12150290055,"-162.43",,"38.48"
+2015-01-31,2015-01-31,"Abonament BT 24",066BT24130010594,"-1.00",,"37.48"
+

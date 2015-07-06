@@ -13,18 +13,17 @@ $adapter = $sm->get('\Zend\Db\Adapter\Adapter');
 
 
 
-$dir = getcwd().DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.'2015/3';
-
+$dir = getcwd().DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.'test';
+echo $dir;
 
 echo "\n";
-
 
 /** @var \Import\BT\Parser $parser */
 $parser  = $sm->get('\Import\BT\Parser');
 
 foreach (new DirectoryIterator($dir) as $element) {
     if ($element->isFile() && $element->getExtension() == 'csv') {
-        echo "Importing ".$element,"\n";
+        echo "Validating ".$element,"\n";
         $transactions = $parser->parse($element->getPathname());
         /** @var \Import\BT\Transaction $transaction */
         foreach ($transactions as $transaction) {

@@ -26,6 +26,41 @@ return [
             ],
         ],
 
+
+        'import' => [
+            'type' => 'Zend\Mvc\Router\Http\Literal',
+            'options' => [
+                'route'    => '/import',
+                'defaults' => [
+                    'controller' => 'Application\Controller\Index',
+                    'action'     => 'import',
+                ],
+            ],
+        ],
+
+        'importDone' => [
+            'type' => 'Zend\Mvc\Router\Http\Literal',
+            'options' => [
+                'route'    => '/import/done',
+                'defaults' => [
+                    'controller' => 'Application\Controller\Index',
+                    'action'     => 'done',
+                ],
+            ],
+        ],
+
+        'processImport' => [
+            'type' => 'Zend\Mvc\Router\Http\Literal',
+            'options' => [
+                'route'    => '/import/process',
+                'defaults' => [
+                    'controller' => 'Application\Controller\Index',
+                    'action'     => 'process',
+                ],
+            ],
+        ],
+
+
         'application' => array(
             'type'    => 'Literal',
             'options' => [

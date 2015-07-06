@@ -1,0 +1,11 @@
+<h2>Imported transactions</h2>
+<table class="table table-hover">
+    <?php foreach ($transactions as $transaction) :?>
+            <tr>
+                <td><?php echo $transaction['description']; ?></td>
+                <td><?php echo $transaction['amount'] ?></td>
+                <td><?php echo $transaction['transactionDate'] ?></td>
+            </tr>
+    <?php endforeach;?>
+
+</table>

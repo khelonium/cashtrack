@@ -9,6 +9,10 @@ return [
         [
             'label' => 'Merchants',
             'route' => 'merchants',
+        ],
+        [
+            'label' => 'Import',
+            'route' => 'import',
         ]
     ],
 ];
