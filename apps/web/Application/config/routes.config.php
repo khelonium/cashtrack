@@ -32,7 +32,7 @@ return [
             'options' => [
                 'route'    => '/import',
                 'defaults' => [
-                    'controller' => 'Application\Controller\Index',
+                    'controller' => 'Application\Controller\Import',
                     'action'     => 'import',
                 ],
             ],
@@ -43,7 +43,7 @@ return [
             'options' => [
                 'route'    => '/import/done',
                 'defaults' => [
-                    'controller' => 'Application\Controller\Index',
+                    'controller' => 'Application\Controller\Import',
                     'action'     => 'done',
                 ],
             ],
@@ -54,7 +54,7 @@ return [
             'options' => [
                 'route'    => '/import/process',
                 'defaults' => [
-                    'controller' => 'Application\Controller\Index',
+                    'controller' => 'Application\Controller\Import',
                     'action'     => 'process',
                 ],
             ],

@@ -34,7 +34,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Report' => 'Application\Controller\Report',
+            'Application\Controller\Import' => 'Application\Controller\ImportController',
             'Application\API\Account' => 'Application\API\Account',
             'Application\API\Transaction' => 'Application\API\Transaction',
             'Application\API\Balance' => 'Application\API\Balance',
