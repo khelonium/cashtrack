@@ -33,11 +33,6 @@ class Repository extends AbstractRepository implements TransactionRepositoryInte
     }
 
 
-    public function delete(Transaction $transaction)
-    {
-        $this->gateway()->delete(['id' => $transaction->id]);
-    }
-
     /**
      * @param IntervalInterface $interval
      * @return array

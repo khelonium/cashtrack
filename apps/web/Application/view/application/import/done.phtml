@@ -2,9 +2,9 @@
 <table class="table table-hover">
     <?php foreach ($transactions as $transaction) :?>
             <tr>
-                <td><?php echo $transaction['description']; ?></td>
-                <td><?php echo $transaction['amount'] ?></td>
-                <td><?php echo $transaction['transactionDate'] ?></td>
+                <td><?php echo $transaction->description; ?></td>
+                <td><?php echo $transaction->amount ?></td>
+                <td><?php echo $transaction->date ?></td>
             </tr>
     <?php endforeach;?>
 

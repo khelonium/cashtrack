@@ -17,20 +17,38 @@ class ImportController extends IndexController
     {
 
         $request = $this->getRequest();
+
         if (false == $request->isPost()) {
             $this->redirect()->toRoute('import');
             return;
         }
 
+        $files = $request->getFiles();
+        $filter = new \Zend\Filter\File\RenameUpload("./data/uploads/");
+        $filter->setOverwrite(true);
+        $filter->setUseUploadName(true);
+
+
+        $file_data = $filter->filter($files['transaction_file']);
+
+        $sm = $this->getServiceLocator();
+        $merchant_service = $sm->get('\Database\Merchant\Repository');
+
+        $out = [];
+        foreach ($merchant_service->all() as $merchant) {
+            $out[] = $merchant;
+        }
+        $parser =  new \Import\BT\Parser(new \Import\BT\Matcher($out));
+
+        $import = new \Import\BT\Importer($sm->get('\Database\Transaction\Repository'), $parser);
+
+        $container = $this->getSessionContainer();
+        $container->transactions = $import->import($file_data['tmp_name']);
 
         $this->redirect()->toRoute('importDone');
 
-        $container = $this->getSessionContainer();
 
-        $container->transactions = [
-            ['description' => 'Abonament BT 24', 'amount' => 1.24, 'date', 'transactionDate' => '2015-01-31'],
-            ['description' => 'ELECTRICA FURNIZARE', 'amount' => 162.43, 'transactionDate' => '2015-01-29']
-        ];
+
     }
 
     public function doneAction()

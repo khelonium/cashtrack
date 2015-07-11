@@ -24,7 +24,15 @@ class Repository extends AbstractRepository
             throw new \InvalidArgumentException(" Provided argument is not string");
         }
 
-        return $this->add(new Merchant(array('name' => $name)));
+        return $this->add(new Merchant(array('name' => $name ,'identifier' => $identifier)));
+
+    }
+
+    public function create($data)
+    {
+        $merchant = new Merchant();
+        $merchant->exchangeArray($data);
+        $this->add($merchant);
 
     }
 

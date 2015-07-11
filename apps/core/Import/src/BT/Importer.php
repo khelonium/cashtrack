@@ -9,26 +9,25 @@
 
 namespace Import\BT;
 
-use Database\Transaction\Repository as TransactionService;
+use Database\Transaction\Repository as TransactionRepository;
 
 class Importer
 {
     private $parser;
 
     /**
-     * @var TransactionService
+     * @var TransactionRepository
      */
-    private $service   = null;
+    private $repo   = null;
 
 
 
     /**
-     * @param TransactionService $transactionService
-     * @param $merchants used to identify transactions FIXME - merchants not nice here
+     * @param TransactionRepository $repo
      */
-    public function __construct(TransactionService $transactionService , Parser $parser )
+    public function __construct(TransactionRepository $repo, Parser $parser )
     {
-        $this->service = $transactionService;
+        $this->repo = $repo;
         $this->parser  = $parser;
     }
 
@@ -46,17 +45,19 @@ class Importer
 
         $transactions = $this->parser->parse($file);
 
-        $parts   =  explode ("-",$file);
-        $parts   =  explode ("/", $parts[0]);
-        $account =  array_pop($parts);
+        $account = $this->getAccount($file);
 
-
+        $out = [];
 
         foreach ($transactions as $transaction) {
             $transaction->fromAccount = $this->map[$account];
-            $this->service->add($this->mapToEntity($transaction));
+            $entity = $this->mapToEntity($transaction);
+            $out[] = $entity;
+            $this->repo->add($entity);
 
         }
+
+        return $out;
     }
 
     /**
@@ -75,5 +76,17 @@ class Importer
         $entity->from_account = $transaction->fromAccount;
 
         return $entity;
+    }
+
+    /**
+     * @param $file
+     * @return mixed
+     */
+    protected function getAccount($file)
+    {
+        $parts = explode("-", $file);
+        $parts = explode("/", $parts[0]);
+        $account = array_pop($parts);
+        return $account;
     }
 }

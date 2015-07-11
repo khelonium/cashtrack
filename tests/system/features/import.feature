@@ -6,16 +6,22 @@ Feature: Bank exports can be imported in UI
     When I follow "Import"
     Then I should see "Upload your file"
 
-    
-   Scenario: I can upload a transaction
+  Scenario: I can upload a file
+    Given I am on "/import"
+    And there are some merchants added
+    When I attach the file "RO81BTRL06601201514881XX-01.01.2015-31.01.2015.csv" to "transaction_file"
+    Then the file should be uploaded
+
+
+  Scenario: I can import a transaction
      Given I am on "/import"
-     When I attach the file "sample.csv" to "transaction_file"
+     And there are some merchants added
+     When I attach the export file "RO81BTRL06601201514881XX-01.01.2015-31.01.2015.csv" to "transaction_file"
      And I press "Upload"
      Then I should be on "/import/done"
      Then I should see "Imported transactions"
      And I should see "Abonament BT 24"
      And I should see "2015-01-31"
-     And I should see "1.24"
      And I should see "ELECTRICA FURNIZARE"
      And I should see "162.43"
 

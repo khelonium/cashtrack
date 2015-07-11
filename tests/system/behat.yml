@@ -3,3 +3,4 @@ default:
     Behat\MinkExtension:
       base_url: http://cashtrack.test/
       goutte: ~
+      files_path: /tmp/

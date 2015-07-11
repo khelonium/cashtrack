@@ -14,9 +14,15 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
      */
     public function beforeScenario()
     {
+        echo "Beforescenario \n";
         foreach ($this->getTransactionRepo()->all() as $transaction) {
             $this->getTransactionRepo()->delete($transaction);
         }
+
+        foreach ($this->getMerchantRepo()->all() as $merchant) {
+            $this->getMerchantRepo()->delete($merchant);
+        }
+
     }
 
     /**
@@ -129,6 +135,14 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         /** @var \Database\Transaction\Repository $transaction */
         $transaction = TestBootstrap::get('\Database\Transaction\Repository');
         return $transaction;
+    }
+
+    /**
+     * @return \Database\Merchant\Repository
+     */
+    protected function getMerchantRepo()
+    {
+        return TestBootstrap::get('\Database\Merchant\Repository');
     }
 
     /**
@@ -375,6 +389,38 @@ class FeatureContext extends \Behat\MinkExtension\Context\MinkContext
         if ($this->last->excessNotified || $this->last->almostNotified) {
             throw new \Exception("Weekly limit : There should be no notifications");
         };
+    }
+
+    /**
+     * @Given /^there are some merchants added$/
+     */
+    public function thereAreSomeMerchantsAdded()
+    {
+
+        $this->getMerchantRepo()->create(
+            [
+                'name' => 'unknown',
+                'identifier' => 'unknown',
+                'accountId' => 41
+            ]
+        );
+
+    }
+
+    /**
+     * @Then /^the file should be uploaded$/
+     */
+    public function theFileShouldBeUploaded()
+    {
+    }
+
+    /**
+     * @When /^(?:|I )attach the export file "(?P<path>[^"]*)" to "(?P<field>(?:[^"]|\\")*)"$/
+     */
+    public function iAttachTheExportFileTo($file, $field)
+    {
+        $file = dirname(__DIR__).DIRECTORY_SEPARATOR.$file;
+        $this->attachFileToField($field, $file);
     }
 
 }

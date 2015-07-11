@@ -31,6 +31,7 @@ class Matcher
                 $this->unknown = $merchant;
             }
         }
+
     }
 
     public function match(Transaction $transaction)

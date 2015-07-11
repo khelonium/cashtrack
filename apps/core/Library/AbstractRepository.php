@@ -97,4 +97,9 @@ abstract class AbstractRepository implements ServiceManagerAwareInterface
         return $out;
     }
 
+    public function delete($entity)
+    {
+        $this->gateway()->delete(['id' => $entity->id]);
+    }
+
 }

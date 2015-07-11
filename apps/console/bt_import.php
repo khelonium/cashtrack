@@ -22,7 +22,6 @@ echo "\n";
 echo "\n";
 if ($import) {
     $merchant_service = $sm->get('\Database\Merchant\Repository');
-    $matcher = new \Import\BT\Matcher($merchant_service->all());
 
 
 
