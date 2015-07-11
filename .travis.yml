@@ -28,6 +28,8 @@ before_script:
   - cp -f build/global.php ./config/autoload/global.php
   - cp -f build/test.php ./config/autoload/test.php
   - cp -f build/local.php ./config/autoload/local.php
+  - mkdir -p data/uploads
+  - chmod a+w data/uploads
   - composer install
 
 script: ./tests.sh
