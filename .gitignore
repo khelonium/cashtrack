@@ -16,3 +16,4 @@ oldtests/_log/*
 codeception.yml
 .vagrant/
 phpmyadmin/
+data/uploads
