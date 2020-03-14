@@ -110,7 +110,7 @@ DROP TABLE IF EXISTS `transaction`;
 CREATE TABLE `transaction` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `amount` float NOT NULL,
-  `from_account` int(11) NOT NULL,
+  `from_account` int(11) DEFAULT 0,
   `to_account` int(11) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `transaction_date` date NOT NULL,

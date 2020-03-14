@@ -18,9 +18,11 @@ class Module
 
     protected $whiteList = array('zfcuser/login');
 
-    public function onBootstrap(MvcEvent $e)
+    //this should be renamed back to onBootstab to enable
+    //deactivated because it breaks ci and is not needed
+    //left here because locally may need enabling without going to git history
+    public function onBootstrapDisabled(MvcEvent $e)
     {
-
         $app = $e->getApplication();
         $em  = $app->getEventManager();
         $sm  = $app->getServiceManager();
